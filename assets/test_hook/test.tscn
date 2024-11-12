@@ -1,0 +1,150 @@
+[gd_scene load_steps=11 format=3 uid="uid://deqn1243icg0v"]
+
+[ext_resource type="Script" path="res://assets/test_hook/hero.gd" id="1_r8eof"]
+[ext_resource type="Texture2D" uid="uid://cyim4knemhx1y" path="res://assets/test_hook/test_hero.png" id="2_31xtq"]
+[ext_resource type="PackedScene" uid="uid://g6qqmpn6dogs" path="res://modules/hook/hook_2d.tscn" id="3_m1es6"]
+[ext_resource type="PackedScene" uid="uid://b6r4hvvcagswn" path="res://assets/test_hook/test_tile_flat.tscn" id="4_fyxap"]
+[ext_resource type="PackedScene" uid="uid://cvwr4qsydynkp" path="res://assets/test_hook/test_tile_slope_a.tscn" id="5_qi6gf"]
+[ext_resource type="PackedScene" uid="uid://dps5bujxpkc07" path="res://assets/test_hook/test_tile_slope_b.tscn" id="6_mjroy"]
+[ext_resource type="PackedScene" uid="uid://1ehgmto3np1f" path="res://assets/test_hook/test_tile_slope_d.tscn" id="7_0ukam"]
+[ext_resource type="PackedScene" uid="uid://cvgyhydkouwx5" path="res://assets/test_hook/test_tile_slope_c.tscn" id="8_0as00"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_uta8p"]
+radius = 9.0
+height = 28.0
+
+[sub_resource type="GDScript" id="GDScript_halkj"]
+script/source = "extends Button
+
+func _ready() -> void:
+	pressed.connect(get_tree().reload_current_scene)
+"
+
+[node name="test" type="Node2D"]
+
+[node name="test_hero" type="CharacterBody2D" parent="."]
+position = Vector2(-64, 0)
+floor_max_angle = 1.0472
+floor_snap_length = 4.0
+script = ExtResource("1_r8eof")
+move_acceleration = null
+air_control = 0.825
+friction_air = null
+hook_pull_speed = null
+hook_pull_time = null
+
+[node name="collision_shape_2d" type="CollisionShape2D" parent="test_hero"]
+position = Vector2(0, -12)
+shape = SubResource("CapsuleShape2D_uta8p")
+
+[node name="sprite_2d" type="Sprite2D" parent="test_hero"]
+show_behind_parent = true
+texture = ExtResource("2_31xtq")
+offset = Vector2(0, -12)
+
+[node name="label" type="Label" parent="test_hero"]
+offset_left = -21.0
+offset_top = -46.0
+offset_right = 19.0
+offset_bottom = -23.0
+theme_override_font_sizes/font_size = 8
+text = "dwada"
+
+[node name="hook_2d" parent="test_hero" instance=ExtResource("3_m1es6")]
+
+[node name="camera_2d" type="Camera2D" parent="test_hero"]
+zoom = Vector2(2, 2)
+process_callback = 0
+
+[node name="hook_anchor" type="Marker2D" parent="."]
+
+[node name="sprite_2d" type="Sprite2D" parent="hook_anchor"]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(1, 12)
+texture = ExtResource("2_31xtq")
+offset = Vector2(0, -12)
+
+[node name="geometry" type="Node2D" parent="."]
+
+[node name="test_tile_flat_0" parent="geometry" instance=ExtResource("4_fyxap")]
+position = Vector2(-104, 80)
+
+[node name="test_tile_slope_a_0" parent="geometry" instance=ExtResource("5_qi6gf")]
+position = Vector2(-568, 48)
+
+[node name="test_tile_slope_b_0" parent="geometry" instance=ExtResource("6_mjroy")]
+position = Vector2(-152, 48)
+
+[node name="test_tile_slope_d_0" parent="geometry" instance=ExtResource("7_0ukam")]
+position = Vector2(104, 80)
+
+[node name="test_tile_slope_d_1" parent="geometry" instance=ExtResource("7_0ukam")]
+position = Vector2(136, 96)
+
+[node name="test_tile_flat_1" parent="geometry" instance=ExtResource("4_fyxap")]
+position = Vector2(-232, 48)
+
+[node name="test_tile_slope_c_0" parent="geometry" instance=ExtResource("8_0as00")]
+position = Vector2(400, 96)
+
+[node name="test_tile_slope_c_1" parent="geometry" instance=ExtResource("8_0as00")]
+position = Vector2(432, 80)
+
+[node name="test_tile_slope_c_2" parent="geometry" instance=ExtResource("8_0as00")]
+position = Vector2(496, 64)
+
+[node name="test_tile_slope_c_3" parent="geometry" instance=ExtResource("8_0as00")]
+position = Vector2(528, 48)
+
+[node name="test_tile_flat_13" parent="geometry" instance=ExtResource("4_fyxap")]
+position = Vector2(280, 112)
+
+[node name="test_tile_flat_15" parent="geometry" instance=ExtResource("4_fyxap")]
+position = Vector2(512, 80)
+
+[node name="test_tile_flat_16" parent="geometry" instance=ExtResource("4_fyxap")]
+position = Vector2(608, 48)
+
+[node name="test_tile_flat_14" parent="geometry" instance=ExtResource("4_fyxap")]
+position = Vector2(408, 112)
+
+[node name="test_tile_flat_2" parent="geometry" instance=ExtResource("4_fyxap")]
+position = Vector2(152, 112)
+
+[node name="test_tile_flat_3" parent="geometry" instance=ExtResource("4_fyxap")]
+position = Vector2(-360, 48)
+
+[node name="test_tile_flat_4" parent="geometry" instance=ExtResource("4_fyxap")]
+position = Vector2(-488, 48)
+
+[node name="test_tile_flat_5" parent="geometry" instance=ExtResource("4_fyxap")]
+position = Vector2(-488, -112)
+
+[node name="test_tile_flat_6" parent="geometry" instance=ExtResource("4_fyxap")]
+position = Vector2(-360, -112)
+
+[node name="test_tile_flat_7" parent="geometry" instance=ExtResource("4_fyxap")]
+position = Vector2(-160, -232)
+
+[node name="test_tile_flat_8" parent="geometry" instance=ExtResource("4_fyxap")]
+position = Vector2(72, -296)
+
+[node name="test_tile_flat_9" parent="geometry" instance=ExtResource("4_fyxap")]
+position = Vector2(56, -80)
+
+[node name="test_tile_flat_10" parent="geometry" instance=ExtResource("4_fyxap")]
+position = Vector2(184, -80)
+
+[node name="test_tile_flat_11" parent="geometry" instance=ExtResource("4_fyxap")]
+position = Vector2(312, -80)
+
+[node name="test_tile_flat_12" parent="geometry" instance=ExtResource("4_fyxap")]
+position = Vector2(24, 80)
+
+[node name="canvas_layer" type="CanvasLayer" parent="."]
+
+[node name="button" type="Button" parent="canvas_layer"]
+offset_right = 8.0
+offset_bottom = 8.0
+text = "restart"
+script = SubResource("GDScript_halkj")

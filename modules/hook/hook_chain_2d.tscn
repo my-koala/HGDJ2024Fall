@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://trn5puprxjq4"]
+
+[ext_resource type="Texture2D" uid="uid://c8ygbrl6teie7" path="res://assets/test_hook/test_hook.png" id="1_cm42s"]
+[ext_resource type="Script" path="res://modules/hook/hook_chain_2d.gd" id="1_ogh7j"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rljos"]
+size = Vector2(5, 7)
+
+[node name="hook_chain_2d" type="RigidBody2D"]
+collision_layer = 0
+script = ExtResource("1_ogh7j")
+
+[node name="collision_shape_2d" type="CollisionShape2D" parent="."]
+position = Vector2(0, 2)
+shape = SubResource("RectangleShape2D_rljos")
+
+[node name="sprite_2d" type="Sprite2D" parent="."]
+z_index = 1
+texture = ExtResource("1_cm42s")
+offset = Vector2(0, 2.5)
+vframes = 2
+region_enabled = true
+region_rect = Rect2(0, 16, 7, 16)
+
+[node name="pin_joint_2d" type="PinJoint2D" parent="."]
+position = Vector2(0, 4)
+node_a = NodePath("..")
+node_b = NodePath("../../hook_chain_a_1")

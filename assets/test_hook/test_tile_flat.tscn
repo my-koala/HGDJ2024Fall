@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://b6r4hvvcagswn"]
+
+[ext_resource type="Texture2D" uid="uid://bjcxr6eaoilxe" path="res://assets/test_hook/test_tile.png" id="1_k0k6s"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_adqik"]
+size = Vector2(128, 32)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_rgtu4"]
+polygon = PackedVector2Array(-64, -16, -64, 16, 64, 16, 64, -16)
+
+[node name="test_tile_0" type="StaticBody2D"]
+
+[node name="collision_shape_2d" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_adqik")
+
+[node name="sprite_2d" type="Sprite2D" parent="."]
+texture_repeat = 2
+texture = ExtResource("1_k0k6s")
+region_enabled = true
+region_rect = Rect2(0, 0, 128, 32)
+
+[node name="light_occluder_2d" type="LightOccluder2D" parent="."]
+occluder = SubResource("OccluderPolygon2D_rgtu4")

@@ -1,0 +1,106 @@
+[gd_scene load_steps=14 format=3 uid="uid://bno2xbu6glsda"]
+
+[ext_resource type="Script" path="res://assets/actors/hero/hero.gd" id="1_3i57q"]
+[ext_resource type="Script" path="res://modules/swing/swing_2d.gd" id="1_4b5v1"]
+[ext_resource type="Texture2D" uid="uid://dlrwn3jlq3vwf" path="res://assets/actors/hero/hero.png" id="2_tgecw"]
+[ext_resource type="Texture2D" uid="uid://cjug42yt3ge8s" path="res://assets/props/swingset/swingset_foreground.png" id="4_ifpmc"]
+[ext_resource type="Texture2D" uid="uid://cu2cx35yngyu2" path="res://assets/props/swingset/swingset_background.png" id="5_iemka"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_jlghy"]
+rough = true
+bounce = 0.2
+absorbent = true
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_umvcq"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_hogaf"]
+friction = 0.0
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_oj3dq"]
+friction = 0.25
+bounce = 0.25
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_g3ecx"]
+radius = 16.0
+height = 64.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1w0ho"]
+size = Vector2(32, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yxdif"]
+size = Vector2(48, 96)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_u5nc1"]
+size = Vector2(24, 12)
+
+[node name="map" type="Node2D"]
+
+[node name="geometry" type="Node2D" parent="."]
+
+[node name="static_body_2d" type="StaticBody2D" parent="geometry"]
+physics_material_override = SubResource("PhysicsMaterial_jlghy")
+
+[node name="collision_shape_2d" type="CollisionShape2D" parent="geometry/static_body_2d"]
+shape = SubResource("WorldBoundaryShape2D_umvcq")
+
+[node name="static_body_2d_2" type="StaticBody2D" parent="geometry"]
+position = Vector2(440, -136)
+physics_material_override = SubResource("PhysicsMaterial_hogaf")
+
+[node name="collision_polygon_2d" type="CollisionPolygon2D" parent="geometry/static_body_2d_2"]
+polygon = PackedVector2Array(0, 0, 192, 0, 0, -192)
+
+[node name="rigid_body_2d" type="RigidBody2D" parent="geometry"]
+position = Vector2(512, -376)
+mass = 15.0
+physics_material_override = SubResource("PhysicsMaterial_oj3dq")
+
+[node name="collision_shape_2d" type="CollisionShape2D" parent="geometry/rigid_body_2d"]
+shape = SubResource("CapsuleShape2D_g3ecx")
+
+[node name="collision_shape_2d_2" type="CollisionShape2D" parent="geometry/rigid_body_2d"]
+position = Vector2(0, 20)
+shape = SubResource("RectangleShape2D_1w0ho")
+
+[node name="sprite_2d" type="Sprite2D" parent="geometry/rigid_body_2d"]
+texture = ExtResource("2_tgecw")
+
+[node name="hero" type="RigidBody2D" parent="."]
+position = Vector2(0, -56)
+collision_layer = 2
+collision_mask = 3
+script = ExtResource("1_3i57q")
+
+[node name="collision_shape_2d" type="CollisionShape2D" parent="hero"]
+shape = SubResource("RectangleShape2D_yxdif")
+
+[node name="sprite_2d" type="Sprite2D" parent="hero"]
+texture = ExtResource("2_tgecw")
+
+[node name="swingset" type="Node2D" parent="."]
+
+[node name="body" type="Node2D" parent="swingset"]
+position = Vector2(0, -40)
+
+[node name="foreground" type="Sprite2D" parent="swingset/body"]
+position = Vector2(0, -120)
+texture = ExtResource("4_ifpmc")
+
+[node name="background" type="Sprite2D" parent="swingset/body"]
+position = Vector2(0, -120)
+texture = ExtResource("5_iemka")
+
+[node name="swing" type="CharacterBody2D" parent="swingset"]
+position = Vector2(0, -24)
+collision_layer = 4
+collision_mask = 5
+script = ExtResource("1_4b5v1")
+length = 176.0
+
+[node name="collision_shape_2d" type="CollisionShape2D" parent="swingset/swing"]
+shape = SubResource("RectangleShape2D_u5nc1")
+
+[node name="camera_2d" type="Camera2D" parent="."]
+position = Vector2(256, -256)
+zoom = Vector2(0.75, 0.75)
+process_callback = 0

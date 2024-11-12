@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://cvwr4qsydynkp"]
+
+[ext_resource type="Texture2D" uid="uid://bjcxr6eaoilxe" path="res://assets/test_hook/test_tile.png" id="1_q2cy7"]
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_rgtu4"]
+polygon = PackedVector2Array(-16, 16, 16, 16, 16, -16)
+
+[node name="test_tile_slope_a_0" type="StaticBody2D"]
+
+[node name="collision_polygon_2d" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(-16, 16, 16, 16, 16, -16)
+
+[node name="sprite_2d" type="Sprite2D" parent="."]
+texture_repeat = 2
+texture = ExtResource("1_q2cy7")
+region_enabled = true
+region_rect = Rect2(0, 32, 32, 32)
+
+[node name="light_occluder_2d" type="LightOccluder2D" parent="."]
+occluder = SubResource("OccluderPolygon2D_rgtu4")

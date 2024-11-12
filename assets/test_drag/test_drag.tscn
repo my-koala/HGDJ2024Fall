@@ -1,0 +1,242 @@
+[gd_scene load_steps=2 format=3 uid="uid://6cna3q4t3ujp"]
+
+[sub_resource type="GDScript" id="GDScript_kaj3h"]
+resource_name = "test_drag"
+script/source = "@tool
+extends Node
+
+@onready
+var _label_size: Label = $canvas_layer/menu/label_size as Label
+@onready
+var _slider_size_x: HSlider = $canvas_layer/menu/sliders_size/x as HSlider
+@onready
+var _slider_size_y: HSlider = $canvas_layer/menu/sliders_size/y as HSlider
+
+@onready
+var _label_rotation: Label = $canvas_layer/menu/label_rotation as Label
+@onready
+var _slider_rotation: HSlider = $canvas_layer/menu/slider_rotation as HSlider
+
+@onready
+var _label_coefficient: Label = $canvas_layer/menu/label_coefficient as Label
+@onready
+var _slider_coefficient_x: HSlider = $canvas_layer/menu/sliders_coefficient/x as HSlider
+@onready
+var _slider_coefficient_y: HSlider = $canvas_layer/menu/sliders_coefficient/y as HSlider
+
+@onready
+var _label_velocity: Label = $canvas_layer/menu/label_velocity as Label
+@onready
+var _slider_velocity_x: HSlider = $canvas_layer/menu/sliders_velocity/x as HSlider
+@onready
+var _slider_velocity_y: HSlider = $canvas_layer/menu/sliders_velocity/y as HSlider
+
+@onready
+var _label_result: Label = $canvas_layer/menu/label_result as Label
+
+var _canvas_item_object: RID = RID()
+var _canvas_item_velocity: RID = RID()
+
+func _enter_tree() -> void:
+	_canvas_item_object = RenderingServer.canvas_item_create()
+	RenderingServer.canvas_item_set_parent(_canvas_item_object, get_viewport().world_2d.canvas)
+	
+	_canvas_item_velocity = RenderingServer.canvas_item_create()
+	RenderingServer.canvas_item_set_parent(_canvas_item_velocity, get_viewport().world_2d.canvas)
+
+func _exit_tree() -> void:
+	RenderingServer.free_rid(_canvas_item_object)
+	_canvas_item_object = RID()
+	
+	RenderingServer.free_rid(_canvas_item_velocity)
+	_canvas_item_velocity = RID()
+
+func _physics_process(delta: float) -> void:
+	var size: Vector2 = Vector2(_slider_size_x.value, _slider_size_y.value)
+	_label_size.text = \"Object Size (%.0fpx x %.0fpx)\" % [size.x, size.y]
+	
+	var rotation: float = _slider_rotation.value
+	_label_rotation.text = \"Rotation (%.0f degrees)\" % [rotation]
+	rotation *= PI / 180.0
+	
+	var coefficient: Vector2 = Vector2(_slider_coefficient_x.value, _slider_coefficient_y.value)
+	_label_coefficient.text = \"coefficient (%.3f x %.3f)\" % [coefficient.x, coefficient.y]
+	
+	var velocity: Vector2 = Vector2(_slider_velocity_x.value, _slider_velocity_y.value)
+	_label_velocity.text = \"Velocity (%.3f x %.3f)\" % [velocity.x, velocity.y]
+	
+	var drag_direction: Vector2 = -velocity.normalized()
+	
+	# Calculate surface area \"visible\" to drag by dotting edge normals with drag direction.
+	var edge_x_normal: Vector2 = Vector2(size.x, 0.0).rotated(rotation + (PI / 2.0)).normalized()
+	var edge_x_fraction: float = absf(drag_direction.dot(edge_x_normal))
+	var edge_y_normal: Vector2 = Vector2(0.0, size.y).rotated(rotation + (PI / 2.0)).normalized()
+	var edge_y_fraction: float = absf(drag_direction.dot(edge_y_normal))
+	
+	var total_area: float = (edge_x_fraction * size.x) + (edge_y_fraction * size.y)
+	var total_coefficient: float = (edge_x_fraction * coefficient.x) + (edge_y_fraction * coefficient.y)
+	
+	var density: float = 1.0# Air density.
+	var drag: Vector2 = 0.5 * total_coefficient * density * velocity * velocity * total_area
+	
+	_label_result.text = \"Surface Area: (%.3fpx)\\nDrag: (%.3fpx/s^2)\" % [total_area, drag.length()]
+	
+	
+	RenderingServer.canvas_item_clear(_canvas_item_object)
+	RenderingServer.canvas_item_add_rect(_canvas_item_object, Rect2(-(size / 2.0), size), Color.WEB_GRAY, true)
+	RenderingServer.canvas_item_set_transform(_canvas_item_object, Transform2D.IDENTITY.rotated(rotation))
+	
+	RenderingServer.canvas_item_clear(_canvas_item_velocity)
+	RenderingServer.canvas_item_add_line(_canvas_item_velocity, Vector2.ZERO, velocity, Color.RED, -1.0, true)
+	RenderingServer.canvas_item_add_line(_canvas_item_velocity, Vector2.ZERO, drag, Color.BLUE, -1.0, true)
+"
+
+[node name="test_drag" type="Node2D"]
+script = SubResource("GDScript_kaj3h")
+
+[node name="camera_2d" type="Camera2D" parent="."]
+process_callback = 0
+
+[node name="canvas_layer" type="CanvasLayer" parent="."]
+
+[node name="menu" type="VBoxContainer" parent="canvas_layer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -576.0
+
+[node name="title" type="Label" parent="canvas_layer/menu"]
+layout_mode = 2
+text = "Drag Test"
+
+[node name="label_size" type="Label" parent="canvas_layer/menu"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Object Size (24px x 24px)"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="sliders_size" type="Control" parent="canvas_layer/menu"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+
+[node name="x" type="HSlider" parent="canvas_layer/menu/sliders_size"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.5
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+max_value = 128.0
+value = 24.0
+rounded = true
+
+[node name="y" type="HSlider" parent="canvas_layer/menu/sliders_size"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+max_value = 128.0
+value = 24.0
+rounded = true
+
+[node name="label_rotation" type="Label" parent="canvas_layer/menu"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Rotation (0 degrees)"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="slider_rotation" type="HSlider" parent="canvas_layer/menu"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+min_value = -180.0
+max_value = 180.0
+rounded = true
+
+[node name="label_coefficient" type="Label" parent="canvas_layer/menu"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "coefficient (0.875 x 1.125)"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="sliders_coefficient" type="Control" parent="canvas_layer/menu"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+
+[node name="x" type="HSlider" parent="canvas_layer/menu/sliders_coefficient"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.5
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+max_value = 2.0
+step = 0.125
+value = 0.875
+
+[node name="y" type="HSlider" parent="canvas_layer/menu/sliders_coefficient"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+max_value = 2.0
+step = 0.125
+value = 1.125
+
+[node name="label_velocity" type="Label" parent="canvas_layer/menu"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Velocity (24.000 x 0.000)"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="sliders_velocity" type="Control" parent="canvas_layer/menu"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+
+[node name="x" type="HSlider" parent="canvas_layer/menu/sliders_velocity"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.5
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+max_value = 128.0
+step = 0.01
+value = 24.0
+
+[node name="y" type="HSlider" parent="canvas_layer/menu/sliders_velocity"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+max_value = 128.0
+step = 0.01
+
+[node name="label_result" type="Label" parent="canvas_layer/menu"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+text = "Surface Area: (24.000px)
+Drag: (7776.000px/s^2)"
+vertical_alignment = 1
