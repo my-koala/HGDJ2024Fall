@@ -11,6 +11,8 @@ var _swing_set: SwingSet = $swing_set as SwingSet
 var _camera: Camera2D = $camera_2d as Camera2D
 @onready
 var _info: Label = $canvas_layer/info as Label
+@onready
+var _slider_thrust: HSlider = $canvas_layer/controls/slider_thrust as HSlider
 
 func _ready() -> void:
 	if Engine.is_editor_hint():
@@ -44,6 +46,8 @@ func _physics_process(delta: float) -> void:
 			_player_freeze_time += delta
 		else:
 			_player_freeze_time = 0.0
+	
+	_player.get_node_or_null("swing_thruster_2d").set(&"thrust", _slider_thrust.value)
 	
 	_camera.global_position = _player.global_position
 	

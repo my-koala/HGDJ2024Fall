@@ -2,6 +2,9 @@
 extends ProjectileBody2D
 
 @export
+var player: bool = false
+
+@export
 var swing: Swing2D = null:
 	get:
 		return swing
@@ -66,6 +69,9 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 
 func _physics_process(delta: float) -> void:
 	if Engine.is_editor_hint():
+		return
+	
+	if !player:
 		return
 	
 	if !is_swinging():

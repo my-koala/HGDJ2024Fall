@@ -14,7 +14,7 @@ size = Vector2(40, 8)
 script = ExtResource("1_b5517")
 
 [node name="swing_top" type="Node2D" parent="."]
-position = Vector2(0, -192)
+position = Vector2(0, -256)
 
 [node name="catenary_temp" type="Node2D" parent="swing_top"]
 script = ExtResource("6_ymde2")
@@ -44,9 +44,13 @@ position = Vector2(3, 21)
 [node name="foreground" type="Sprite2D" parent="body"]
 z_index = 1
 position = Vector2(0, -120)
+scale = Vector2(1.32, 1.32)
 texture = ExtResource("1_hod3s")
+offset = Vector2(0, -24.81)
 
 [node name="background" type="Sprite2D" parent="body"]
 z_index = -1
 position = Vector2(0, -120)
+scale = Vector2(1.32, 1.32)
 texture = ExtResource("2_m45k4")
+offset = Vector2(0, -24.81)
