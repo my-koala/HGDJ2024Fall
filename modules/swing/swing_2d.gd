@@ -3,43 +3,42 @@ extends ProjectileBody2D
 class_name Swing2D
 
 @export
-var tether_rigid: bool = false
+var rigid: bool = false
 
 @export
-var tether_length: float = 32.0:
+var length: float = 256.0:
 	get:
-		return tether_length
+		return length
 	set(value):
-		tether_length = maxf(value, 0.0)
+		length = maxf(value, 0.0)
 		if Engine.is_editor_hint():
 			queue_redraw()
 
 @export
-var tether_tension_max: float = 120.0:
+var tension_max: float = 4096.0:
 	get:
-		return tether_tension_max
+		return tension_max
 	set(value):
-		tether_tension_max = maxf(value, 0.0)
+		tension_max = maxf(value, 0.0)
 
 @export
-var tether_torsion_friction: float = 0.75:
+var torsion_friction: float = 0.75:
 	get:
-		return tether_torsion_friction
+		return torsion_friction
 	set(value):
-		tether_torsion_friction = clampf(value, 0.0, 1.0)
+		torsion_friction = clampf(value, 0.0, 1.0)
 
-var _tether_anchor_position: Vector2 = Vector2.ZERO
+var _anchor_position: Vector2 = Vector2.ZERO
 
-func set_tether_anchor_position() -> void:
-	_tether_anchor_position = global_position
-	global_position = global_position + Vector2.DOWN * tether_length
+func set_anchor_position() -> void:
+	_anchor_position = global_position + Vector2.UP * length
 
-var _tether_broken: bool = false
+var _broken: bool = false
 
-func is_tether_broken() -> bool:
-	return _tether_broken
+func is_broken() -> bool:
+	return _broken
 
-var _tether_correction: Vector2 = Vector2.ZERO
+var _correction: Vector2 = Vector2.ZERO
 
 var _swing_thrusters: Array[SwingThruster2D] = []
 
@@ -55,7 +54,7 @@ func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
 	
-	set_tether_anchor_position()
+	set_anchor_position()
 
 func _process(delta: float) -> void:
 	if Engine.is_editor_hint():
@@ -67,16 +66,16 @@ func _draw() -> void:
 	if !Engine.is_editor_hint():
 		return
 	
-	draw_circle(Vector2.DOWN * tether_length, 4.0, Color.RED, true)
-	draw_line(Vector2.ZERO, Vector2.DOWN * tether_length, Color.ORANGE_RED, 1.0)
+	draw_circle(Vector2.DOWN * length, 4.0, Color.RED, true)
+	draw_line(Vector2.ZERO, Vector2.DOWN * length, Color.ORANGE_RED, 1.0)
 
 func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 	if Engine.is_editor_hint():
 		return
 	
 	# Reverse tether correction and zero it out.
-	state.linear_velocity -= _tether_correction
-	_tether_correction = Vector2.ZERO
+	state.linear_velocity -= _correction
+	_correction = Vector2.ZERO
 	
 	# Apply thruster forces.
 	for swing_thruster: SwingThruster2D in _swing_thrusters:
@@ -88,32 +87,32 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 	# Apply projectile forces (gravity, drag, etc.)
 	super(state)
 	
-	if is_tether_broken():
+	if is_broken():
 		return
 	
 	# Apply tether tension.
 	# Get radius vector from anchor to position.
-	var tether_radius: Vector2 = global_position - _tether_anchor_position
+	var radius: Vector2 = global_position - _anchor_position
 	# Get radius after one velocity step, used for snapping to tether length.
-	var tether_radius_step: Vector2 = tether_radius + (state.linear_velocity * state.step)
-	if tether_rigid || (tether_radius_step.length_squared() >= (tether_length ** 2.0)):
-		var theta: float = tether_radius.angle_to(state.linear_velocity)
+	var radius_step: Vector2 = radius + (state.linear_velocity * state.step)
+	if rigid || (radius_step.length_squared() >= (length ** 2.0)):
+		var theta: float = radius.angle_to(state.linear_velocity)
 		# Calculate tension as the component of velocity projected onto radius vector.
 		
-		var tether_tension: float = state.linear_velocity.length() * cos(theta)
-		state.linear_velocity += tether_tension * -tether_radius.normalized()
+		var tension: float = state.linear_velocity.length() * cos(theta)
+		state.linear_velocity += tension * -radius.normalized()
 		
-		if (state.linear_velocity.length_squared() / tether_length) > tether_tension_max:
-			_tether_broken = true# Do some breaking and stuff
+		if (state.linear_velocity.length_squared() / length) > tension_max:
+			_broken = true# Do some breaking and stuff
 			return
 		
 		# Right now tension modifies velocity to be tangential to the tether radius.
 		# This causes the next velocity stepped position to shift outside.
 		# Modify velocity so that next velocity step is snapped to the tether radius.
-		tether_radius_step = tether_radius + (state.linear_velocity * state.step)
-		_tether_correction = maxf(tether_radius_step.length() - tether_length, 0.0) * -tether_radius_step.normalized() / state.step
+		radius_step = radius + (state.linear_velocity * state.step)
+		_correction = maxf(radius_step.length() - length, 0.0) * -radius_step.normalized() / state.step
 	
 	# Apply tether correction.
-	state.linear_velocity += _tether_correction
+	state.linear_velocity += _correction
 	
-	state.transform = state.transform.looking_at(_tether_anchor_position).rotated_local(PI / 2.0)
+	state.transform = state.transform.looking_at(_anchor_position).rotated_local(PI / 2.0)

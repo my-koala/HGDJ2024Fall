@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://cptcl4hxijxrb"]
+
+[ext_resource type="Script" path="res://modules/tether/tether_2d.gd" id="1_uxp6g"]
+[ext_resource type="PackedScene" uid="uid://dqsv2aev1ejdx" path="res://modules/tether/tether_segment_2d.tscn" id="2_jbj2g"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_obx3q"]
+
+[node name="tether_2d" type="StaticBody2D"]
+script = ExtResource("1_uxp6g")
+segment_scene = ExtResource("2_jbj2g")
+
+[node name="collision_shape_2d" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_obx3q")
+
+[node name="pin_joint_2d" type="PinJoint2D" parent="."]
+node_a = NodePath("..")
+
+[node name="segment_container" type="Node2D" parent="."]

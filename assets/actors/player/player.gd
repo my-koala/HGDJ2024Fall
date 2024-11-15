@@ -2,7 +2,17 @@
 extends ProjectileBody2D
 
 @export
-var swing: Swing2D = null
+var swing: Swing2D = null:
+	get:
+		return swing
+	set(value):
+		if is_instance_valid(swing):
+			swing.remove_swing_thruster(_swing_thruster)
+		swing = value
+		if is_instance_valid(swing):
+			swing.add_swing_thruster(_swing_thruster)
+		reset_physics_interpolation()
+
 @export
 var swing_offset: Vector2 = Vector2.ZERO
 
@@ -13,18 +23,19 @@ var turn_speed: float = 12.0
 var turn_acceleration: float = 4.0
 var _turn_direction: float = 0.0
 
+@export
+var acceleration_death: float = 128.0
+var _linear_velocity: Vector2 = Vector2.ZERO
+
 @onready
 var _swing_thruster: SwingThruster2D = $swing_thruster_2d as SwingThruster2D
+@onready
+var _particles_explode: GPUParticles2D = $particles/explode as GPUParticles2D
+@onready
+var _sprite: Sprite2D = $sprite_2d as Sprite2D
 
 func is_swinging() -> bool:
 	return is_instance_valid(swing)
-
-func _ready() -> void:
-	if Engine.is_editor_hint():
-		return
-	
-	if is_instance_valid(swing):
-		swing.add_swing_thruster(_swing_thruster)
 
 var _input_move: float = 0.0
 var _input_jump: bool = false
@@ -59,6 +70,12 @@ func _physics_process(delta: float) -> void:
 	
 	if !is_swinging():
 		_turn_direction = signf(_input_move)
+		
+		if linear_velocity.distance_to(_linear_velocity) > acceleration_death:
+			print("death")
+			_particles_explode.emitting = true
+			_sprite.visible = false
+			freeze = true
 	else:
 		if !is_zero_approx(_input_move):
 			_swing_thruster.active = true
@@ -74,5 +91,6 @@ func _physics_process(delta: float) -> void:
 		if _input_jump:
 			_input_jump = false
 			# Jump off swing, retaining swing velocity.
-			swing.remove_swing_thruster(_swing_thruster)
 			swing = null
+	
+	_linear_velocity = linear_velocity

@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://bno2xbu6glsda"]
+[gd_scene load_steps=9 format=3 uid="uid://bno2xbu6glsda"]
 
-[ext_resource type="Texture2D" uid="uid://cyim4knemhx1y" path="res://assets/test_hook/test_hero.png" id="1_aatjq"]
-[ext_resource type="PackedScene" uid="uid://b0567k1pou8kn" path="res://assets/props/swingset/swingset.tscn" id="3_djsok"]
+[ext_resource type="Script" path="res://assets/map/map.gd" id="1_4actq"]
+[ext_resource type="PackedScene" uid="uid://b0567k1pou8kn" path="res://assets/props/swing_set/swing_set.tscn" id="3_djsok"]
 [ext_resource type="PackedScene" uid="uid://cr8cp2x8jbkjq" path="res://assets/actors/player/player.tscn" id="3_w6maq"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_ilh62"]
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_fb6oc"]
+polygon = PackedVector2Array(-9.22337e+18, 0, 9.22337e+18, 0, 9.22337e+18, 256, -9.22337e+18, 256)
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_jlghy"]
 rough = true
@@ -12,6 +13,19 @@ bounce = 1.0
 absorbent = true
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_umvcq"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_il3ug"]
+particle_flag_disable_z = true
+direction = Vector3(0, 1, 0)
+initial_velocity_min = 166.67
+initial_velocity_max = 166.67
+gravity = Vector3(0, 98, 0)
+scale_min = 5.0
+scale_max = 5.0
+color = Color(0, 0, 0, 1)
+collision_mode = 1
+collision_friction = 0.0
+collision_bounce = 0.0
 
 [sub_resource type="GDScript" id="GDScript_vvotl"]
 resource_name = "restart"
@@ -25,24 +39,13 @@ func _on_pressed() -> void:
 "
 
 [node name="map" type="Node2D"]
-
-[node name="static_body_2d" type="StaticBody2D" parent="."]
-position = Vector2(257, -261)
-
-[node name="pin_joint_2d" type="PinJoint2D" parent="static_body_2d"]
-node_a = NodePath("..")
-node_b = NodePath("../../rigid_body_2d")
-
-[node name="rigid_body_2d" type="RigidBody2D" parent="."]
-position = Vector2(189, -193)
-
-[node name="sprite_2d" type="Sprite2D" parent="rigid_body_2d"]
-texture = ExtResource("1_aatjq")
-
-[node name="collision_shape_2d" type="CollisionShape2D" parent="rigid_body_2d"]
-shape = SubResource("CircleShape2D_ilh62")
+script = ExtResource("1_4actq")
 
 [node name="geometry" type="Node2D" parent="."]
+
+[node name="light_occluder_2d" type="LightOccluder2D" parent="geometry"]
+modulate = Color(1, 1, 1, 0)
+occluder = SubResource("OccluderPolygon2D_fb6oc")
 
 [node name="ground" type="StaticBody2D" parent="geometry"]
 physics_material_override = SubResource("PhysicsMaterial_jlghy")
@@ -50,26 +53,49 @@ physics_material_override = SubResource("PhysicsMaterial_jlghy")
 [node name="collision_shape_2d" type="CollisionShape2D" parent="geometry/ground"]
 shape = SubResource("WorldBoundaryShape2D_umvcq")
 
-[node name="swingset" parent="." instance=ExtResource("3_djsok")]
+[node name="gpu_particles_2d" type="GPUParticles2D" parent="geometry"]
+position = Vector2(300, -75)
+amount = 24
+lifetime = 4.0
+collision_base_size = 2.0
+process_material = SubResource("ParticleProcessMaterial_il3ug")
 
-[node name="swing" parent="swingset" index="0"]
-tether_rigid = false
+[node name="swing_set" parent="." instance=ExtResource("3_djsok")]
 
 [node name="camera_2d" type="Camera2D" parent="."]
-position = Vector2(256, -256)
+position = Vector2(167, -167)
 zoom = Vector2(0.75, 0.75)
 process_callback = 0
+limit_left = -384
+limit_bottom = 128
+position_smoothing_enabled = true
+drag_horizontal_enabled = true
+drag_vertical_enabled = true
+drag_horizontal_offset = -0.5
+drag_top_margin = 0.5
+drag_right_margin = 0.0
+drag_bottom_margin = 0.5
+editor_draw_limits = true
+editor_draw_drag_margin = true
 
-[node name="player" parent="." node_paths=PackedStringArray("swing") instance=ExtResource("3_w6maq")]
-swing = NodePath("../swingset/swing")
+[node name="player" parent="." instance=ExtResource("3_w6maq")]
 turn_acceleration = 8.0
+acceleration_death = 1024.0
 
 [node name="canvas_layer" type="CanvasLayer" parent="."]
 
 [node name="button" type="Button" parent="canvas_layer"]
-offset_right = 8.0
-offset_bottom = 8.0
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -61.0
+offset_bottom = 31.0
+grow_horizontal = 0
 text = "restart"
 script = SubResource("GDScript_vvotl")
 
-[editable path="swingset"]
+[node name="info" type="Label" parent="canvas_layer"]
+offset_right = 116.0
+offset_bottom = 45.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 32

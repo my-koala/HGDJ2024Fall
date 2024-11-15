@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cjug42yt3ge8s"
-path="res://.godot/imported/swingset_foreground.png-76054be5597a5fad793f2fc6675c0d82.ctex"
+uid="uid://bddxbcens4ame"
+path="res://.godot/imported/swing_set_chair.png-86b5bc3846087d465b8a14588feda4dc.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/props/swingset/swingset_foreground.png"
-dest_files=["res://.godot/imported/swingset_foreground.png-76054be5597a5fad793f2fc6675c0d82.ctex"]
+source_file="res://assets/props/swing_set/swing_set_chair.png"
+dest_files=["res://.godot/imported/swing_set_chair.png-86b5bc3846087d465b8a14588feda4dc.ctex"]
 
 [params]
 
