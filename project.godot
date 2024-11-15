@@ -78,9 +78,10 @@ jump={
 [physics]
 
 common/physics_jitter_fix=0.0
-2d/default_gravity=600.0
+2d/default_gravity=900.0
 2d/default_linear_damp=0.0
 2d/default_angular_damp=0.0
+2d/solver/default_constraint_bias=0.01
 common/physics_interpolation=true
 
 [rendering]

@@ -6,33 +6,33 @@ script/source = "@tool
 extends Node
 
 @onready
-var _label_size: Label = $canvas_layer/menu/label_size as Label
+var _label_size: Label = $gui/menu/label_size as Label
 @onready
-var _slider_size_x: HSlider = $canvas_layer/menu/sliders_size/x as HSlider
+var _slider_size_x: HSlider = $gui/menu/sliders_size/x as HSlider
 @onready
-var _slider_size_y: HSlider = $canvas_layer/menu/sliders_size/y as HSlider
+var _slider_size_y: HSlider = $gui/menu/sliders_size/y as HSlider
 
 @onready
-var _label_rotation: Label = $canvas_layer/menu/label_rotation as Label
+var _label_rotation: Label = $gui/menu/label_rotation as Label
 @onready
-var _slider_rotation: HSlider = $canvas_layer/menu/slider_rotation as HSlider
+var _slider_rotation: HSlider = $gui/menu/slider_rotation as HSlider
 
 @onready
-var _label_coefficient: Label = $canvas_layer/menu/label_coefficient as Label
+var _label_coefficient: Label = $gui/menu/label_coefficient as Label
 @onready
-var _slider_coefficient_x: HSlider = $canvas_layer/menu/sliders_coefficient/x as HSlider
+var _slider_coefficient_x: HSlider = $gui/menu/sliders_coefficient/x as HSlider
 @onready
-var _slider_coefficient_y: HSlider = $canvas_layer/menu/sliders_coefficient/y as HSlider
+var _slider_coefficient_y: HSlider = $gui/menu/sliders_coefficient/y as HSlider
 
 @onready
-var _label_velocity: Label = $canvas_layer/menu/label_velocity as Label
+var _label_velocity: Label = $gui/menu/label_velocity as Label
 @onready
-var _slider_velocity_x: HSlider = $canvas_layer/menu/sliders_velocity/x as HSlider
+var _slider_velocity_x: HSlider = $gui/menu/sliders_velocity/x as HSlider
 @onready
-var _slider_velocity_y: HSlider = $canvas_layer/menu/sliders_velocity/y as HSlider
+var _slider_velocity_y: HSlider = $gui/menu/sliders_velocity/y as HSlider
 
 @onready
-var _label_result: Label = $canvas_layer/menu/label_result as Label
+var _label_result: Label = $gui/menu/label_result as Label
 
 var _canvas_item_object: RID = RID()
 var _canvas_item_velocity: RID = RID()
@@ -77,13 +77,13 @@ func _physics_process(delta: float) -> void:
 	var total_coefficient: float = (edge_x_fraction * coefficient.x) + (edge_y_fraction * coefficient.y)
 	
 	var density: float = 1.0# Air density.
-	var drag: Vector2 = 0.5 * total_coefficient * density * velocity * velocity * total_area
+	var drag: Vector2 = drag_direction * (0.5 * total_coefficient * density * velocity.length_squared() * total_area)
 	
 	_label_result.text = \"Surface Area: (%.3fpx)\\nDrag: (%.3fpx/s^2)\" % [total_area, drag.length()]
 	
 	
 	RenderingServer.canvas_item_clear(_canvas_item_object)
-	RenderingServer.canvas_item_add_rect(_canvas_item_object, Rect2(-(size / 2.0), size), Color.WEB_GRAY, true)
+	RenderingServer.canvas_item_add_rect(_canvas_item_object, Rect2(-(size / 2.0), size), Color.WHITE, true)
 	RenderingServer.canvas_item_set_transform(_canvas_item_object, Transform2D.IDENTITY.rotated(rotation))
 	
 	RenderingServer.canvas_item_clear(_canvas_item_velocity)
@@ -94,22 +94,33 @@ func _physics_process(delta: float) -> void:
 [node name="test_drag" type="Node2D"]
 script = SubResource("GDScript_kaj3h")
 
+[node name="background" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="color_rect" type="ColorRect" parent="background"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.21748, 0.400346, 0.390566, 1)
+
 [node name="camera_2d" type="Camera2D" parent="."]
 process_callback = 0
 
-[node name="canvas_layer" type="CanvasLayer" parent="."]
+[node name="gui" type="CanvasLayer" parent="."]
 
-[node name="menu" type="VBoxContainer" parent="canvas_layer"]
+[node name="menu" type="VBoxContainer" parent="gui"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_right = -576.0
 
-[node name="title" type="Label" parent="canvas_layer/menu"]
+[node name="title" type="Label" parent="gui/menu"]
 layout_mode = 2
 text = "Drag Test"
 
-[node name="label_size" type="Label" parent="canvas_layer/menu"]
+[node name="label_size" type="Label" parent="gui/menu"]
 custom_minimum_size = Vector2(0, 16)
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
@@ -117,11 +128,11 @@ text = "Object Size (24px x 24px)"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="sliders_size" type="Control" parent="canvas_layer/menu"]
+[node name="sliders_size" type="Control" parent="gui/menu"]
 custom_minimum_size = Vector2(0, 16)
 layout_mode = 2
 
-[node name="x" type="HSlider" parent="canvas_layer/menu/sliders_size"]
+[node name="x" type="HSlider" parent="gui/menu/sliders_size"]
 custom_minimum_size = Vector2(0, 16)
 layout_mode = 1
 anchors_preset = -1
@@ -133,7 +144,7 @@ max_value = 128.0
 value = 24.0
 rounded = true
 
-[node name="y" type="HSlider" parent="canvas_layer/menu/sliders_size"]
+[node name="y" type="HSlider" parent="gui/menu/sliders_size"]
 custom_minimum_size = Vector2(0, 16)
 layout_mode = 1
 anchors_preset = -1
@@ -146,7 +157,7 @@ max_value = 128.0
 value = 24.0
 rounded = true
 
-[node name="label_rotation" type="Label" parent="canvas_layer/menu"]
+[node name="label_rotation" type="Label" parent="gui/menu"]
 custom_minimum_size = Vector2(0, 16)
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
@@ -154,14 +165,14 @@ text = "Rotation (0 degrees)"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="slider_rotation" type="HSlider" parent="canvas_layer/menu"]
+[node name="slider_rotation" type="HSlider" parent="gui/menu"]
 custom_minimum_size = Vector2(0, 16)
 layout_mode = 2
 min_value = -180.0
 max_value = 180.0
 rounded = true
 
-[node name="label_coefficient" type="Label" parent="canvas_layer/menu"]
+[node name="label_coefficient" type="Label" parent="gui/menu"]
 custom_minimum_size = Vector2(0, 16)
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
@@ -169,11 +180,11 @@ text = "coefficient (0.875 x 1.125)"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="sliders_coefficient" type="Control" parent="canvas_layer/menu"]
+[node name="sliders_coefficient" type="Control" parent="gui/menu"]
 custom_minimum_size = Vector2(0, 16)
 layout_mode = 2
 
-[node name="x" type="HSlider" parent="canvas_layer/menu/sliders_coefficient"]
+[node name="x" type="HSlider" parent="gui/menu/sliders_coefficient"]
 custom_minimum_size = Vector2(0, 16)
 layout_mode = 1
 anchors_preset = -1
@@ -185,7 +196,7 @@ max_value = 2.0
 step = 0.125
 value = 0.875
 
-[node name="y" type="HSlider" parent="canvas_layer/menu/sliders_coefficient"]
+[node name="y" type="HSlider" parent="gui/menu/sliders_coefficient"]
 custom_minimum_size = Vector2(0, 16)
 layout_mode = 1
 anchors_preset = -1
@@ -198,7 +209,7 @@ max_value = 2.0
 step = 0.125
 value = 1.125
 
-[node name="label_velocity" type="Label" parent="canvas_layer/menu"]
+[node name="label_velocity" type="Label" parent="gui/menu"]
 custom_minimum_size = Vector2(0, 16)
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
@@ -206,11 +217,11 @@ text = "Velocity (24.000 x 0.000)"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="sliders_velocity" type="Control" parent="canvas_layer/menu"]
+[node name="sliders_velocity" type="Control" parent="gui/menu"]
 custom_minimum_size = Vector2(0, 16)
 layout_mode = 2
 
-[node name="x" type="HSlider" parent="canvas_layer/menu/sliders_velocity"]
+[node name="x" type="HSlider" parent="gui/menu/sliders_velocity"]
 custom_minimum_size = Vector2(0, 16)
 layout_mode = 1
 anchors_preset = -1
@@ -222,7 +233,7 @@ max_value = 128.0
 step = 0.01
 value = 24.0
 
-[node name="y" type="HSlider" parent="canvas_layer/menu/sliders_velocity"]
+[node name="y" type="HSlider" parent="gui/menu/sliders_velocity"]
 custom_minimum_size = Vector2(0, 16)
 layout_mode = 1
 anchors_preset = -1
@@ -234,7 +245,7 @@ grow_vertical = 2
 max_value = 128.0
 step = 0.01
 
-[node name="label_result" type="Label" parent="canvas_layer/menu"]
+[node name="label_result" type="Label" parent="gui/menu"]
 custom_minimum_size = Vector2(0, 16)
 layout_mode = 2
 text = "Surface Area: (24.000px)
