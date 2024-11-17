@@ -43,4 +43,4 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 		
 		var drag: Vector2 = drag_direction * (0.5 * coeff * density_kg * state.linear_velocity.length_squared() * area)
 		
-		#state.linear_velocity += state.inverse_mass * drag * state.step
+		state.linear_velocity += state.inverse_mass * drag * state.step

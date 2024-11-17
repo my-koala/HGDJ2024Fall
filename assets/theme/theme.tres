@@ -1,0 +1,107 @@
+[gd_resource type="Theme" load_steps=9 format=3 uid="uid://c2oj0cg0ly36r"]
+
+[ext_resource type="Texture2D" uid="uid://dcleyf7tlxe3s" path="res://assets/theme/nine_patch.png" id="1_pquj0"]
+[ext_resource type="FontFile" uid="uid://bx0xycx0lfkk0" path="res://third_party/5yearsoldfont/5yearsoldfont.ttf" id="2_1tgk7"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_oeiqp"]
+texture = ExtResource("1_pquj0")
+texture_margin_left = 16.0
+texture_margin_top = 16.0
+texture_margin_right = 16.0
+texture_margin_bottom = 16.0
+expand_margin_left = 8.0
+expand_margin_top = 8.0
+expand_margin_right = 8.0
+expand_margin_bottom = 8.0
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+region_rect = Rect2(256, 0, 128, 128)
+modulate_color = Color(0.843137, 0.843137, 0.843137, 0.360784)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hd1qm"]
+texture = ExtResource("1_pquj0")
+texture_margin_left = 32.0
+texture_margin_top = 32.0
+texture_margin_right = 32.0
+texture_margin_bottom = 32.0
+expand_margin_left = 8.0
+expand_margin_top = 8.0
+expand_margin_right = 8.0
+expand_margin_bottom = 8.0
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+region_rect = Rect2(384, 0, 128, 128)
+modulate_color = Color(1, 1, 1, 0.603922)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_33s23"]
+texture = ExtResource("1_pquj0")
+texture_margin_left = 16.0
+texture_margin_top = 16.0
+texture_margin_right = 16.0
+texture_margin_bottom = 16.0
+expand_margin_left = 8.0
+expand_margin_top = 8.0
+expand_margin_right = 8.0
+expand_margin_bottom = 8.0
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+region_rect = Rect2(0, 0, 128, 128)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kuqu8"]
+texture = ExtResource("1_pquj0")
+texture_margin_left = 16.0
+texture_margin_top = 16.0
+texture_margin_right = 16.0
+texture_margin_bottom = 16.0
+expand_margin_left = 8.0
+expand_margin_top = 8.0
+expand_margin_right = 8.0
+expand_margin_bottom = 8.0
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+region_rect = Rect2(0, 0, 128, 128)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tyibx"]
+texture = ExtResource("1_pquj0")
+texture_margin_left = 16.0
+texture_margin_top = 16.0
+texture_margin_right = 16.0
+texture_margin_bottom = 16.0
+expand_margin_left = 8.0
+expand_margin_top = 8.0
+expand_margin_right = 8.0
+expand_margin_bottom = 8.0
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+region_rect = Rect2(0, 0, 128, 128)
+modulate_color = Color(0.828162, 0.802471, 0.801281, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_x4iwf"]
+texture = ExtResource("1_pquj0")
+texture_margin_left = 16.0
+texture_margin_top = 16.0
+texture_margin_right = 16.0
+texture_margin_bottom = 16.0
+expand_margin_left = 8.0
+expand_margin_top = 8.0
+expand_margin_right = 8.0
+expand_margin_bottom = 8.0
+region_rect = Rect2(0, 0, 128, 128)
+
+[resource]
+default_font = ExtResource("2_1tgk7")
+Button/colors/font_color = Color(0.093087, 0.0794113, 0.0960633, 1)
+Button/colors/font_disabled_color = Color(0.679183, 0.659057, 0.683529, 1)
+Button/colors/font_focus_color = Color(0.0941176, 0.0784314, 0.0941176, 1)
+Button/colors/font_hover_color = Color(0.485703, 0.485704, 0.485703, 1)
+Button/colors/font_pressed_color = Color(0.0941176, 0.0784314, 0.0941176, 1)
+Button/font_sizes/font_size = 24
+Button/styles/disabled = SubResource("StyleBoxTexture_oeiqp")
+Button/styles/focus = SubResource("StyleBoxTexture_hd1qm")
+Button/styles/hover = SubResource("StyleBoxTexture_33s23")
+Button/styles/normal = SubResource("StyleBoxTexture_kuqu8")
+Button/styles/pressed = SubResource("StyleBoxTexture_tyibx")
+HeaderLarge/font_sizes/font_size = 32
+Label/colors/font_color = Color(0.093087, 0.0794113, 0.0960633, 1)
+Panel/styles/panel = SubResource("StyleBoxTexture_x4iwf")
+RichTextLabel/colors/default_color = Color(0.093087, 0.0794113, 0.0960633, 1)

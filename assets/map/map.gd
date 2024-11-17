@@ -14,11 +14,19 @@ var _info: Label = $canvas_layer/info as Label
 @onready
 var _slider_thrust: HSlider = $canvas_layer/controls/slider_thrust as HSlider
 
+var _camera_remote_transform: RemoteTransform2D = null
+
 func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
 	
 	_player.swing = _swing_set.get_swing()
+	
+	_camera_remote_transform = RemoteTransform2D.new()
+	_camera_remote_transform.update_position = true
+	_camera_remote_transform.update_rotation = false
+	_camera_remote_transform.update_scale = false
+	_player.add_child(_camera_remote_transform)
 
 var _player_position: Vector2 = Vector2.ZERO
 var _player_velocity: float = 0.0
@@ -30,7 +38,32 @@ var _player_freeze_threshold: float = 0.05
 
 var _player_altitude_max: float = 0.0
 
+var _tween_camera: Tween = null
+var _tween_camera_toggle: bool = false
+
+func _process(delta: float) -> void:
+	if Engine.is_editor_hint():
+		return
+	
+	if _player.is_swinging():
+		_tween_camera_toggle = false
+		
+		var camera_zoom: float = clampf(remap(_swing_set.get_swing().length, 512.0, 1024.0, 0.5, 0.125), 0.125, 0.5)
+		_camera.zoom = Vector2(camera_zoom, camera_zoom)
+	else:
+		_camera_remote_transform.remote_path = _camera_remote_transform.get_path_to(_camera)
+		if !_tween_camera_toggle:
+			_tween_camera_toggle = true
+			
+			_tween_camera = create_tween()
+			_tween_camera.set_parallel(true)
+			_tween_camera.set_ease(Tween.EASE_IN_OUT)
+			_tween_camera.tween_property(_camera, "zoom", Vector2(0.5, 0.5), 2.0)
+
 func _physics_process(delta: float) -> void:
+	if Engine.is_editor_hint():
+		return
+	
 	var player_position: Vector2 = _player.global_position
 	var player_distance: float = _player.global_position.x
 	var player_altitude: float = -_player.global_position.y
@@ -48,8 +81,6 @@ func _physics_process(delta: float) -> void:
 			_player_freeze_time = 0.0
 	
 	_player.get_node_or_null("swing_thruster_2d").set(&"thrust", _slider_thrust.value)
-	
-	_camera.global_position = _player.global_position
 	
 	if _player_freeze_time > player_freeze_time:
 		get_tree().reload_current_scene()

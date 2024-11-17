@@ -17,7 +17,6 @@ collision_layer = 2
 collision_mask = 3
 custom_integrator = true
 script = ExtResource("1_u3l7h")
-player = null
 swing_offset = Vector2(0, -24)
 drag_size = Vector2(32, 64)
 

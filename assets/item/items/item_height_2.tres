@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="Item" load_steps=4 format=3 uid="uid://ckte04nynovtn"]
+
+[ext_resource type="Texture2D" uid="uid://j18jikfcyhjc" path="res://assets/item/items/items.png" id="1_p2ko4"]
+[ext_resource type="Script" path="res://assets/item/item.gd" id="2_qnxw8"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8jfo1"]
+atlas = ExtResource("1_p2ko4")
+region = Rect2(256, 0, 128, 128)
+
+[resource]
+script = ExtResource("2_qnxw8")
+type = 0
+order = 2
+name = &"tall swing"
+price_dollars = 29
+price_cents = 99
+icon = SubResource("AtlasTexture_8jfo1")

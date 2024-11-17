@@ -30,8 +30,8 @@ var torsion_friction: float = 0.75:
 
 var _anchor_position: Vector2 = Vector2.ZERO
 
-func set_anchor_position() -> void:
-	_anchor_position = global_position + Vector2.UP * length
+func set_anchor_position(anchor_position: Vector2) -> void:
+	_anchor_position = anchor_position
 
 var _broken: bool = false
 
@@ -54,7 +54,8 @@ func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
 	
-	set_anchor_position()
+	set_anchor_position(global_position)
+	global_position.y += length
 
 func _process(delta: float) -> void:
 	if Engine.is_editor_hint():

@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="Item" load_steps=4 format=3 uid="uid://cvssg54dl6yfp"]
+
+[ext_resource type="Texture2D" uid="uid://j18jikfcyhjc" path="res://assets/item/items/items.png" id="1_ag70j"]
+[ext_resource type="Script" path="res://assets/item/item.gd" id="2_dwl7k"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8jfo1"]
+atlas = ExtResource("1_ag70j")
+region = Rect2(0, 0, 128, 128)
+
+[resource]
+script = ExtResource("2_dwl7k")
+type = 0
+order = 0
+name = &"small swing"
+price_dollars = 0
+price_cents = 0
+icon = SubResource("AtlasTexture_8jfo1")

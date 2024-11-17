@@ -12,17 +12,17 @@ script = ExtResource("1_sfpys")
 [node name="precompile" type="Node" parent="."]
 script = ExtResource("3_y3tuq")
 
-[node name="canvas_layer" type="CanvasLayer" parent="."]
+[node name="gui" type="CanvasLayer" parent="."]
 layer = 2
 
-[node name="color_rect" type="ColorRect" parent="canvas_layer"]
+[node name="color_rect" type="ColorRect" parent="gui"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="label" type="Label" parent="canvas_layer"]
+[node name="label" type="Label" parent="gui"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0

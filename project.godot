@@ -30,6 +30,7 @@ gdscript/warnings/unsafe_property_access=2
 gdscript/warnings/unsafe_method_access=2
 gdscript/warnings/unsafe_call_argument=2
 gdscript/warnings/unsafe_void_return=2
+gdscript/warnings/integer_division=0
 
 [display]
 
@@ -50,6 +51,10 @@ folder_colors={
 "res://modules/": "purple",
 "res://third_party/": "orange"
 }
+
+[gui]
+
+theme/custom="res://assets/theme/theme.tres"
 
 [input]
 

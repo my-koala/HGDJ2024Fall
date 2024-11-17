@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="Item" load_steps=4 format=3 uid="uid://cq5hv3xbyllv4"]
+
+[ext_resource type="Texture2D" uid="uid://j18jikfcyhjc" path="res://assets/item/items/items.png" id="1_gfom1"]
+[ext_resource type="Script" path="res://assets/item/item.gd" id="2_ljv10"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8jfo1"]
+atlas = ExtResource("1_gfom1")
+region = Rect2(384, 0, 128, 128)
+
+[resource]
+script = ExtResource("2_ljv10")
+type = 0
+order = 3
+name = &"bigest swing"
+price_dollars = 100
+price_cents = 0
+icon = SubResource("AtlasTexture_8jfo1")
