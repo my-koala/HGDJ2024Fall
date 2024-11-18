@@ -9,9 +9,9 @@ region = Rect2(384, 0, 128, 128)
 
 [resource]
 script = ExtResource("2_ljv10")
-type = 0
-order = 3
 name = &"bigest swing"
-price_dollars = 100
+group = &"height"
+id = 3
+price_dollars = 250
 price_cents = 0
 icon = SubResource("AtlasTexture_8jfo1")

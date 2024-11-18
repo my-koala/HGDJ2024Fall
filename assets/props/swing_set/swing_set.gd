@@ -1,7 +1,15 @@
 @tool
 extends Node2D
 
+@export
 var game_data: GameData = preload("res://assets/game_data/game_data.tres")
+
+const ITEM_HEIGHT: Array[Item] = [
+	preload("res://assets/item/items/item_height_0.tres"),
+	preload("res://assets/item/items/item_height_1.tres"),
+	preload("res://assets/item/items/item_height_2.tres"),
+	preload("res://assets/item/items/item_height_3.tres"),
+	]
 
 @onready
 var _top: Node2D = $top as Node2D
@@ -17,7 +25,16 @@ func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
 	
-	set_height(1024.0)
+	if game_data.is_item_equipped(ITEM_HEIGHT[0]):
+		set_height(256.0)
+	elif game_data.is_item_equipped(ITEM_HEIGHT[1]):
+		set_height(386.0)
+	elif game_data.is_item_equipped(ITEM_HEIGHT[2]):
+		set_height(512.0)
+	elif game_data.is_item_equipped(ITEM_HEIGHT[3]):
+		set_height(1024.0)
+	else:
+		set_height(256.0)
 
 func set_height(height: float) -> void:
 	height = maxf(height, 0.0)

@@ -3,12 +3,27 @@ class_name GameData
 
 # Global game data container.
 
-func _init() -> void:
-	print("lul")
-	if Engine.is_editor_hint():
-		
-		return
-	
+@export
+var _items: Array[Item] = []:
+	get:
+		return _items
+	set(value):
+		_items = value
+		_init_items()
+
+var _items_purchased: Array[bool] = []
+var _items_equipped: Array[bool] = []
+
+func _init_items() -> void:
+	_items_purchased.resize(_items.size())
+	_items_purchased.fill(false)
+	_items_equipped.resize(_items.size())
+	_items_equipped.fill(false)
+	# purchase and equip all free items
+	for item: Item in _items:
+		if (item.price_dollars + item.price_cents) <= 0:
+			item_purchase(item)
+			item_equip(item)
 
 const CENT_TO_DOLLAR: int = 100
 
@@ -28,7 +43,6 @@ func money_deposit(dollars: int, cents: int) -> void:
 	_money_cents += cents
 	_money_dollars += dollars + (_money_cents / CENT_TO_DOLLAR)
 	_money_cents = _money_cents % CENT_TO_DOLLAR
-	
 	emit_changed()
 
 func money_withdraw(dollars: int, cents: int) -> void:
@@ -43,7 +57,6 @@ func money_withdraw(dollars: int, cents: int) -> void:
 	if _money_dollars < 0:
 		_money_dollars = 0
 		_money_cents = 0
-	
 	emit_changed()
 
 func can_money_withdraw(dollars: int, cents: int) -> bool:
@@ -51,28 +64,46 @@ func can_money_withdraw(dollars: int, cents: int) -> bool:
 	cents = cents % CENT_TO_DOLLAR
 	return _money_dollars > dollars || ((_money_dollars == dollars) && (cents > _money_cents))
 
-const ITEM_PATH: String = "res://assets/item/items/"
+func get_items() -> Array[Item]:
+	return _items
 
+func get_items_purchased() -> Array[Item]:
+	var items_purchased: Array[Item] = []
+	for index: int in _items.size():
+		if _items_purchased[index]:
+			items_purchased.append(_items[index])
+	return items_purchased
 
-const ITEM_DEFAULT: int = 1 << 0
-var _items_purchased: Array[int] = [ITEM_DEFAULT, ITEM_DEFAULT, ITEM_DEFAULT, ITEM_DEFAULT]
-var _items_equipped: Array[int] = [ITEM_DEFAULT, ITEM_DEFAULT, ITEM_DEFAULT, ITEM_DEFAULT]
-
-func get_items_purchased(index: int) -> int:
+func is_item_purchased(item: Item) -> bool:
+	var index: int = _items.find(item)
+	if index == -1:
+		return false
 	return _items_purchased[index]
 
-func get_items_equipped(index: int) -> int:
+func is_item_equipped(item: Item) -> bool:
+	var index: int = _items.find(item)
+	if index == -1:
+		return false
 	return _items_equipped[index]
 
-func is_item_purchased(index: int, item: int) -> bool:
-	return (_items_purchased[index] & (1 << item)) > 0
-
-func item_purchase(index: int, item: int) -> void:
-	_items_purchased[index] |= 1 << item
+func item_purchase(item: Item) -> void:
+	var index: int = _items.find(item)
+	if index == -1:
+		return
+	_items_purchased[index] = true
 	emit_changed()
 
-func item_equip(index: int, item: int) -> void:
-	if !is_item_purchased(index, item):
+func item_equip(item: Item) -> void:
+	var index: int = _items.find(item)
+	if index == -1:
 		return
-	_items_equipped[index] = 1 << item
+	if !_items_purchased[index]:
+		return
+	_items_equipped[index] = true
+	# find other items in group and unequip
+	for index2: int in _items.size():
+		if _items[index2] == item:
+			continue
+		if _items[index2].group == item.group:
+			_items_equipped[index2] = false
 	emit_changed()

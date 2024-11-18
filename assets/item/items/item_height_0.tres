@@ -9,9 +9,9 @@ region = Rect2(0, 0, 128, 128)
 
 [resource]
 script = ExtResource("2_dwl7k")
-type = 0
-order = 0
 name = &"small swing"
+group = &"height"
+id = 0
 price_dollars = 0
 price_cents = 0
 icon = SubResource("AtlasTexture_8jfo1")

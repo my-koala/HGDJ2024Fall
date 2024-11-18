@@ -2,16 +2,14 @@
 extends Resource
 class_name Item
 
-enum Type { HEIGHT, THRUST, SAFETY }
-
-@export
-var type: Type = Type.HEIGHT
-
-@export
-var order: int = 0
-
 @export
 var name: StringName = &""
+
+@export
+var group: StringName = &""
+
+@export
+var id: int = 0
 
 @export
 var price_dollars: int = 0

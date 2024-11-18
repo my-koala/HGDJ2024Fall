@@ -1,6 +1,12 @@
-[gd_resource type="Resource" script_class="GameData" load_steps=2 format=3 uid="uid://dhwomc3afc8y4"]
+[gd_resource type="Resource" script_class="GameData" load_steps=7 format=3 uid="uid://dhwomc3afc8y4"]
 
+[ext_resource type="Script" path="res://assets/item/item.gd" id="1_ox7ci"]
 [ext_resource type="Script" path="res://assets/game_data/game_data.gd" id="1_p0oid"]
+[ext_resource type="Resource" uid="uid://cvssg54dl6yfp" path="res://assets/item/items/item_height_0.tres" id="2_osw14"]
+[ext_resource type="Resource" uid="uid://gj477d1fecaw" path="res://assets/item/items/item_height_1.tres" id="3_e0ptk"]
+[ext_resource type="Resource" uid="uid://ckte04nynovtn" path="res://assets/item/items/item_height_2.tres" id="4_n87qv"]
+[ext_resource type="Resource" uid="uid://cq5hv3xbyllv4" path="res://assets/item/items/item_height_3.tres" id="5_si2h0"]
 
 [resource]
 script = ExtResource("1_p0oid")
+_items = Array[ExtResource("1_ox7ci")]([ExtResource("2_osw14"), ExtResource("3_e0ptk"), ExtResource("4_n87qv"), ExtResource("5_si2h0")])

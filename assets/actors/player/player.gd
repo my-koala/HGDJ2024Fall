@@ -53,6 +53,12 @@ func _input(event: InputEvent) -> void:
 	
 	_input_jump = _input_jump || Input.is_action_pressed(&"jump")
 
+func _ready() -> void:
+	if Engine.is_editor_hint():
+		return
+	
+	
+
 func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 	if Engine.is_editor_hint():
 		return

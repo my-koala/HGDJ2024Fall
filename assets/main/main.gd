@@ -19,4 +19,3 @@ func _ready() -> void:
 	await _precompile.done
 	_map.process_mode = Node.PROCESS_MODE_INHERIT
 	_canvas_layer.visible = false
-

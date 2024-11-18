@@ -48,7 +48,7 @@ func _process(delta: float) -> void:
 	if _player.is_swinging():
 		_tween_camera_toggle = false
 		
-		var camera_zoom: float = clampf(remap(_swing_set.get_swing().length, 512.0, 1024.0, 0.5, 0.125), 0.125, 0.5)
+		var camera_zoom: float = clampf(remap(_swing_set.get_swing().length, 256.0, 1024.0, 0.5, 0.25), 0.125, 0.5)
 		_camera.zoom = Vector2(camera_zoom, camera_zoom)
 	else:
 		_camera_remote_transform.remote_path = _camera_remote_transform.get_path_to(_camera)
