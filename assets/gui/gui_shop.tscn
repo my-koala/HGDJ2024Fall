@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://wsiimntin7gu"]
+[gd_scene load_steps=7 format=3 uid="uid://wsiimntin7gu"]
 
 [ext_resource type="Script" path="res://assets/gui/gui_shop.gd" id="1_7ikmg"]
 [ext_resource type="Texture2D" uid="uid://j18jikfcyhjc" path="res://assets/item/items/items.png" id="2_cglov"]
 [ext_resource type="PackedScene" uid="uid://cvife3b4ydk4n" path="res://assets/gui/gui_overlay.tscn" id="2_x0suw"]
 [ext_resource type="PackedScene" uid="uid://d2g4wper4yqqm" path="res://assets/gui/gui_shop_button_group.tscn" id="3_vso3q"]
+[ext_resource type="PackedScene" uid="uid://oegi41er2dkg" path="res://assets/gui/gui_shop_group.tscn" id="4_to1ib"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_n8o6u"]
 atlas = ExtResource("2_cglov")
@@ -18,7 +19,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_7ikmg")
 
-[node name="menus" type="Control" parent="."]
+[node name="main" type="Control" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -26,15 +27,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="main" type="Control" parent="menus"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="panel_top" type="Panel" parent="menus/main"]
+[node name="panel_top" type="Panel" parent="main"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -46,7 +39,7 @@ offset_bottom = -8.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="label" type="Label" parent="menus/main/panel_top"]
+[node name="label" type="Label" parent="main/panel_top"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -57,7 +50,7 @@ text = "stuff i can Buy"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="texture_rect" type="TextureRect" parent="menus/main/panel_top"]
+[node name="texture_rect" type="TextureRect" parent="main/panel_top"]
 layout_mode = 0
 offset_left = 47.0
 offset_top = -24.0
@@ -66,7 +59,7 @@ offset_bottom = 72.0
 texture = SubResource("AtlasTexture_n8o6u")
 expand_mode = 1
 
-[node name="panel_groups" type="Panel" parent="menus/main"]
+[node name="panel_groups" type="Panel" parent="main"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
@@ -80,17 +73,16 @@ offset_bottom = 200.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="grid_container" type="GridContainer" parent="menus/main/panel_groups"]
+[node name="grid_container" type="GridContainer" parent="main/panel_groups"]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 columns = 2
 
-[node name="button_shop_a" parent="menus/main/panel_groups/grid_container" instance=ExtResource("3_vso3q")]
+[node name="button_shop_a" parent="main/panel_groups/grid_container" instance=ExtResource("3_vso3q")]
 layout_mode = 2
 
-[node name="shop" type="Control" parent="menus"]
-visible = false
+[node name="groups" type="Control" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -98,7 +90,26 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="display" type="Control" parent="."]
+[node name="overlay" type="ColorRect" parent="groups"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.796652, 0.766556, 0.77416, 0.670588)
+
+[node name="gui_shop_group" parent="groups" instance=ExtResource("4_to1ib")]
+layout_mode = 0
+anchors_preset = 0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+grow_horizontal = 1
+grow_vertical = 1
+
+[node name="balance" type="Control" parent="."]
 visible = false
 layout_mode = 1
 anchors_preset = 15

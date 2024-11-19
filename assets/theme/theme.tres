@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=9 format=3 uid="uid://c2oj0cg0ly36r"]
+[gd_resource type="Theme" load_steps=10 format=3 uid="uid://c2oj0cg0ly36r"]
 
 [ext_resource type="Texture2D" uid="uid://dcleyf7tlxe3s" path="res://assets/theme/nine_patch.png" id="1_pquj0"]
 [ext_resource type="FontFile" uid="uid://bx0xycx0lfkk0" path="res://third_party/5yearsoldfont/5yearsoldfont.ttf" id="2_1tgk7"]
@@ -76,6 +76,11 @@ axis_stretch_vertical = 1
 region_rect = Rect2(0, 0, 128, 128)
 modulate_color = Color(0.828162, 0.802471, 0.801281, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k3syv"]
+content_margin_left = 8.0
+content_margin_top = 16.0
+content_margin_bottom = 16.0
+
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_x4iwf"]
 texture = ExtResource("1_pquj0")
 texture_margin_left = 16.0
@@ -103,6 +108,7 @@ Button/styles/normal = SubResource("StyleBoxTexture_kuqu8")
 Button/styles/pressed = SubResource("StyleBoxTexture_tyibx")
 GridContainer/constants/h_separation = 0
 GridContainer/constants/v_separation = 0
+HScrollBar/styles/scroll = SubResource("StyleBoxFlat_k3syv")
 HeaderLarge/font_sizes/font_size = 32
 Label/colors/font_color = Color(0.093087, 0.0794113, 0.0960633, 1)
 Panel/styles/panel = SubResource("StyleBoxTexture_x4iwf")

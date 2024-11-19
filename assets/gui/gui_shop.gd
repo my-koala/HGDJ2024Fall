@@ -3,6 +3,8 @@ extends Control
 
 const GUI_SHOP_BUTTON_GROUP: PackedScene = preload("gui_shop_button_group.tscn")
 const GuiShopButtonGroup: = preload("gui_shop_button_group.gd")
+const GUI_SHOP_BUTTON_ITEM: PackedScene = preload("gui_shop_button_item.tscn")
+const GuiShopButtonItem: = preload("gui_shop_button_item.gd")
 
 signal exit_home()
 signal exit_game()
@@ -11,11 +13,11 @@ signal exit_game()
 var _game_data: GameData = preload("res://assets/game_data/game_data.tres")
 
 @onready
-var _menu_main: Control = $menus/main as Control
+var _menu_main: Control = $main as Control
 @onready
-var _menu_shop: Control = $menus/shop as Control
+var _menu_groups: Control = $groups as Control
 @onready
-var _menu_main_groups_container: GridContainer = $menus/main/panel_groups/grid_container as GridContainer
+var _menu_main_groups_container: GridContainer = $main/panel_groups/grid_container as GridContainer
 
 enum Menu { MAIN, SHOP }
 var _menu: Menu = Menu.MAIN
@@ -37,8 +39,8 @@ func _ready() -> void:
 			button_group.item_group = item.group
 			button_group.pressed.connect(_on_button_group_pressed.bind(null))
 			_menu_main_groups_container.add_child(button_group)
-		
-	
+		# todo: instantiate group scene, add to groups
+		# 
 	
 	set_menu(Menu.MAIN)
 
