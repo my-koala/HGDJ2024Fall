@@ -10,7 +10,7 @@ region = Rect2(128, 0, 128, 128)
 [resource]
 script = ExtResource("2_doyru")
 name = &"big swing"
-group = &"height"
+group = &"swing height"
 id = 1
 price_dollars = 2
 price_cents = 50

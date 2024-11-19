@@ -3,14 +3,11 @@
 [ext_resource type="Script" path="res://assets/gui/gui_shop.gd" id="1_7ikmg"]
 [ext_resource type="Texture2D" uid="uid://j18jikfcyhjc" path="res://assets/item/items/items.png" id="2_cglov"]
 [ext_resource type="PackedScene" uid="uid://cvife3b4ydk4n" path="res://assets/gui/gui_overlay.tscn" id="2_x0suw"]
+[ext_resource type="PackedScene" uid="uid://d2g4wper4yqqm" path="res://assets/gui/gui_shop_button_group.tscn" id="3_vso3q"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_n8o6u"]
 atlas = ExtResource("2_cglov")
 region = Rect2(768, 0, 128, 128)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_v77vq"]
-atlas = ExtResource("2_cglov")
-region = Rect2(384, 128, 128, 128)
 
 [node name="gui_shop" type="Control"]
 layout_mode = 3
@@ -69,154 +66,28 @@ offset_bottom = 72.0
 texture = SubResource("AtlasTexture_n8o6u")
 expand_mode = 1
 
-[node name="shops" type="Panel" parent="menus/main"]
+[node name="panel_groups" type="Panel" parent="menus/main"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.2
-anchor_top = 0.125
-anchor_right = 0.8
-anchor_bottom = 0.925
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="button_shop_a" type="Button" parent="menus/main/shops"]
-layout_mode = 1
-anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 8.0
-offset_top = 8.0
-offset_right = -8.0
-offset_bottom = -8.0
+offset_left = -300.0
+offset_top = -200.0
+offset_right = 300.0
+offset_bottom = 200.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="shop_title" type="Label" parent="menus/main/shops/button_shop_a"]
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 1.0
-anchor_bottom = 0.2
-grow_horizontal = 2
-theme_override_font_sizes/font_size = 32
-text = "swing Heihgt"
-horizontal_alignment = 1
-vertical_alignment = 1
+[node name="grid_container" type="GridContainer" parent="menus/main/panel_groups"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+columns = 2
 
-[node name="shop_subtitle" type="Label" parent="menus/main/shops/button_shop_a"]
-layout_mode = 1
-anchors_preset = -1
-anchor_top = 0.175
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-theme_override_colors/font_color = Color(0, 0, 0, 0.713726)
-theme_override_font_sizes/font_size = 16
-text = "(click to browse shop)"
-horizontal_alignment = 1
-
-[node name="item_icon" type="TextureRect" parent="menus/main/shops/button_shop_a"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.5
-anchor_top = 0.6
-anchor_right = 0.5
-anchor_bottom = 0.6
-offset_left = -64.0
-offset_top = -64.0
-offset_right = 64.0
-offset_bottom = 64.0
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset = Vector2(64, 64)
-texture = SubResource("AtlasTexture_v77vq")
-
-[node name="item_name" type="Label" parent="menus/main/shops/button_shop_a"]
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 0
-theme_type_variation = &"HeaderLarge"
-theme_override_font_sizes/font_size = 20
-text = "<Item Name>"
-horizontal_alignment = 1
-vertical_alignment = 2
-
-[node name="button_shop_b" type="Button" parent="menus/main/shops"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = 8.0
-offset_top = 8.0
-offset_right = -8.0
-offset_bottom = -8.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="shop_title" type="Label" parent="menus/main/shops/button_shop_b"]
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 1.0
-anchor_bottom = 0.2
-grow_horizontal = 2
-theme_override_font_sizes/font_size = 32
-text = "Swing ThruSter"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="shop_subtitle" type="Label" parent="menus/main/shops/button_shop_b"]
-layout_mode = 1
-anchors_preset = -1
-anchor_top = 0.175
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-theme_override_colors/font_color = Color(0, 0, 0, 0.713726)
-theme_override_font_sizes/font_size = 16
-text = "(click to browse shop)"
-horizontal_alignment = 1
-
-[node name="item_icon" type="TextureRect" parent="menus/main/shops/button_shop_b"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.5
-anchor_top = 0.6
-anchor_right = 0.5
-anchor_bottom = 0.6
-offset_left = -64.0
-offset_top = -64.0
-offset_right = 64.0
-offset_bottom = 64.0
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset = Vector2(64, 64)
-texture = SubResource("AtlasTexture_v77vq")
-
-[node name="item_name" type="Label" parent="menus/main/shops/button_shop_b"]
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 0
-theme_type_variation = &"HeaderLarge"
-theme_override_font_sizes/font_size = 20
-text = "<Item Name>"
-horizontal_alignment = 1
-vertical_alignment = 2
-
-[node name="overlay" type="ColorRect" parent="menus/main"]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(1, 1, 1, 0.792157)
+[node name="button_shop_a" parent="menus/main/panel_groups/grid_container" instance=ExtResource("3_vso3q")]
+layout_mode = 2
 
 [node name="shop" type="Control" parent="menus"]
 visible = false

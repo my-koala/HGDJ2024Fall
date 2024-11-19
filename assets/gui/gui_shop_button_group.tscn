@@ -1,0 +1,67 @@
+[gd_scene load_steps=4 format=3 uid="uid://d2g4wper4yqqm"]
+
+[ext_resource type="Texture2D" uid="uid://j18jikfcyhjc" path="res://assets/item/items/items.png" id="1_iqetr"]
+[ext_resource type="Script" path="res://assets/gui/gui_shop_button_group.gd" id="1_ub1fr"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v77vq"]
+atlas = ExtResource("1_iqetr")
+region = Rect2(384, 128, 128, 128)
+
+[node name="gui_shop_button_group" type="Button"]
+custom_minimum_size = Vector2(300, 200)
+anchors_preset = -1
+offset_right = 300.0
+offset_bottom = 200.0
+script = ExtResource("1_ub1fr")
+
+[node name="title" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.2
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 32
+text = "swing Heihgt"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="subtitle" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.175
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0, 0, 0, 0.713726)
+theme_override_font_sizes/font_size = 16
+text = "(click to browse shop)"
+horizontal_alignment = 1
+
+[node name="item_icon" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.6
+anchor_right = 0.5
+anchor_bottom = 0.6
+offset_left = -64.0
+offset_top = -64.0
+offset_right = 64.0
+offset_bottom = 64.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(64, 64)
+texture = SubResource("AtlasTexture_v77vq")
+
+[node name="item_name" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_type_variation = &"HeaderLarge"
+theme_override_font_sizes/font_size = 20
+text = "<Item Name>"
+horizontal_alignment = 1
+vertical_alignment = 2
