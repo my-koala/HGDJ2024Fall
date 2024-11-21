@@ -1,9 +1,9 @@
 [gd_scene load_steps=3 format=3 uid="uid://nl7ycbfa1qpk"]
 
-[ext_resource type="Script" path="res://assets/gui/gui_home.gd" id="1_gjawd"]
+[ext_resource type="Script" path="res://assets/scenes/home/home.gd" id="1_gjawd"]
 [ext_resource type="Theme" uid="uid://c2oj0cg0ly36r" path="res://assets/theme/theme.tres" id="1_kgtu0"]
 
-[node name="gui_home" type="Control"]
+[node name="home" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -26,17 +26,22 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="button_play" type="Button" parent="buttons"]
+[node name="play" type="Button" parent="buttons"]
 layout_mode = 2
 theme = ExtResource("1_kgtu0")
 text = "play"
 
-[node name="button_tutorial" type="Button" parent="buttons"]
+[node name="tutorial" type="Button" parent="buttons"]
 layout_mode = 2
 theme = ExtResource("1_kgtu0")
 text = "tutorial"
 
-[node name="button_credits" type="Button" parent="buttons"]
+[node name="credits" type="Button" parent="buttons"]
 layout_mode = 2
 theme = ExtResource("1_kgtu0")
 text = "credits"
+
+[node name="quit" type="Button" parent="buttons"]
+layout_mode = 2
+theme = ExtResource("1_kgtu0")
+text = "quit"

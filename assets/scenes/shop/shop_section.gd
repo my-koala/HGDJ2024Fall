@@ -1,13 +1,13 @@
 @tool
 extends Panel
 
-const GuiShopItemButton: = preload("gui_shop_item_button.gd")
+const ShopItemButton: = preload("shop_item_button.gd")
 
 @export
 var section: StringName = &""
 
 @export
-var item_buttons: Array[GuiShopItemButton] = []
+var item_buttons: Array[ShopItemButton] = []
 
 @onready
 var _title: Label = $title as Label

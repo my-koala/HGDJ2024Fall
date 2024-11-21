@@ -1,8 +1,8 @@
 [gd_scene load_steps=2 format=3 uid="uid://oegi41er2dkg"]
 
-[ext_resource type="Script" path="res://assets/gui/gui_shop_section.gd" id="1_ps6im"]
+[ext_resource type="Script" path="res://assets/scenes/shop/shop_section.gd" id="1_ps6im"]
 
-[node name="gui_shop_section" type="Panel"]
+[node name="shop_section" type="Panel"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0

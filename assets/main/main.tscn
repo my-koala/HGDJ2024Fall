@@ -1,34 +1,28 @@
 [gd_scene load_steps=6 format=3 uid="uid://b31dacy4pd1eo"]
 
-[ext_resource type="PackedScene" uid="uid://bno2xbu6glsda" path="res://assets/play/play.tscn" id="1_s4vh8"]
+[ext_resource type="PackedScene" uid="uid://bno2xbu6glsda" path="res://assets/scenes/play/play.tscn" id="1_s4vh8"]
 [ext_resource type="Script" path="res://assets/main/main.gd" id="1_sfpys"]
-[ext_resource type="PackedScene" uid="uid://nl7ycbfa1qpk" path="res://assets/gui/gui_home.tscn" id="3_m6023"]
-[ext_resource type="PackedScene" uid="uid://wsiimntin7gu" path="res://assets/gui/gui_shop.tscn" id="4_02m6b"]
+[ext_resource type="PackedScene" uid="uid://nl7ycbfa1qpk" path="res://assets/scenes/home/home.tscn" id="3_m6023"]
+[ext_resource type="PackedScene" uid="uid://wsiimntin7gu" path="res://assets/scenes/shop/shop.tscn" id="4_02m6b"]
 [ext_resource type="PackedScene" uid="uid://cvife3b4ydk4n" path="res://assets/gui/gui_overlay.tscn" id="5_4coaf"]
 
 [node name="main" type="Node"]
 script = ExtResource("1_sfpys")
-_game_data = null
 
-[node name="map" parent="." instance=ExtResource("1_s4vh8")]
+[node name="overlay" type="CanvasLayer" parent="."]
+layer = 10
 
-[node name="gui" type="CanvasLayer" parent="."]
-layer = 2
-
-[node name="gui_home" parent="gui" instance=ExtResource("3_m6023")]
-
-[node name="gui_shop" parent="gui" instance=ExtResource("4_02m6b")]
-
-[node name="transition" type="ColorRect" parent="gui"]
+[node name="transition" type="ColorRect" parent="overlay"]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="gui_overlay" parent="gui" instance=ExtResource("5_4coaf")]
+[node name="overlay" parent="overlay" instance=ExtResource("5_4coaf")]
 
-[node name="compiling_shaders" type="Control" parent="gui"]
+[node name="compiling_shaders" type="Control" parent="overlay"]
 visible = false
 layout_mode = 3
 anchors_preset = 15
@@ -37,7 +31,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="color_rect" type="ColorRect" parent="gui/compiling_shaders"]
+[node name="color_rect" type="ColorRect" parent="overlay/compiling_shaders"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -45,7 +39,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="label" type="Label" parent="gui/compiling_shaders"]
+[node name="label" type="Label" parent="overlay/compiling_shaders"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -57,3 +51,18 @@ text = "compiling shaders....
 please be patient..."
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="scene_home" type="CanvasLayer" parent="."]
+
+[node name="home" parent="scene_home" instance=ExtResource("3_m6023")]
+
+[node name="scene_play" type="CanvasLayer" parent="."]
+layer = 0
+follow_viewport_enabled = true
+
+[node name="play" parent="scene_play" instance=ExtResource("1_s4vh8")]
+
+[node name="scene_shop" type="CanvasLayer" parent="."]
+layer = 2
+
+[node name="shop" parent="scene_shop" instance=ExtResource("4_02m6b")]

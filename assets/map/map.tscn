@@ -1,0 +1,192 @@
+[gd_scene load_steps=11 format=3 uid="uid://d34tspg13skye"]
+
+[ext_resource type="Texture2D" uid="uid://besvtvlevcor5" path="res://assets/global.png" id="1_3s3ts"]
+[ext_resource type="Script" path="res://assets/map/map.gd" id="1_t7ca2"]
+[ext_resource type="PackedScene" uid="uid://cr8cp2x8jbkjq" path="res://assets/actors/player/player.tscn" id="2_sdmjw"]
+[ext_resource type="PackedScene" uid="uid://b0567k1pou8kn" path="res://assets/props/swing_set/swing_set.tscn" id="3_x8dr8"]
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_fb6oc"]
+polygon = PackedVector2Array(-1e+09, 0, 1e+09, 0, 1e+09, 256, -1e+09, 256)
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_jlghy"]
+rough = true
+bounce = 1.0
+absorbent = true
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_umvcq"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_mqngb"]
+radius = 16.0
+height = 96.0
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_i62ke"]
+rough = true
+bounce = 1.0
+absorbent = true
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lgvkf"]
+size = Vector2(384, 24)
+
+[node name="map" type="Node2D"]
+script = ExtResource("1_t7ca2")
+
+[node name="geometry" type="Node2D" parent="."]
+
+[node name="light_occluder_2d" type="LightOccluder2D" parent="geometry"]
+modulate = Color(1, 1, 1, 0)
+occluder = SubResource("OccluderPolygon2D_fb6oc")
+
+[node name="ground" type="StaticBody2D" parent="geometry"]
+physics_material_override = SubResource("PhysicsMaterial_jlghy")
+
+[node name="collision_shape_2d" type="CollisionShape2D" parent="geometry/ground"]
+shape = SubResource("WorldBoundaryShape2D_umvcq")
+
+[node name="parallax_2d" type="Parallax2D" parent="geometry"]
+z_index = -1
+repeat_size = Vector2(512, 0)
+repeat_times = 8
+
+[node name="sprite_2d" type="Sprite2D" parent="geometry/parallax_2d"]
+texture = ExtResource("1_3s3ts")
+offset = Vector2(0, 24)
+region_enabled = true
+region_rect = Rect2(0, 368, 512, 80)
+
+[node name="background" type="Parallax2D" parent="geometry"]
+modulate = Color(1, 1, 1, 0.364706)
+scroll_scale = Vector2(0.75, 1)
+repeat_size = Vector2(4096, 0)
+repeat_times = 4
+
+[node name="sprite_2d" type="Sprite2D" parent="geometry/background"]
+position = Vector2(714, -250)
+scale = Vector2(2, 2)
+texture = ExtResource("1_3s3ts")
+region_enabled = true
+region_rect = Rect2(592, 64, 176, 256)
+
+[node name="sprite_2d_4" type="Sprite2D" parent="geometry/background"]
+position = Vector2(3547, -308)
+scale = Vector2(2.5, 2.5)
+texture = ExtResource("1_3s3ts")
+flip_h = true
+region_enabled = true
+region_rect = Rect2(592, 64, 176, 256)
+
+[node name="sprite_2d_5" type="Sprite2D" parent="geometry/background"]
+position = Vector2(3328, -237)
+scale = Vector2(1.75, 1.75)
+texture = ExtResource("1_3s3ts")
+flip_h = true
+region_enabled = true
+region_rect = Rect2(592, 64, 176, 256)
+
+[node name="sprite_2d_2" type="Sprite2D" parent="geometry/background"]
+position = Vector2(1956, -243)
+scale = Vector2(2, 2)
+texture = ExtResource("1_3s3ts")
+region_enabled = true
+region_rect = Rect2(592, 64, 176, 256)
+
+[node name="sprite_2d_3" type="Sprite2D" parent="geometry/background"]
+position = Vector2(2410, -220)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("1_3s3ts")
+flip_h = true
+region_enabled = true
+region_rect = Rect2(592, 64, 176, 256)
+
+[node name="background_2" type="Parallax2D" parent="geometry"]
+modulate = Color(1, 1, 1, 0.364706)
+scroll_scale = Vector2(0.625, 1)
+repeat_size = Vector2(4096, 0)
+repeat_times = 4
+
+[node name="sprite_2d_6" type="Sprite2D" parent="geometry/background_2"]
+position = Vector2(3103, -141)
+scale = Vector2(2, 2)
+texture = ExtResource("1_3s3ts")
+region_enabled = true
+region_rect = Rect2(16, 0, 160, 128)
+
+[node name="sprite_2d_7" type="Sprite2D" parent="geometry/background_2"]
+position = Vector2(1701, -161)
+scale = Vector2(2, 2)
+texture = ExtResource("1_3s3ts")
+region_enabled = true
+region_rect = Rect2(16, 0, 160, 128)
+
+[node name="sprite_2d_8" type="Sprite2D" parent="geometry/background_2"]
+position = Vector2(2172, -154)
+scale = Vector2(2, 2)
+texture = ExtResource("1_3s3ts")
+flip_h = true
+region_enabled = true
+region_rect = Rect2(16, 0, 160, 128)
+
+[node name="seesaw" type="StaticBody2D" parent="geometry"]
+position = Vector2(1142, -4)
+
+[node name="collision_shape_2d" type="CollisionShape2D" parent="geometry/seesaw"]
+position = Vector2(0, -40)
+shape = SubResource("CapsuleShape2D_mqngb")
+
+[node name="pin_joint_2d" type="PinJoint2D" parent="geometry/seesaw"]
+position = Vector2(0, -64)
+node_a = NodePath("..")
+node_b = NodePath("../plank")
+bias = 0.504
+
+[node name="sprite_2d" type="Sprite2D" parent="geometry/seesaw"]
+scale = Vector2(2, 2)
+texture = ExtResource("1_3s3ts")
+offset = Vector2(0, -12)
+region_enabled = true
+region_rect = Rect2(208, 272, 224, 80)
+
+[node name="plank" type="RigidBody2D" parent="geometry/seesaw"]
+position = Vector2(0, -64)
+rotation = -0.331613
+collision_mask = 3
+mass = 5.0
+physics_material_override = SubResource("PhysicsMaterial_i62ke")
+can_sleep = false
+
+[node name="collision_shape_2d" type="CollisionShape2D" parent="geometry/seesaw/plank"]
+position = Vector2(0, -8)
+shape = SubResource("RectangleShape2D_lgvkf")
+
+[node name="sprite_2d" type="Sprite2D" parent="geometry/seesaw/plank"]
+scale = Vector2(2, 2)
+texture = ExtResource("1_3s3ts")
+offset = Vector2(0, -12)
+region_enabled = true
+region_rect = Rect2(208, 224, 224, 48)
+
+[node name="player_2" parent="geometry/seesaw" instance=ExtResource("2_sdmjw")]
+position = Vector2(-146, -67)
+rotation = -0.331613
+_game_data = null
+turn_acceleration = 8.0
+acceleration_death = 1024.0
+
+[node name="swing_set" parent="." instance=ExtResource("3_x8dr8")]
+
+[node name="camera_2d" type="Camera2D" parent="."]
+position = Vector2(167, -167)
+zoom = Vector2(0.5, 0.5)
+process_callback = 0
+limit_bottom = 128
+position_smoothing_enabled = true
+position_smoothing_speed = 32.0
+editor_draw_limits = true
+editor_draw_drag_margin = true
+
+[node name="player" parent="." instance=ExtResource("2_sdmjw")]
+mass = 20.0
+_game_data = null
+player = true
+turn_acceleration = 8.0
+acceleration_death = 1536.0
+drag_density = 24.0
