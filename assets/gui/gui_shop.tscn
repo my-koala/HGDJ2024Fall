@@ -2,11 +2,14 @@
 
 [ext_resource type="Script" path="res://assets/gui/gui_shop.gd" id="1_7ikmg"]
 [ext_resource type="Texture2D" uid="uid://j18jikfcyhjc" path="res://assets/item/items/items.png" id="2_cglov"]
-[ext_resource type="PackedScene" uid="uid://cvife3b4ydk4n" path="res://assets/gui/gui_overlay.tscn" id="2_x0suw"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_2q615"]
 atlas = ExtResource("2_cglov")
 region = Rect2(896, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uq53k"]
+atlas = ExtResource("2_cglov")
+region = Rect2(640, 128, 128, 128)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_n8o6u"]
 atlas = ExtResource("2_cglov")
@@ -78,6 +81,37 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "Ready!"
 
+[node name="left" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.025
+anchor_top = 0.25
+anchor_right = 0.175
+anchor_bottom = 0.75
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="texture_rect" type="TextureRect" parent="left"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.625
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AtlasTexture_uq53k")
+stretch_mode = 3
+
+[node name="home" type="Button" parent="left"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.625
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Quit to Main Menu"
+autowrap_mode = 2
+
 [node name="section_overlay" type="ColorRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
@@ -88,6 +122,14 @@ grow_vertical = 2
 color = Color(0.796652, 0.766556, 0.77416, 0.670588)
 
 [node name="section_container" type="Control" parent="."]
+layout_mode = 1
+anchor_left = 0.125
+anchor_top = 0.2
+anchor_right = 0.875
+anchor_bottom = 0.8
+mouse_filter = 2
+
+[node name="section_container_2" type="Control" parent="."]
 layout_mode = 1
 anchor_left = 0.125
 anchor_top = 0.2
@@ -160,12 +202,3 @@ offset_right = 589.0
 offset_bottom = 73.0
 texture = SubResource("AtlasTexture_onf2c")
 expand_mode = 1
-
-[node name="canvas_layer" type="CanvasLayer" parent="."]
-
-[node name="gui_overlay" parent="canvas_layer" instance=ExtResource("2_x0suw")]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2

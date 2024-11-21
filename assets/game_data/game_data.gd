@@ -64,7 +64,7 @@ func money_withdraw(dollars: int, cents: int) -> void:
 func can_money_withdraw(dollars: int, cents: int) -> bool:
 	dollars += cents / CENT_TO_DOLLAR
 	cents = cents % CENT_TO_DOLLAR
-	return _money_dollars > dollars || ((_money_dollars == dollars) && (cents >= _money_cents))
+	return (_money_dollars > dollars) || ((_money_dollars == dollars) && (_money_cents >= cents))
 
 func get_items() -> Array[Item]:
 	return _items

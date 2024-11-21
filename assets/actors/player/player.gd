@@ -1,6 +1,12 @@
 @tool
 extends ProjectileBody2D
 
+enum InjuryState { NONE, HEADACHE, BROKEN_ARM, BROKEN_LEG, BROKEN_NECK, DEAD }
+var _injury_state: InjuryState = InjuryState.NONE
+
+@export
+var _game_data: GameData = preload("res://assets/game_data/game_data.tres")
+
 @export
 var player: bool = false
 
@@ -63,6 +69,11 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 	if Engine.is_editor_hint():
 		return
 	
+	if _injury_state == InjuryState.DEAD:
+		state.linear_velocity = Vector2.ZERO
+		state.angular_velocity = 0.0
+		return
+	
 	super(state)
 	
 	if !is_swinging():
@@ -84,10 +95,9 @@ func _physics_process(delta: float) -> void:
 		_turn_direction = signf(_input_move)
 		
 		if linear_velocity.distance_to(_linear_velocity) > acceleration_death:
-			print("death")
 			_particles_explode.emitting = true
 			_sprite.visible = false
-			freeze = true
+			_injury_state = InjuryState.DEAD
 	else:
 		if !is_zero_approx(_input_move):
 			_swing_thruster.active = true

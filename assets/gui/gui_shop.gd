@@ -1,7 +1,8 @@
 @tool
 extends Control
 
-# i think everything is done. thank god
+# TODO: i think everything is done
+# TODO: need sound effects (cash register, cant buy, 
 
 const GuiShopSection: = preload("gui_shop_section.gd")
 const GUI_SHOP_SECTION: PackedScene = preload("gui_shop_section.tscn")
@@ -11,7 +12,7 @@ const GuiShopItemButton: = preload("gui_shop_item_button.gd")
 const GUI_SHOP_ITEM_BUTTON: PackedScene = preload("gui_shop_item_button.tscn")
 
 signal exit_home()
-signal exit_game()
+signal exit_play()
 
 @export
 var _game_data: GameData = preload("res://assets/game_data/game_data.tres")
@@ -26,6 +27,8 @@ var _section_container: Control = $section_container as Control
 var _balance: Label = $bottom/balance as Label
 @onready
 var _ready_button: Button = $right/ready as Button
+@onready
+var _home_button: Button = $left/home as Button
 
 var _menu_group_id: int = 0
 
@@ -42,6 +45,7 @@ func _ready() -> void:
 	
 	_game_data.changed.connect(_on_game_data_changed)
 	_ready_button.pressed.connect(_on_ready_button_pressed)
+	_home_button.pressed.connect(_on_home_button_pressed)
 	
 	refresh()
 	_set_active_section(null)
@@ -110,13 +114,17 @@ func refresh() -> void:
 		if _game_data.is_item_equipped(item):
 			item_button._label_price.text = "Equipped"
 			item_button._label_subtitle.text = "(this is equipped)"
+			item_button._label_subtitle.modulate = Color(0.0, 0.0, 0.0, 0.75)
 		elif _game_data.is_item_purchased(item):
-			item_button._label_price.text = "Purchased"
+			item_button._label_price.text = "Owned"
 			item_button._label_subtitle.text = "(click to equip)"
+			item_button._label_subtitle.modulate = Color(0.0, 0.5, 0.0, 0.75)
 		elif _game_data.can_money_withdraw(item.price_dollars, item.price_cents):
 			item_button._label_subtitle.text = "(click to buy)"
+			item_button._label_subtitle.modulate = Color(0.0, 0.5, 0.0, 0.75)
 		else:
 			item_button._label_subtitle.text = "(cant buy)"
+			item_button._label_subtitle.modulate = Color(1.0, 0.0, 0.0, 0.75)
 		item_button._texture_icon.texture = item.icon
 	
 	for section_button: GuiShopSectionButton in _section_buttons:
@@ -126,11 +134,12 @@ func refresh() -> void:
 		var index: int = _section_buttons.find(section_button)
 		var is_left: bool = (index % size_col) == 0
 		var is_right: bool = ((index + size_col - 1) % size_col) == 0
+		is_right = is_right || ((index + size_col - 1) >= _section_buttons.size())
 		var is_top: bool = (index - size_col) < 0
-		var is_bottom: bool = (index + size_col) >= (size_col * size_row)
+		var is_bottom: bool = (index + size_col) >= (_section_buttons.size())
 		
 		if is_left:
-			section_button.focus_neighbor_left = section_button.get_path_to(section_button)
+			section_button.focus_neighbor_left = section_button.get_path_to(_home_button)
 		else:
 			section_button.focus_neighbor_left = section_button.get_path_to(_section_buttons[index - 1])
 		if is_right:
@@ -182,13 +191,23 @@ func refresh() -> void:
 	
 	var ready_button_left: Node = _ready_button
 	if !_section_buttons.is_empty():
-		ready_button_left = _section_buttons[0]
+		ready_button_left = _section_buttons[mini(_section_button_container.columns, _section_buttons.size()) - 1]
 	_ready_button.focus_neighbor_left = _ready_button.get_path_to(ready_button_left)
 	_ready_button.focus_neighbor_right = _ready_button.get_path_to(_ready_button)
 	_ready_button.focus_neighbor_top = _ready_button.get_path_to(_ready_button)
 	_ready_button.focus_neighbor_bottom = _ready_button.get_path_to(_ready_button)
 	_ready_button.focus_next = _ready_button.get_path_to(_ready_button)
 	_ready_button.focus_previous = _ready_button.get_path_to(ready_button_left)
+	
+	var home_button_right: Node = _home_button
+	if !_section_buttons.is_empty():
+		home_button_right = _section_buttons[0]
+	_home_button.focus_neighbor_left = _home_button.get_path_to(_home_button)
+	_home_button.focus_neighbor_right = _home_button.get_path_to(home_button_right)
+	_home_button.focus_neighbor_top = _home_button.get_path_to(_home_button)
+	_home_button.focus_neighbor_bottom = _home_button.get_path_to(_home_button)
+	_home_button.focus_next = _home_button.get_path_to(home_button_right)
+	_home_button.focus_previous = _home_button.get_path_to(_home_button)
 
 func _on_item_button_pressed(item_button: GuiShopItemButton) -> void:
 	if _game_data.is_item_purchased(item_button.item):
@@ -224,10 +243,12 @@ func _set_active_section(active_section: GuiShopSection) -> void:
 	_active_section_tween.set_trans(Tween.TRANS_CUBIC)
 	
 	for section: GuiShopSection in _sections:
-		if section != _active_section || section != active_section:
+		if section != _active_section && section != active_section:
 			section.position.y = size.y
 	
 	_ready_button.grab_focus.call_deferred()
+	if !_section_buttons.is_empty():
+		_section_buttons[0].grab_focus.call_deferred()
 	
 	_section_overlay.visible = false
 	
@@ -243,12 +264,15 @@ func _set_active_section(active_section: GuiShopSection) -> void:
 		for section_button: GuiShopSectionButton in _section_buttons:
 			if section_button.section == _active_section.section:
 				section_button.grab_focus.call_deferred()
+				break
 	
 	_active_section = active_section
 	
 	if is_instance_valid(_active_section):
 		_section_overlay.visible = true
 		_active_section._back.grab_focus.call_deferred()
+		if !_active_section.item_buttons.is_empty():
+			_active_section.item_buttons[0].grab_focus.call_deferred()
 		var duration: float = 0.25 * (_active_section.position.y / size.y)
 		_active_section_tween.tween_property(_active_section, "position:y", 0.0, duration)
 		duration = 0.25 * (1.0 - _section_overlay.modulate.a)
@@ -256,8 +280,10 @@ func _set_active_section(active_section: GuiShopSection) -> void:
 	
 
 func _on_ready_button_pressed() -> void:
-	exit_game.emit()
-	print("exit to game!")
+	exit_play.emit()
+
+func _on_home_button_pressed() -> void:
+	exit_home.emit()
 
 func _on_game_data_changed() -> void:
 	refresh()

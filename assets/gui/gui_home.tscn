@@ -1,5 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://nl7ycbfa1qpk"]
+[gd_scene load_steps=3 format=3 uid="uid://nl7ycbfa1qpk"]
 
+[ext_resource type="Script" path="res://assets/gui/gui_home.gd" id="1_gjawd"]
 [ext_resource type="Theme" uid="uid://c2oj0cg0ly36r" path="res://assets/theme/theme.tres" id="1_kgtu0"]
 
 [node name="gui_home" type="Control"]
@@ -9,6 +10,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_gjawd")
 
 [node name="buttons" type="VBoxContainer" parent="."]
 layout_mode = 1
