@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="Item" load_steps=4 format=3 uid="uid://c8k8njf6eenj6"]
+
+[ext_resource type="Texture2D" uid="uid://j18jikfcyhjc" path="res://assets/item/items/items.png" id="1_ok1sp"]
+[ext_resource type="Script" path="res://assets/item/item.gd" id="2_s7v1d"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8jfo1"]
+atlas = ExtResource("1_ok1sp")
+region = Rect2(384, 128, 128, 128)
+
+[resource]
+script = ExtResource("2_s7v1d")
+name = &"Jet Engine"
+section = &"Swing Thrust"
+price_dollars = 499
+price_cents = 99
+icon = SubResource("AtlasTexture_8jfo1")

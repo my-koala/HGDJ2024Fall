@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="Item" load_steps=4 format=3 uid="uid://bruhbcme440le"]
+
+[ext_resource type="Texture2D" uid="uid://j18jikfcyhjc" path="res://assets/item/items/items.png" id="1_5jdjv"]
+[ext_resource type="Script" path="res://assets/item/item.gd" id="2_y187c"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8jfo1"]
+atlas = ExtResource("1_5jdjv")
+region = Rect2(256, 128, 128, 128)
+
+[resource]
+script = ExtResource("2_y187c")
+name = &"Firework"
+section = &"Swing Thrust"
+price_dollars = 50
+price_cents = 15
+icon = SubResource("AtlasTexture_8jfo1")

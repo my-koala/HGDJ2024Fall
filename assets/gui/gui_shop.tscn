@@ -2,8 +2,11 @@
 
 [ext_resource type="Script" path="res://assets/gui/gui_shop.gd" id="1_7ikmg"]
 [ext_resource type="Texture2D" uid="uid://j18jikfcyhjc" path="res://assets/item/items/items.png" id="2_cglov"]
-[ext_resource type="PackedScene" uid="uid://d2g4wper4yqqm" path="res://assets/gui/gui_shop_section_button.tscn" id="2_swe06"]
 [ext_resource type="PackedScene" uid="uid://cvife3b4ydk4n" path="res://assets/gui/gui_overlay.tscn" id="2_x0suw"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2q615"]
+atlas = ExtResource("2_cglov")
+region = Rect2(896, 0, 128, 128)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_n8o6u"]
 atlas = ExtResource("2_cglov")
@@ -45,14 +48,35 @@ grow_horizontal = 2
 grow_vertical = 2
 columns = 2
 
-[node name="gui_shop_section_button" parent="section_button_container/grid_container" instance=ExtResource("2_swe06")]
-layout_mode = 2
+[node name="right" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.825
+anchor_top = 0.25
+anchor_right = 0.975
+anchor_bottom = 0.75
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="gui_shop_section_button_2" parent="section_button_container/grid_container" instance=ExtResource("2_swe06")]
-layout_mode = 2
+[node name="texture_rect" type="TextureRect" parent="right"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.625
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AtlasTexture_2q615")
+stretch_mode = 3
 
-[node name="gui_shop_section_button_3" parent="section_button_container/grid_container" instance=ExtResource("2_swe06")]
-layout_mode = 2
+[node name="ready" type="Button" parent="right"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.625
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Ready!"
 
 [node name="section_overlay" type="ColorRect" parent="."]
 layout_mode = 1

@@ -1,11 +1,7 @@
 @tool
 extends Control
 
-# TODO:
-# set focus neighbors, rather than setting focus modes/states
-# then grab_focus() manually
-# maybe clean up the refresh if possible?
-#
+# i think everything is done. thank god
 
 const GuiShopSection: = preload("gui_shop_section.gd")
 const GUI_SHOP_SECTION: PackedScene = preload("gui_shop_section.tscn")
@@ -28,6 +24,8 @@ var _section_overlay: ColorRect = $section_overlay as ColorRect
 var _section_container: Control = $section_container as Control
 @onready
 var _balance: Label = $bottom/balance as Label
+@onready
+var _ready_button: Button = $right/ready as Button
 
 var _menu_group_id: int = 0
 
@@ -43,6 +41,7 @@ func _ready() -> void:
 		return
 	
 	_game_data.changed.connect(_on_game_data_changed)
+	_ready_button.pressed.connect(_on_ready_button_pressed)
 	
 	refresh()
 	_set_active_section(null)
@@ -79,7 +78,7 @@ func refresh() -> void:
 			if _section_buttons[index].section == item.section:
 				section_button = _section_buttons[index]
 				break
-		
+			
 		if !is_instance_valid(section_button):
 			# Create section button.
 			section_button = GUI_SHOP_SECTION_BUTTON.instantiate() as GuiShopSectionButton
@@ -94,10 +93,9 @@ func refresh() -> void:
 			section_button._texture_icon.texture = item.icon
 		
 		var item_button: GuiShopItemButton = null
-		for index: int in section.item_buttons.size():
-			if section.item_buttons[index].item == item:
-				item_button = section.item_buttons[index]
-				break
+		for _item_button: GuiShopItemButton in section.item_buttons:
+			if _item_button.item == item:
+				item_button = _item_button
 		
 		if !is_instance_valid(item_button):
 			# Create item button.
@@ -120,7 +118,77 @@ func refresh() -> void:
 		else:
 			item_button._label_subtitle.text = "(cant buy)"
 		item_button._texture_icon.texture = item.icon
+	
+	for section_button: GuiShopSectionButton in _section_buttons:
+		var size_col: int = mini(_section_button_container.columns, _section_buttons.size())
+		var size_row: int = ceili(float(_section_buttons.size()) / float(size_col))
 		
+		var index: int = _section_buttons.find(section_button)
+		var is_left: bool = (index % size_col) == 0
+		var is_right: bool = ((index + size_col - 1) % size_col) == 0
+		var is_top: bool = (index - size_col) < 0
+		var is_bottom: bool = (index + size_col) >= (size_col * size_row)
+		
+		if is_left:
+			section_button.focus_neighbor_left = section_button.get_path_to(section_button)
+		else:
+			section_button.focus_neighbor_left = section_button.get_path_to(_section_buttons[index - 1])
+		if is_right:
+			section_button.focus_neighbor_right = section_button.get_path_to(_ready_button)
+		else:
+			section_button.focus_neighbor_right = section_button.get_path_to(_section_buttons[index + 1])
+		if is_top:
+			section_button.focus_neighbor_top = section_button.get_path_to(section_button)
+		else:
+			section_button.focus_neighbor_top = section_button.get_path_to(_section_buttons[index - size_col])
+		if is_bottom:
+			section_button.focus_neighbor_bottom = section_button.get_path_to(section_button)
+		else:
+			section_button.focus_neighbor_bottom = section_button.get_path_to(_section_buttons[index + size_col])
+		section_button.focus_next = section_button.get_path_to(_ready_button)
+		section_button.focus_previous = section_button.get_path_to(section_button)
+	
+	for section: GuiShopSection in _sections:
+		if section.item_buttons.is_empty():
+			section._back.focus_neighbor_left = section._back.get_path_to(section._back)
+			section._back.focus_neighbor_right = section._back.get_path_to(section._back)
+			section._back.focus_neighbor_bottom = section._back.get_path_to(section._back)
+			section._back.focus_neighbor_top = section._back.get_path_to(section._back)
+			section._back.focus_next = section._back.get_path_to(section._back)
+			section._back.focus_previous = section._back.get_path_to(section._back)
+		else:
+			section._back.focus_neighbor_left = section._back.get_path_to(section._back)
+			section._back.focus_neighbor_right = section._back.get_path_to(section._back)
+			section._back.focus_neighbor_bottom = section._back.get_path_to(section.item_buttons[0])
+			section._back.focus_neighbor_top = section._back.get_path_to(section._back)
+			section._back.focus_next = section._back.get_path_to(section.item_buttons[0])
+			section._back.focus_previous = section._back.get_path_to(section._back)
+		for index: int in section.item_buttons.size():
+			var item_button: GuiShopItemButton = section.item_buttons[index]
+			var is_left: bool = index == 0
+			var is_right: bool = index == (section.item_buttons.size() - 1)
+			if is_left:
+				item_button.focus_neighbor_left = item_button.get_path_to(item_button)
+			else:
+				item_button.focus_neighbor_left = item_button.get_path_to(section.item_buttons[index - 1])
+			if is_right:
+				item_button.focus_neighbor_right = item_button.get_path_to(item_button)
+			else:
+				item_button.focus_neighbor_right = item_button.get_path_to(section.item_buttons[index + 1])
+			item_button.focus_neighbor_bottom = item_button.get_path_to(item_button)
+			item_button.focus_neighbor_top = item_button.get_path_to(section._back)
+			item_button.focus_next = item_button.get_path_to(section._back)
+			item_button.focus_previous = item_button.get_path_to(section._back)
+	
+	var ready_button_left: Node = _ready_button
+	if !_section_buttons.is_empty():
+		ready_button_left = _section_buttons[0]
+	_ready_button.focus_neighbor_left = _ready_button.get_path_to(ready_button_left)
+	_ready_button.focus_neighbor_right = _ready_button.get_path_to(_ready_button)
+	_ready_button.focus_neighbor_top = _ready_button.get_path_to(_ready_button)
+	_ready_button.focus_neighbor_bottom = _ready_button.get_path_to(_ready_button)
+	_ready_button.focus_next = _ready_button.get_path_to(_ready_button)
+	_ready_button.focus_previous = _ready_button.get_path_to(ready_button_left)
 
 func _on_item_button_pressed(item_button: GuiShopItemButton) -> void:
 	if _game_data.is_item_purchased(item_button.item):
@@ -159,24 +227,37 @@ func _set_active_section(active_section: GuiShopSection) -> void:
 		if section != _active_section || section != active_section:
 			section.position.y = size.y
 	
+	_ready_button.grab_focus.call_deferred()
+	
 	_section_overlay.visible = false
 	
 	if is_instance_valid(_active_section):
+		_section_overlay.visible = true
 		var duration: float = 0.25 * (1.0 - (_active_section.position.y / size.y))
 		_active_section_tween.tween_property(_active_section, "position:y", size.y, duration)
 		if !is_instance_valid(active_section):
 			duration = 0.25 * (_section_overlay.modulate.a)
 			_active_section_tween.tween_property(_section_overlay, "modulate:a", 0.0, duration)
 			_active_section_tween.tween_property(_section_overlay, "visible", false, duration)
+		# find corresponding section button and focus
+		for section_button: GuiShopSectionButton in _section_buttons:
+			if section_button.section == _active_section.section:
+				section_button.grab_focus.call_deferred()
 	
 	_active_section = active_section
 	
 	if is_instance_valid(_active_section):
 		_section_overlay.visible = true
+		_active_section._back.grab_focus.call_deferred()
 		var duration: float = 0.25 * (_active_section.position.y / size.y)
 		_active_section_tween.tween_property(_active_section, "position:y", 0.0, duration)
 		duration = 0.25 * (1.0 - _section_overlay.modulate.a)
 		_active_section_tween.tween_property(_section_overlay, "modulate:a", 1.0, duration)
+	
+
+func _on_ready_button_pressed() -> void:
+	exit_game.emit()
+	print("exit to game!")
 
 func _on_game_data_changed() -> void:
 	refresh()

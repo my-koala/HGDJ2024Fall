@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="Item" load_steps=4 format=3 uid="uid://cwh128i6s6lm7"]
+
+[ext_resource type="Texture2D" uid="uid://j18jikfcyhjc" path="res://assets/item/items/items.png" id="1_8fcrl"]
+[ext_resource type="Script" path="res://assets/item/item.gd" id="2_mbn7j"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8jfo1"]
+atlas = ExtResource("1_8fcrl")
+region = Rect2(128, 128, 128, 128)
+
+[resource]
+script = ExtResource("2_mbn7j")
+name = &"Bottle Rocket"
+section = &"Swing Thrust"
+price_dollars = 2
+price_cents = 33
+icon = SubResource("AtlasTexture_8jfo1")

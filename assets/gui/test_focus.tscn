@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://3rf7ps8836k0"]
+
+[node name="test_focus" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="h_box_container_2" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 254.0
+offset_top = 283.0
+offset_right = 662.0
+offset_bottom = 342.0
+
+[node name="button" type="Button" parent="h_box_container_2"]
+layout_mode = 2
+text = "focus me daddy"
+
+[node name="button_2" type="Button" parent="h_box_container_2"]
+layout_mode = 2
+text = "focus me daddy"
+
+[node name="h_box_container" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 260.0
+offset_top = 273.0
+offset_right = 668.0
+offset_bottom = 332.0
+
+[node name="button" type="Button" parent="h_box_container"]
+layout_mode = 2
+text = "focus me daddy"
+
+[node name="button_2" type="Button" parent="h_box_container"]
+layout_mode = 2
+text = "focus me daddy"

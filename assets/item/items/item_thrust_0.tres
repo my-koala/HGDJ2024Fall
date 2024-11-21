@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="Item" load_steps=4 format=3 uid="uid://dn2lhti2ogfew"]
+
+[ext_resource type="Texture2D" uid="uid://j18jikfcyhjc" path="res://assets/item/items/items.png" id="1_ubavl"]
+[ext_resource type="Script" path="res://assets/item/item.gd" id="2_kb0jv"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8jfo1"]
+atlas = ExtResource("1_ubavl")
+region = Rect2(0, 128, 128, 128)
+
+[resource]
+script = ExtResource("2_kb0jv")
+name = &"No Thrust"
+section = &"Swing Thrust"
+price_dollars = 0
+price_cents = 0
+icon = SubResource("AtlasTexture_8jfo1")

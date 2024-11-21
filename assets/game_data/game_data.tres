@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="GameData" load_steps=7 format=3 uid="uid://dhwomc3afc8y4"]
+[gd_resource type="Resource" script_class="GameData" load_steps=11 format=3 uid="uid://dhwomc3afc8y4"]
 
 [ext_resource type="Script" path="res://assets/item/item.gd" id="1_ox7ci"]
 [ext_resource type="Script" path="res://assets/game_data/game_data.gd" id="1_p0oid"]
@@ -6,9 +6,13 @@
 [ext_resource type="Resource" uid="uid://gj477d1fecaw" path="res://assets/item/items/item_height_1.tres" id="3_e0ptk"]
 [ext_resource type="Resource" uid="uid://ckte04nynovtn" path="res://assets/item/items/item_height_2.tres" id="4_n87qv"]
 [ext_resource type="Resource" uid="uid://cq5hv3xbyllv4" path="res://assets/item/items/item_height_3.tres" id="5_si2h0"]
+[ext_resource type="Resource" uid="uid://dn2lhti2ogfew" path="res://assets/item/items/item_thrust_0.tres" id="6_gsio5"]
+[ext_resource type="Resource" uid="uid://cwh128i6s6lm7" path="res://assets/item/items/item_thrust_1.tres" id="7_yylii"]
+[ext_resource type="Resource" uid="uid://bruhbcme440le" path="res://assets/item/items/item_thrust_2.tres" id="8_fdkv0"]
+[ext_resource type="Resource" uid="uid://c8k8njf6eenj6" path="res://assets/item/items/item_thrust_3.tres" id="9_rpsru"]
 
 [resource]
 script = ExtResource("1_p0oid")
-_items = Array[ExtResource("1_ox7ci")]([ExtResource("2_osw14"), ExtResource("3_e0ptk"), ExtResource("4_n87qv"), ExtResource("5_si2h0")])
+_items = Array[ExtResource("1_ox7ci")]([ExtResource("2_osw14"), ExtResource("3_e0ptk"), ExtResource("4_n87qv"), ExtResource("5_si2h0"), ExtResource("6_gsio5"), ExtResource("7_yylii"), ExtResource("8_fdkv0"), ExtResource("9_rpsru")])
 _money_dollars = 5
 _money_cents = 0

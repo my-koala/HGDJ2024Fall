@@ -9,9 +9,6 @@ var name: StringName = &""
 var section: StringName = &""
 
 @export
-var id: int = 0
-
-@export
 var price_dollars: int = 0
 
 @export
