@@ -1,12 +1,14 @@
 @tool
 extends Node
 
-# TODO (IN ORDER)
-# finish swing tether rope texture drawing
-#  - need to make new sprite
-# finish swing height art, use sprite frames, correspond to heights
-# redo character art - need leaning animations, freefall, and landing
-# add swing thrusters, art, functionality,
+# DONE
+# finish catenary texture drawing
+
+# TODO to finish for final delivery
+# add swing thrusters - art and functionality
+# finish swing height art, use sprite frames, correspond to heights - do later (after balancing) super easy
+# redo character art - need leaning animations, freefall, and landing - animations
+# balance drag, gravity, etc.
 # add sounds
 # add instructions and credits screen to menu
 # shader precompilation

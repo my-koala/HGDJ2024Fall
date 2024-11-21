@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://b0567k1pou8kn"]
+[gd_scene load_steps=9 format=3 uid="uid://b0567k1pou8kn"]
 
 [ext_resource type="Script" path="res://assets/props/swing_set/swing_set.gd" id="1_b5517"]
 [ext_resource type="Texture2D" uid="uid://cjug42yt3ge8s" path="res://assets/props/swing_set/swing_set_foreground.png" id="1_hod3s"]
 [ext_resource type="Texture2D" uid="uid://cu2cx35yngyu2" path="res://assets/props/swing_set/swing_set_background.png" id="2_m45k4"]
 [ext_resource type="Script" path="res://modules/swing/swing_2d.gd" id="3_hnorh"]
+[ext_resource type="Texture2D" uid="uid://mlwokig84l77" path="res://assets/tethers/tether_rope.png" id="3_xmo8o"]
 [ext_resource type="Texture2D" uid="uid://bddxbcens4ame" path="res://assets/props/swing_set/swing_set_chair.png" id="4_e6346"]
 [ext_resource type="Script" path="res://modules/catenary/catenary_2d.gd" id="6_ymde2"]
 
@@ -18,7 +19,7 @@ position = Vector2(0, -256)
 
 [node name="catenary" type="Node2D" parent="top"]
 script = ExtResource("6_ymde2")
-length = 384.0
+texture = ExtResource("3_xmo8o")
 
 [node name="swing" type="RigidBody2D" parent="top"]
 collision_layer = 4
