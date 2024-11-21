@@ -10,3 +10,5 @@
 [resource]
 script = ExtResource("1_p0oid")
 _items = Array[ExtResource("1_ox7ci")]([ExtResource("2_osw14"), ExtResource("3_e0ptk"), ExtResource("4_n87qv"), ExtResource("5_si2h0")])
+_money_dollars = 5
+_money_cents = 0

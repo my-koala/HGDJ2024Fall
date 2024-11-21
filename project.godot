@@ -55,6 +55,7 @@ folder_colors={
 [gui]
 
 theme/custom="res://assets/theme/theme.tres"
+theme/custom_font="res://third_party/5yearsoldfont/5yearsoldfont.ttf"
 
 [input]
 

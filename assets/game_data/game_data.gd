@@ -27,7 +27,9 @@ func _init_items() -> void:
 
 const CENT_TO_DOLLAR: int = 100
 
+@export
 var _money_dollars: int = 0
+@export
 var _money_cents: int = 0
 
 func get_money_dollars() -> int:
@@ -62,7 +64,7 @@ func money_withdraw(dollars: int, cents: int) -> void:
 func can_money_withdraw(dollars: int, cents: int) -> bool:
 	dollars += cents / CENT_TO_DOLLAR
 	cents = cents % CENT_TO_DOLLAR
-	return _money_dollars > dollars || ((_money_dollars == dollars) && (cents > _money_cents))
+	return _money_dollars > dollars || ((_money_dollars == dollars) && (cents >= _money_cents))
 
 func get_items() -> Array[Item]:
 	return _items
@@ -90,6 +92,9 @@ func item_purchase(item: Item) -> void:
 	var index: int = _items.find(item)
 	if index == -1:
 		return
+	if !can_money_withdraw(item.price_dollars, item.price_cents):
+		return
+	money_withdraw(item.price_dollars, item.price_cents)
 	_items_purchased[index] = true
 	emit_changed()
 
@@ -100,10 +105,10 @@ func item_equip(item: Item) -> void:
 	if !_items_purchased[index]:
 		return
 	_items_equipped[index] = true
-	# find other items in group and unequip
+	# find other items in section and unequip
 	for index2: int in _items.size():
 		if _items[index2] == item:
 			continue
-		if _items[index2].group == item.group:
+		if _items[index2].section == item.section:
 			_items_equipped[index2] = false
 	emit_changed()

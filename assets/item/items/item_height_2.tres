@@ -9,8 +9,8 @@ region = Rect2(256, 0, 128, 128)
 
 [resource]
 script = ExtResource("2_qnxw8")
-name = &"tall swing"
-group = &"swing height"
+name = &"Tall Swing"
+section = &"Swing Height"
 id = 2
 price_dollars = 29
 price_cents = 99

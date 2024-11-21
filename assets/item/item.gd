@@ -6,7 +6,7 @@ class_name Item
 var name: StringName = &""
 
 @export
-var group: StringName = &""
+var section: StringName = &""
 
 @export
 var id: int = 0

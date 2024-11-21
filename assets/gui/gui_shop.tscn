@@ -2,11 +2,14 @@
 
 [ext_resource type="Script" path="res://assets/gui/gui_shop.gd" id="1_7ikmg"]
 [ext_resource type="Texture2D" uid="uid://j18jikfcyhjc" path="res://assets/item/items/items.png" id="2_cglov"]
+[ext_resource type="PackedScene" uid="uid://d2g4wper4yqqm" path="res://assets/gui/gui_shop_section_button.tscn" id="2_swe06"]
 [ext_resource type="PackedScene" uid="uid://cvife3b4ydk4n" path="res://assets/gui/gui_overlay.tscn" id="2_x0suw"]
-[ext_resource type="PackedScene" uid="uid://d2g4wper4yqqm" path="res://assets/gui/gui_shop_button_group.tscn" id="3_vso3q"]
-[ext_resource type="PackedScene" uid="uid://oegi41er2dkg" path="res://assets/gui/gui_shop_group.tscn" id="4_to1ib"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_n8o6u"]
+atlas = ExtResource("2_cglov")
+region = Rect2(640, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_onf2c"]
 atlas = ExtResource("2_cglov")
 region = Rect2(768, 0, 128, 128)
 
@@ -19,47 +22,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_7ikmg")
 
-[node name="main" type="Control" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="panel_top" type="Panel" parent="main"]
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 1.0
-anchor_bottom = 0.125
-offset_left = 8.0
-offset_top = 8.0
-offset_right = -8.0
-offset_bottom = -8.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="label" type="Label" parent="main/panel_top"]
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-theme_override_font_sizes/font_size = 48
-text = "stuff i can Buy"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="texture_rect" type="TextureRect" parent="main/panel_top"]
-layout_mode = 0
-offset_left = 47.0
-offset_top = -24.0
-offset_right = 143.0
-offset_bottom = 72.0
-texture = SubResource("AtlasTexture_n8o6u")
-expand_mode = 1
-
-[node name="panel_groups" type="Panel" parent="main"]
+[node name="section_button_container" type="Panel" parent="."]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
@@ -73,24 +36,25 @@ offset_bottom = 200.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="grid_container" type="GridContainer" parent="main/panel_groups"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-columns = 2
-
-[node name="button_shop_a" parent="main/panel_groups/grid_container" instance=ExtResource("3_vso3q")]
-layout_mode = 2
-
-[node name="groups" type="Control" parent="."]
+[node name="grid_container" type="GridContainer" parent="section_button_container"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+columns = 2
 
-[node name="overlay" type="ColorRect" parent="groups"]
+[node name="gui_shop_section_button" parent="section_button_container/grid_container" instance=ExtResource("2_swe06")]
+layout_mode = 2
+
+[node name="gui_shop_section_button_2" parent="section_button_container/grid_container" instance=ExtResource("2_swe06")]
+layout_mode = 2
+
+[node name="gui_shop_section_button_3" parent="section_button_container/grid_container" instance=ExtResource("2_swe06")]
+layout_mode = 2
+
+[node name="section_overlay" type="ColorRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -99,24 +63,79 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.796652, 0.766556, 0.77416, 0.670588)
 
-[node name="gui_shop_group" parent="groups" instance=ExtResource("4_to1ib")]
-layout_mode = 0
-anchors_preset = 0
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-grow_horizontal = 1
-grow_vertical = 1
-
-[node name="balance" type="Control" parent="."]
-visible = false
+[node name="section_container" type="Control" parent="."]
 layout_mode = 1
-anchors_preset = 15
+anchor_left = 0.125
+anchor_top = 0.2
+anchor_right = 0.875
+anchor_bottom = 0.8
+mouse_filter = 2
+
+[node name="top" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.125
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="title" type="Label" parent="top"]
+layout_mode = 1
+anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
+theme_override_font_sizes/font_size = 48
+text = "stuff i can Buy"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="bottom" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.25
+anchor_top = 0.875
+anchor_right = 0.75
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 2
 grow_vertical = 2
+
+[node name="balance" type="Label" parent="bottom"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.05
+anchor_right = 0.95
+anchor_bottom = 1.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 32
+text = "my Money: $0 and 0¢"
+vertical_alignment = 1
+
+[node name="texture_rect" type="TextureRect" parent="bottom"]
+layout_mode = 0
+offset_left = -99.0
+offset_top = -23.0
+offset_right = -3.0
+offset_bottom = 73.0
+texture = SubResource("AtlasTexture_n8o6u")
+expand_mode = 1
+
+[node name="texture_rect_2" type="TextureRect" parent="bottom"]
+layout_mode = 0
+offset_left = 493.0
+offset_top = -23.0
+offset_right = 589.0
+offset_bottom = 73.0
+texture = SubResource("AtlasTexture_onf2c")
+expand_mode = 1
 
 [node name="canvas_layer" type="CanvasLayer" parent="."]
 
