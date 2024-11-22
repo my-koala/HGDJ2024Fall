@@ -15,6 +15,7 @@
 
 [resource]
 script = ExtResource("1_p0oid")
+_infinite_money = true
 _items = Array[ExtResource("1_ox7ci")]([ExtResource("2_osw14"), ExtResource("3_e0ptk"), ExtResource("4_n87qv"), ExtResource("5_si2h0"), ExtResource("6_gsio5"), ExtResource("7_yylii"), ExtResource("8_fdkv0"), ExtResource("9_rpsru"), ExtResource("10_dywsb"), ExtResource("11_guov2")])
 _money_dollars = 5
 _money_cents = 0

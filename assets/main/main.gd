@@ -1,15 +1,19 @@
 @tool
 extends Node
 
+# BUG: looks like a bug with swing tension not properly retaining velocity?
+# it's definitely noticeable with huge velocity discrepancy between small vs big swing
+
 # DONE
 # finish catenary texture drawing
+# add thruster functionality
 
-# TODO to finish for final delivery
-# add swing thrusters - art and functionality
-# finish swing height art, use sprite frames, correspond to heights - do later (after balancing) super easy
+# TODO stuff to finish for final deliverable
+# finish thrusters art - need sprites, particles
 # redo character art - need leaning animations, freefall, and landing - animations
 # balance drag, gravity, etc.
-# add sounds
+# finish swing height art, use sprite frames, correspond to heights - do after balancing - super easy
+# add sounds (when power comes back)
 # add instructions and credits screen to menu
 # shader precompilation
 # add injuries, child safety items - still unsure how to do this lolololol

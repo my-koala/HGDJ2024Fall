@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://b0567k1pou8kn"]
+[gd_scene load_steps=18 format=3 uid="uid://b0567k1pou8kn"]
 
 [ext_resource type="Script" path="res://assets/props/swing_set/swing_set.gd" id="1_b5517"]
 [ext_resource type="Texture2D" uid="uid://cjug42yt3ge8s" path="res://assets/props/swing_set/swing_set_foreground.png" id="1_hod3s"]
@@ -6,10 +6,39 @@
 [ext_resource type="Script" path="res://modules/swing/swing_2d.gd" id="3_hnorh"]
 [ext_resource type="Texture2D" uid="uid://mlwokig84l77" path="res://assets/tethers/tether_rope.png" id="3_xmo8o"]
 [ext_resource type="Texture2D" uid="uid://bddxbcens4ame" path="res://assets/props/swing_set/swing_set_chair.png" id="4_e6346"]
+[ext_resource type="Script" path="res://assets/props/swing_set/swing_set_thruster_a.gd" id="6_sibsm"]
 [ext_resource type="Script" path="res://modules/catenary/catenary_2d.gd" id="6_ymde2"]
+[ext_resource type="Texture2D" uid="uid://4lkve7vna8pq" path="res://assets/props/swing_set/swing_set_thrusters.png" id="7_i03qf"]
+[ext_resource type="Script" path="res://assets/props/swing_set/swing_set_thruster_b.gd" id="7_k01se"]
+[ext_resource type="Texture2D" uid="uid://xkj026qvngwi" path="res://assets/props/swing_set/particles_bubbles.png" id="8_axec3"]
+[ext_resource type="Script" path="res://assets/props/swing_set/swing_set_thruster_c.gd" id="8_rang1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u5nc1"]
 size = Vector2(40, 8)
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_237sk"]
+particles_animation = true
+particles_anim_h_frames = 4
+particles_anim_v_frames = 1
+particles_anim_loop = true
+
+[sub_resource type="Curve" id="Curve_absk2"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.577295, 0.756326), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_a8t60"]
+curve = SubResource("Curve_absk2")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_qw52q"]
+particle_flag_disable_z = true
+direction = Vector3(-1, 0, 0)
+spread = 25.0
+initial_velocity_min = 46.06
+initial_velocity_max = 131.58
+gravity = Vector3(0, -200, 0)
+alpha_curve = SubResource("CurveTexture_a8t60")
+anim_speed_min = 1.76
+anim_speed_max = 3.6
 
 [node name="swing_set" type="Node2D"]
 script = ExtResource("1_b5517")
@@ -38,10 +67,48 @@ texture = ExtResource("4_e6346")
 region_enabled = true
 region_rect = Rect2(95, 387, 45, 16)
 
+[node name="swing_set_thruster_a" type="Node2D" parent="top/swing"]
+z_index = 1
+script = ExtResource("6_sibsm")
+
+[node name="sprite_2d" type="Sprite2D" parent="top/swing/swing_set_thruster_a"]
+position = Vector2(-28, -32)
+texture = ExtResource("7_i03qf")
+region_enabled = true
+region_rect = Rect2(0, 0, 128, 128)
+
+[node name="bubbles" type="GPUParticles2D" parent="top/swing/swing_set_thruster_a/sprite_2d"]
+material = SubResource("CanvasItemMaterial_237sk")
+position = Vector2(-29, 30)
+texture = ExtResource("8_axec3")
+process_material = SubResource("ParticleProcessMaterial_qw52q")
+
+[node name="swing_set_thruster_b" type="Node2D" parent="top/swing"]
+visible = false
+z_index = 1
+script = ExtResource("7_k01se")
+
+[node name="sprite_2d" type="Sprite2D" parent="top/swing/swing_set_thruster_b"]
+position = Vector2(-27, -33)
+texture = ExtResource("7_i03qf")
+region_enabled = true
+region_rect = Rect2(256, 0, 128, 128)
+
+[node name="swing_set_thruster_c" type="Node2D" parent="top/swing"]
+visible = false
+z_index = 1
+script = ExtResource("8_rang1")
+
+[node name="sprite_2d" type="Sprite2D" parent="top/swing/swing_set_thruster_c"]
+position = Vector2(-32, -20)
+texture = ExtResource("7_i03qf")
+region_enabled = true
+region_rect = Rect2(384, 0, 128, 128)
+
 [node name="body" type="Node2D" parent="."]
 
 [node name="foreground" type="Sprite2D" parent="body"]
-z_index = 1
+z_index = 2
 position = Vector2(0, 99.69)
 scale = Vector2(1.32, 1.32)
 texture = ExtResource("1_hod3s")

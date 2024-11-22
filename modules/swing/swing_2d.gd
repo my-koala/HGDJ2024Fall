@@ -50,6 +50,9 @@ func remove_swing_thruster(swing_thruster: SwingThruster2D) -> void:
 	if is_instance_valid(swing_thruster) && _swing_thrusters.has(swing_thruster):
 		_swing_thrusters.erase(swing_thruster)
 
+func get_swing_thrusters() -> Array[SwingThruster2D]:
+	return _swing_thrusters.duplicate()
+
 func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
@@ -80,9 +83,8 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 	
 	# Apply thruster forces.
 	for swing_thruster: SwingThruster2D in _swing_thrusters:
-		if swing_thruster.active:
-			var thrust_direction: Vector2 = swing_thruster.thrust_direction.rotated(swing_thruster.global_rotation)
-			var thrust: Vector2 = swing_thruster.thrust * thrust_direction
+		if swing_thruster.is_active():
+			var thrust: Vector2 = swing_thruster.get_thrust().rotated(swing_thruster.global_rotation)
 			state.linear_velocity += state.inverse_mass * thrust * state.step
 	
 	# Apply projectile forces (gravity, drag, etc.)

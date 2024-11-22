@@ -34,7 +34,7 @@ offset = Vector2(0, -8)
 
 [node name="swing_thruster_2d" type="Node2D" parent="."]
 script = ExtResource("3_s3hhr")
-thrust = 512.0
+thrust = 128.0
 
 [node name="particles" type="Node2D" parent="."]
 

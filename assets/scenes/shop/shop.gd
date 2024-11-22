@@ -44,6 +44,7 @@ func scene_start() -> void:
 	_scene_active = true
 	queue_refresh()
 	_set_active_section(null)
+	_ready_button.grab_focus.call_deferred()
 
 func scene_stop() -> void:
 	_scene_active = false

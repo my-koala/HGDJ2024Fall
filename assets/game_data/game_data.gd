@@ -4,6 +4,9 @@ class_name GameData
 # Global game data container.
 
 @export
+var _infinite_money: bool = false
+
+@export
 var _items: Array[Item] = []:
 	get:
 		return _items
@@ -62,6 +65,8 @@ func money_withdraw(dollars: int, cents: int) -> void:
 	emit_changed()
 
 func can_money_withdraw(dollars: int, cents: int) -> bool:
+	if _infinite_money:
+		return true
 	dollars += cents / CENT_TO_DOLLAR
 	cents = cents % CENT_TO_DOLLAR
 	return (_money_dollars > dollars) || ((_money_dollars == dollars) && (_money_cents >= cents))

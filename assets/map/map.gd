@@ -74,6 +74,9 @@ func _physics_process(delta: float) -> void:
 	if Engine.is_editor_hint():
 		return
 	
+	if _player.is_swinging():
+		return
+	
 	var player_distance: float = _player.global_position.x / METER
 	var player_altitude: float = -_player.global_position.y / METER
 	var player_velocity: float = _player.linear_velocity.length() / METER
@@ -82,9 +85,7 @@ func _physics_process(delta: float) -> void:
 	_player_velocity_max = maxf(_player_velocity_max, player_velocity)
 	_player_altitude_max = maxf(_player_altitude_max, player_altitude)
 	
-	if _player.is_swinging():
-		_player_freeze_time = 0.0
-	elif player_velocity < 1.0:
+	if player_velocity < 1.0 && absf(_player.angular_velocity) < 1.0:
 		if _player_freeze_time < player_freeze_time:
 			_player_freeze_time += delta
 			if _player_freeze_time >= player_freeze_time:
