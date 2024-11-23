@@ -36,6 +36,9 @@ var _player_velocity_max: float = 0.0
 func get_player_velocity_max() -> float:
 	return _player_velocity_max
 
+func get_player_injury() -> Player.Injury:
+	return _player.get_injury()
+
 func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
@@ -58,8 +61,9 @@ func _process(delta: float) -> void:
 	if _player.is_swinging():
 		_tween_camera_toggle = false
 		
-		var camera_zoom: float = clampf(remap(_swing_set.get_swing().length, 256.0, 1024.0, 0.5, 0.25), 0.125, 0.5)
-		_camera.zoom = Vector2(camera_zoom, camera_zoom)
+		var x: float = remap(_swing_set.get_height(), 0.0, 2048.0, 0.0, 1.0)
+		var zoom: float = (-5.10476 * (x ** 3.0)) + (9.8 * (x ** 2.0)) - (5.91167 * x) + 1.34643
+		_camera.zoom = Vector2(zoom, zoom)
 	else:
 		_camera_remote_transform.remote_path = _camera_remote_transform.get_path_to(_camera)
 		if !_tween_camera_toggle:
@@ -68,7 +72,7 @@ func _process(delta: float) -> void:
 			_tween_camera = create_tween()
 			_tween_camera.set_parallel(true)
 			_tween_camera.set_ease(Tween.EASE_IN_OUT)
-			_tween_camera.tween_property(_camera, "zoom", Vector2(0.5, 0.5), 2.0)
+			_tween_camera.tween_property(_camera, "zoom", Vector2(0.75, 0.75), 2.0)
 
 func _physics_process(delta: float) -> void:
 	if Engine.is_editor_hint():

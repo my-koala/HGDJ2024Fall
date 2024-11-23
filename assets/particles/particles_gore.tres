@@ -4,7 +4,6 @@
 particle_flag_disable_z = true
 angle_min = -80.0
 angle_max = 180.0
-inherit_velocity_ratio = 0.25
 direction = Vector3(0, -1, 0)
 spread = 180.0
 flatness = 0.776

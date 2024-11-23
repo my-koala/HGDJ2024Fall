@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://ciq6hbyqq0cgn"]
+
+[ext_resource type="Texture2D" uid="uid://cd31gai8dqla5" path="res://assets/particles/particles_pop.png" id="1_pg4de"]
+[ext_resource type="Material" uid="uid://b5u8irug0584q" path="res://assets/particles/particles_pop.tres" id="2_ynkf5"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_237sk"]
+particles_animation = true
+particles_anim_h_frames = 4
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[node name="particles_pop" type="GPUParticles2D"]
+material = SubResource("CanvasItemMaterial_237sk")
+amount = 4
+lifetime = 0.25
+explosiveness = 0.31
+texture = ExtResource("1_pg4de")
+process_material = ExtResource("2_ynkf5")

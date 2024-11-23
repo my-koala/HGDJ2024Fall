@@ -1,0 +1,19 @@
+[gd_resource type="ParticleProcessMaterial" load_steps=3 format=3 uid="uid://g5g07bnm4kuk"]
+
+[sub_resource type="Curve" id="Curve_absk2"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.577295, 0.756326), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_a8t60"]
+curve = SubResource("Curve_absk2")
+
+[resource]
+particle_flag_disable_z = true
+direction = Vector3(0, 1, 0)
+spread = 25.0
+initial_velocity_min = 128.0
+initial_velocity_max = 256.0
+gravity = Vector3(0, -200, 0)
+alpha_curve = SubResource("CurveTexture_a8t60")
+anim_speed_min = 1.76
+anim_speed_max = 3.6

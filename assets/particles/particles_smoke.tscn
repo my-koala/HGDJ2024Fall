@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://xhkfkwfh3qyg"]
+
+[ext_resource type="Texture2D" uid="uid://c4rycfai4kck0" path="res://assets/particles/particles_smoke.png" id="1_po7ke"]
+[ext_resource type="Material" uid="uid://3pp8mxt2581n" path="res://assets/particles/particles_smoke.tres" id="2_dw14o"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_237sk"]
+particles_animation = true
+particles_anim_h_frames = 2
+particles_anim_v_frames = 1
+particles_anim_loop = true
+
+[node name="particles_smoke" type="GPUParticles2D"]
+material = SubResource("CanvasItemMaterial_237sk")
+amount = 24
+lifetime = 2.0
+texture = ExtResource("1_po7ke")
+process_material = ExtResource("2_dw14o")

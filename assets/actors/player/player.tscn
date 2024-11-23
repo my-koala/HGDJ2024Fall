@@ -1,36 +1,52 @@
-[gd_scene load_steps=7 format=3 uid="uid://cr8cp2x8jbkjq"]
+[gd_scene load_steps=9 format=3 uid="uid://cr8cp2x8jbkjq"]
 
 [ext_resource type="Script" path="res://assets/actors/player/player.gd" id="1_u3l7h"]
 [ext_resource type="Texture2D" uid="uid://dlrwn3jlq3vwf" path="res://assets/actors/player/player.png" id="2_dq1n6"]
 [ext_resource type="Script" path="res://modules/swing/swing_thruster_2d.gd" id="3_s3hhr"]
-[ext_resource type="Material" uid="uid://k6r6lkdoi2ti" path="res://assets/actors/player/player_particles_explode.tres" id="4_j3ij5"]
+[ext_resource type="PackedScene" uid="uid://dttqibk1d158e" path="res://assets/particles/particles_gore.tscn" id="4_fy08f"]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_v2dxq"]
-radius = 16.0
-height = 64.0
+[sub_resource type="CircleShape2D" id="CircleShape2D_2pb5c"]
+radius = 28.0179
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_7x1fk"]
-size = Vector2(32, 16)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_02nuq"]
+size = Vector2(28, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f2s3n"]
+size = Vector2(28, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_du5dm"]
+size = Vector2(40, 16)
 
 [node name="player" type="RigidBody2D"]
 collision_layer = 2
 collision_mask = 3
 custom_integrator = true
 script = ExtResource("1_u3l7h")
-swing_offset = Vector2(0, -24)
+swing_offset = Vector2(8, -40)
+turn_acceleration = 8.0
 drag_size = Vector2(32, 64)
-
-[node name="collision_shape_2d" type="CollisionShape2D" parent="."]
-position = Vector2(0, -8)
-shape = SubResource("CapsuleShape2D_v2dxq")
-
-[node name="collision_shape_2d_2" type="CollisionShape2D" parent="."]
-position = Vector2(0, 16)
-shape = SubResource("RectangleShape2D_7x1fk")
 
 [node name="sprite_2d" type="Sprite2D" parent="."]
 texture = ExtResource("2_dq1n6")
 offset = Vector2(0, -8)
+hframes = 4
+vframes = 2
+
+[node name="head" type="CollisionShape2D" parent="."]
+position = Vector2(0, -32)
+shape = SubResource("CircleShape2D_2pb5c")
+
+[node name="front" type="CollisionShape2D" parent="."]
+position = Vector2(14, 4)
+shape = SubResource("RectangleShape2D_02nuq")
+
+[node name="back" type="CollisionShape2D" parent="."]
+position = Vector2(-14, 4)
+shape = SubResource("RectangleShape2D_f2s3n")
+
+[node name="legs" type="CollisionShape2D" parent="."]
+position = Vector2(0, 32)
+shape = SubResource("RectangleShape2D_du5dm")
 
 [node name="swing_thruster_2d" type="Node2D" parent="."]
 script = ExtResource("3_s3hhr")
@@ -38,12 +54,4 @@ thrust = 128.0
 
 [node name="particles" type="Node2D" parent="."]
 
-[node name="explode" type="GPUParticles2D" parent="particles"]
-emitting = false
-amount = 512
-lifetime = 4.0
-one_shot = true
-explosiveness = 1.0
-collision_base_size = 2.0
-visibility_rect = Rect2(-1024, -1024, 2048, 2048)
-process_material = ExtResource("4_j3ij5")
+[node name="particles_gore" parent="particles" instance=ExtResource("4_fy08f")]

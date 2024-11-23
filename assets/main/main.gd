@@ -92,9 +92,9 @@ func set_scene(scene: Scene) -> void:
 	
 	_scene_transition_tween = create_tween()
 	_scene_transition_tween.set_ease(Tween.EASE_IN_OUT)
-	_scene_transition_tween.set_trans(Tween.TRANS_CUBIC)
+	_scene_transition_tween.set_trans(Tween.TRANS_LINEAR)
 	_scene_transition_tween.set_parallel(true)
-	duration = 0.5 * (1.0 - (_transition.modulate.a / 1.0))
+	duration = 0.25 * (1.0 - (_transition.modulate.a / 1.0))
 	_scene_transition_tween.tween_property(_transition, "modulate:a", 1.0, duration)
 	
 	_scene_transition_tween.play()
@@ -139,12 +139,13 @@ func set_scene(scene: Scene) -> void:
 			_scene_play.scene_stop()
 			_scene_shop.scene_start()
 	
-	duration = 0.5 * (_transition.modulate.a / 1.0)
+	duration = 0.25 * (_transition.modulate.a / 1.0)
 	_scene_transition_tween.tween_property(_transition, "modulate:a", 0.0, duration)
 	
 	_scene_transition_tween.play()
 	await _scene_transition_tween.finished
 	_scene_transition_tween.stop()
 	
-	_transition.visible = false
 	_scene_transition = false
+	
+	_transition.visible = false

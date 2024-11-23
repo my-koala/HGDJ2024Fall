@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://b8p2r8l2dhu0k"]
+
+[ext_resource type="Texture2D" uid="uid://dh2nmuvqyu71o" path="res://assets/particles/particles_flame.png" id="1_as70r"]
+[ext_resource type="Material" uid="uid://14yp08bmux41" path="res://assets/particles/particles_flame.tres" id="2_ifp5j"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_237sk"]
+particles_animation = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 4
+particles_anim_loop = true
+
+[node name="particles_flame" type="GPUParticles2D"]
+material = SubResource("CanvasItemMaterial_237sk")
+amount = 1
+lifetime = 2.0
+texture = ExtResource("1_as70r")
+process_material = ExtResource("2_ifp5j")

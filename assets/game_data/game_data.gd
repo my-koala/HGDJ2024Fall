@@ -6,18 +6,26 @@ class_name GameData
 @export
 var _infinite_money: bool = false
 
-@export
-var _items: Array[Item] = []:
-	get:
-		return _items
-	set(value):
-		_items = value
-		_init_items()
+var _items: Array[Item] = [
+	preload("res://assets/item/items/item_height_0.tres"),
+	preload("res://assets/item/items/item_height_1.tres"),
+	preload("res://assets/item/items/item_height_2.tres"),
+	preload("res://assets/item/items/item_height_3.tres"),
+	preload("res://assets/item/items/item_thrust_0.tres"),
+	preload("res://assets/item/items/item_thrust_1.tres"),
+	preload("res://assets/item/items/item_thrust_2.tres"),
+	preload("res://assets/item/items/item_thrust_3.tres"),
+	preload("res://assets/item/items/item_safety_0.tres"),
+	preload("res://assets/item/items/item_safety_1.tres"),
+]
 
 var _items_purchased: Array[bool] = []
 var _items_equipped: Array[bool] = []
 
-func _init_items() -> void:
+func _init() -> void:
+	reset_items()
+
+func reset_items() -> void:
 	_items_purchased.resize(_items.size())
 	_items_purchased.fill(false)
 	_items_equipped.resize(_items.size())

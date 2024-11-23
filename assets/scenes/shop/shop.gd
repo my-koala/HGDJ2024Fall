@@ -68,7 +68,10 @@ func _process(delta: float) -> void:
 
 func refresh() -> void:
 	_balance.text = "my Money: $%d and %d¢" % [_game_data.get_money_dollars(), _game_data.get_money_cents()]
-	
+	print(_game_data.resource_path)
+	print(_game_data._items.size())
+	print(_game_data._items)
+	print(_game_data._infinite_money)
 	for item: Item in _game_data.get_items():
 		var section: ShopSection = null
 		for index: int in _sections.size():
@@ -177,8 +180,16 @@ func refresh() -> void:
 			section._back.focus_neighbor_left = section._back.get_path_to(section._back)
 			section._back.focus_neighbor_right = section._back.get_path_to(section._back)
 			section._back.focus_neighbor_bottom = section._back.get_path_to(section.item_buttons[0])
+			for item_button: ShopItemButton in section.item_buttons:
+				if _game_data.is_item_equipped(item_button.item):
+					section._back.focus_neighbor_bottom = section._back.get_path_to(item_button)
+					break
 			section._back.focus_neighbor_top = section._back.get_path_to(section._back)
 			section._back.focus_next = section._back.get_path_to(section.item_buttons[0])
+			for item_button: ShopItemButton in section.item_buttons:
+				if _game_data.is_item_equipped(item_button.item):
+					section._back.focus_next = section._back.get_path_to(item_button)
+					break
 			section._back.focus_previous = section._back.get_path_to(section._back)
 		for index: int in section.item_buttons.size():
 			var item_button: ShopItemButton = section.item_buttons[index]
@@ -282,8 +293,10 @@ func _set_active_section(active_section: ShopSection) -> void:
 		_section_overlay.visible = true
 		if _scene_active:
 			_active_section._back.grab_focus.call_deferred()
-			if !_active_section.item_buttons.is_empty():
-				_active_section.item_buttons[0].grab_focus.call_deferred()
+			for item_button: ShopItemButton in _active_section.item_buttons:
+				if _game_data.is_item_equipped(item_button.item):
+					item_button.grab_focus.call_deferred()
+					break
 		var duration: float = 0.25 * (_active_section.position.y / size.y)
 		_active_section_tween.tween_property(_active_section, "position:y", 0.0, duration)
 		duration = 0.25 * (1.0 - _section_overlay.modulate.a)

@@ -7,6 +7,7 @@ extends Node2D
 
 const MAP: PackedScene = preload("res://assets/map/map.tscn")
 const Map: = preload("res://assets/map/map.gd")
+const Player: = preload("res://assets/actors/player/player.gd")
 
 signal exit()
 
@@ -88,22 +89,57 @@ func _on_map_player_stopped() -> void:
 	var distance: float = _map.get_player_distance_max()
 	var altitude: float = _map.get_player_altitude_max()
 	var velocity: float = _map.get_player_velocity_max()
-	var money_distance_dollars: int = floori(absf(distance) * 0.08)
-	var money_distance_cents: int = floori(100.0 * absf(distance) * 0.08) % 100
-	var money_altitude_dollars: int = floori(absf(altitude) * 0.03)
-	var money_altitude_cents: int = floori(100.0 * absf(altitude) * 0.03) % 100
-	var money_velocity_dollars: int = floori(absf(altitude) * 0.04)
-	var money_velocity_cents: int = floori(100.0 * absf(altitude) * 0.04) % 100
-	var money_injuries_dollars: int = 0
-	var money_injuries_cents: int = 0
-	var money_total_dollars: int = money_distance_dollars + money_altitude_dollars + money_velocity_dollars - money_injuries_dollars
-	var money_total_cents: int = money_distance_cents + money_altitude_cents + money_velocity_cents - money_injuries_cents
-	money_total_dollars += money_total_cents / 100
-	money_total_cents = money_total_cents % 100
 	
-	_game_data.money_deposit(money_total_dollars, money_total_cents)
+	var money_distance_cents: int = floori(absf(distance) * 8.0)
+	var money_altitude_cents: int = floori(absf(altitude) * 7.0)
+	var money_velocity_cents: int = floori(absf(velocity) * 4.0)
 	
-	_results_stats_middle.text = "%.2f meters\n%.2f meters\n%.2f meters/second\n%s\n" % [distance, altitude, velocity, "Nothing Hurts"]
-	_results_stats_right.text = "+$%d.%02d\n+$%d.%02d\n+$%d.%02d\n-$%d.%02d\n+$%d.%02d\n" % [money_distance_dollars, money_distance_cents, money_altitude_dollars, money_altitude_cents, money_velocity_dollars, money_velocity_cents, money_injuries_dollars, money_injuries_cents, 0, 0]
-	_results_total_right.text = "$%d.%02d" % [money_total_dollars, money_total_cents]
+	var money_total_cents: int = money_distance_cents + money_altitude_cents + money_velocity_cents
+	
+	var money_injury_penalty: float = 0.0
+	var injuries: String = "Nothing Hurts"
+	match _map.get_player_injury():
+		Player.Injury.NONE:
+			injuries = "Nothing Hurts (-0%)"
+			money_injury_penalty = 0.0
+		Player.Injury.BROKEN_RIBS:
+			injuries = "Broken Ribs (-10%)"
+			money_injury_penalty = 0.1
+		Player.Injury.CONCUSSION:
+			injuries = "Concussion (-20%)"
+			money_injury_penalty = 0.2
+		Player.Injury.BROKEN_LEGS:
+			injuries = "Broken Legs (-50%)"
+			money_injury_penalty = 0.5
+		Player.Injury.BROKEN_BACK:
+			injuries = "Broken Back (-60%)"
+			money_injury_penalty = 0.6
+		Player.Injury.COMATOSE:
+			injuries = "Comatose (-80%)"
+			money_injury_penalty = 0.8
+		Player.Injury.PARAPLEGIC:
+			injuries = "Paraplegic (-90%)"
+			money_injury_penalty = 0.9
+		Player.Injury.COMATOSE_PARAPLEGIC:
+			injuries = "Comatose & Paraplegic (-95%)"
+			money_injury_penalty = 0.95
+		Player.Injury.DEAD:
+			injuries = "Dead (-100%)"
+			money_injury_penalty = 1.0
+	
+	var money_injuries_cents: int = int(float(money_total_cents) * money_injury_penalty)
+	money_total_cents -= money_injuries_cents
+	
+	_game_data.money_deposit(0, money_total_cents)
+	
+	_results_stats_middle.text = "%.2f meters\n%.2f meters\n%.2f meters/second\n%s\n" % [distance, altitude, velocity, injuries]
+	_results_stats_right.text = "+$%d.%02d\n+$%d.%02d\n+$%d.%02d\n-$%d.%02d\n+$%d.%02d\n" % [
+		money_distance_cents / 100, money_distance_cents % 100,
+		money_altitude_cents / 100, money_altitude_cents % 100,
+		money_velocity_cents / 100, money_velocity_cents % 100,
+		money_injuries_cents / 100, money_injuries_cents % 100,
+		0, 0
+		]
+	
+	_results_total_right.text = "$%d.%02d" % [money_total_cents / 100, money_total_cents % 100]
 	

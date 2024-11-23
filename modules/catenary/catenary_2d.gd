@@ -41,6 +41,7 @@ func coth(x: float) -> float:
 # todo: some math here LOL
 
 func _draw() -> void:
+	
 	if end_position.length_squared() >= length * length:
 		# Draw straight.
 		if is_instance_valid(texture):
@@ -54,7 +55,7 @@ func _draw() -> void:
 			draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
 			draw_line(Vector2.ZERO, end_position, Color.BLUE, 1.0)
 		return
-	elif is_zero_approx(end_position.x):
+	elif absf(end_position.x) < 0.01:
 		# Draw partial straight with offset to match le droopiness.
 		# math was done on paper, but im sure theres some proper proof somewhere
 		if is_instance_valid(texture):

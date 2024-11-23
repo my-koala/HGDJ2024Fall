@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://xkj026qvngwi"
-path="res://.godot/imported/particles_bubbles.png-e0f3d9953b70964c0a72ec07f799466d.ctex"
+uid="uid://cd31gai8dqla5"
+path="res://.godot/imported/particles_pop.png-7063005b5f6e5744fc6673acf3e218d3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/props/swing_set/particles_bubbles.png"
-dest_files=["res://.godot/imported/particles_bubbles.png-e0f3d9953b70964c0a72ec07f799466d.ctex"]
+source_file="res://assets/particles/particles_pop.png"
+dest_files=["res://.godot/imported/particles_pop.png-7063005b5f6e5744fc6673acf3e218d3.ctex"]
 
 [params]
 

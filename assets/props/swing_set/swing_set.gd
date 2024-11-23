@@ -35,6 +35,10 @@ var _thruster_c: SwingThruster2D = $top/swing/swing_set_thruster_c as SwingThrus
 func get_swing() -> Swing2D:
 	return _swing
 
+var _height: float = 0.0
+func get_height() -> float:
+	return _height
+
 func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
@@ -42,11 +46,11 @@ func _ready() -> void:
 	if game_data.is_item_equipped(ITEM_HEIGHT[0]):
 		set_height(256.0)
 	elif game_data.is_item_equipped(ITEM_HEIGHT[1]):
-		set_height(386.0)
-	elif game_data.is_item_equipped(ITEM_HEIGHT[2]):
 		set_height(512.0)
-	elif game_data.is_item_equipped(ITEM_HEIGHT[3]):
+	elif game_data.is_item_equipped(ITEM_HEIGHT[2]):
 		set_height(1024.0)
+	elif game_data.is_item_equipped(ITEM_HEIGHT[3]):
+		set_height(2048.0)
 	else:
 		set_height(256.0)
 	
@@ -84,10 +88,11 @@ func _ready() -> void:
 		_swing.add_swing_thruster(_thruster_c)
 
 func set_height(height: float) -> void:
-	height = maxf(height, 0.0)
-	_top.position = Vector2(0.0, -height)
-	_swing.length = height - 24.0
+	_height = maxf(height, 0.0)
+	_top.position = Vector2(0.0, -_height)
+	_swing.length = _height - 24.0
 	_swing.set_anchor_position(_top.global_position)
+	_swing.global_position = Vector2(_top.global_position.x, _top.global_position.y + _swing.length)
 	_catenary.length = _swing.length
 	_catenary.end_position = _swing.global_position - _catenary.global_position
 
