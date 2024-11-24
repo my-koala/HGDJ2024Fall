@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://tqd0uje87gwe"]
+
+[ext_resource type="Texture2D" uid="uid://dkjb63hnabcij" path="res://assets/particles/particles_speed.png" id="1_f4ni3"]
+[ext_resource type="Material" uid="uid://dujvt7l0cif13" path="res://assets/particles/particles_speed.tres" id="2_qqq0g"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_237sk"]
+particles_animation = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 4
+particles_anim_loop = false
+
+[node name="particles_speed" type="GPUParticles2D"]
+material = SubResource("CanvasItemMaterial_237sk")
+amount = 4
+lifetime = 0.25
+explosiveness = 0.31
+texture = ExtResource("1_f4ni3")
+process_material = ExtResource("2_qqq0g")

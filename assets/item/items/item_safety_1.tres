@@ -9,8 +9,8 @@ region = Rect2(128, 256, 128, 128)
 
 [resource]
 script = ExtResource("2_bds17")
-name = &"Pillow"
+name = &"Umbrella"
 section = &"Child Safety"
-price_dollars = 0
+price_dollars = 30
 price_cents = 75
 icon = SubResource("AtlasTexture_8plsg")

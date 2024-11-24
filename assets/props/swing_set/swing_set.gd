@@ -32,6 +32,15 @@ var _thruster_b: SwingThruster2D = $top/swing/swing_set_thruster_b as SwingThrus
 @onready
 var _thruster_c: SwingThruster2D = $top/swing/swing_set_thruster_c as SwingThruster2D
 
+@onready
+var _body_a: Node2D = $body_a as Node2D
+@onready
+var _body_b: Node2D = $body_b as Node2D
+@onready
+var _body_c: Node2D = $body_c as Node2D
+@onready
+var _body_d: Node2D = $body_d as Node2D
+
 func get_swing() -> Swing2D:
 	return _swing
 
@@ -44,14 +53,39 @@ func _ready() -> void:
 		return
 	
 	if game_data.is_item_equipped(ITEM_HEIGHT[0]):
+		_body_a.visible = true
+		_body_b.visible = false
+		_body_c.visible = false
+		_body_d.visible = false
+		
 		set_height(256.0)
 	elif game_data.is_item_equipped(ITEM_HEIGHT[1]):
+		_body_a.visible = false
+		_body_b.visible = true
+		_body_c.visible = false
+		_body_d.visible = false
+		
 		set_height(512.0)
 	elif game_data.is_item_equipped(ITEM_HEIGHT[2]):
+		_body_a.visible = false
+		_body_b.visible = false
+		_body_c.visible = true
+		_body_d.visible = false
+		
 		set_height(1024.0)
 	elif game_data.is_item_equipped(ITEM_HEIGHT[3]):
+		_body_a.visible = false
+		_body_b.visible = false
+		_body_c.visible = false
+		_body_d.visible = true
+		
 		set_height(2048.0)
 	else:
+		_body_a.visible = true
+		_body_b.visible = false
+		_body_c.visible = false
+		_body_d.visible = false
+		
 		set_height(256.0)
 	
 	if game_data.is_item_equipped(ITEM_THRUST[0]):
@@ -79,6 +113,7 @@ func _ready() -> void:
 		_swing.add_swing_thruster(_thruster_b)
 		_swing.remove_swing_thruster(_thruster_c)
 	elif game_data.is_item_equipped(ITEM_THRUST[3]):
+		
 		_thruster_a.visible = false
 		_thruster_b.visible = false
 		_thruster_c.visible = true
@@ -86,6 +121,14 @@ func _ready() -> void:
 		_swing.remove_swing_thruster(_thruster_a)
 		_swing.remove_swing_thruster(_thruster_b)
 		_swing.add_swing_thruster(_thruster_c)
+	else:
+		_thruster_a.visible = false
+		_thruster_b.visible = false
+		_thruster_c.visible = false
+		
+		_swing.remove_swing_thruster(_thruster_a)
+		_swing.remove_swing_thruster(_thruster_b)
+		_swing.remove_swing_thruster(_thruster_c)
 
 func set_height(height: float) -> void:
 	_height = maxf(height, 0.0)

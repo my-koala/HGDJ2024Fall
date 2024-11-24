@@ -1,17 +1,16 @@
-[gd_scene load_steps=11 format=3 uid="uid://d34tspg13skye"]
+[gd_scene load_steps=12 format=3 uid="uid://d34tspg13skye"]
 
 [ext_resource type="Texture2D" uid="uid://besvtvlevcor5" path="res://assets/global.png" id="1_3s3ts"]
 [ext_resource type="Script" path="res://assets/map/map.gd" id="1_t7ca2"]
 [ext_resource type="PackedScene" uid="uid://cr8cp2x8jbkjq" path="res://assets/actors/player/player.tscn" id="2_sdmjw"]
 [ext_resource type="PackedScene" uid="uid://b0567k1pou8kn" path="res://assets/props/swing_set/swing_set.tscn" id="3_x8dr8"]
+[ext_resource type="PackedScene" uid="uid://deknjco3nnp4j" path="res://assets/props/brick_wall/brick_wall.tscn" id="4_wt10p"]
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_fb6oc"]
 polygon = PackedVector2Array(-1e+09, 0, 1e+09, 0, 1e+09, 256, -1e+09, 256)
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_jlghy"]
 rough = true
-bounce = 1.0
-absorbent = true
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_umvcq"]
 
@@ -45,7 +44,7 @@ shape = SubResource("WorldBoundaryShape2D_umvcq")
 [node name="parallax_2d" type="Parallax2D" parent="geometry"]
 z_index = -1
 repeat_size = Vector2(512, 0)
-repeat_times = 8
+repeat_times = 32
 
 [node name="sprite_2d" type="Sprite2D" parent="geometry/parallax_2d"]
 texture = ExtResource("1_3s3ts")
@@ -57,7 +56,7 @@ region_rect = Rect2(0, 368, 512, 80)
 modulate = Color(1, 1, 1, 0.364706)
 scroll_scale = Vector2(0.75, 1)
 repeat_size = Vector2(4096, 0)
-repeat_times = 4
+repeat_times = 8
 
 [node name="sprite_2d" type="Sprite2D" parent="geometry/background"]
 position = Vector2(714, -250)
@@ -101,7 +100,7 @@ region_rect = Rect2(592, 64, 176, 256)
 modulate = Color(1, 1, 1, 0.364706)
 scroll_scale = Vector2(0.625, 1)
 repeat_size = Vector2(4096, 0)
-repeat_times = 4
+repeat_times = 8
 
 [node name="sprite_2d_6" type="Sprite2D" parent="geometry/background_2"]
 position = Vector2(3103, -141)
@@ -167,8 +166,10 @@ region_rect = Rect2(208, 224, 224, 48)
 [node name="player_2" parent="geometry/seesaw" instance=ExtResource("2_sdmjw")]
 position = Vector2(-146, -67)
 rotation = -0.331613
-_game_data = null
-acceleration_death = 1024.0
+drag_size = Vector2(16, 24)
+
+[node name="brick_wall" parent="geometry" instance=ExtResource("4_wt10p")]
+position = Vector2(-4096, 0)
 
 [node name="swing_set" parent="." instance=ExtResource("3_x8dr8")]
 
@@ -184,7 +185,5 @@ editor_draw_drag_margin = true
 
 [node name="player" parent="." instance=ExtResource("2_sdmjw")]
 mass = 20.0
-_game_data = null
 player = true
-acceleration_death = 1536.0
-drag_density = 24.0
+drag_size = Vector2(16, 24)

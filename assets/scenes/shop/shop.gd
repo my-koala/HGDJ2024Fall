@@ -68,10 +68,7 @@ func _process(delta: float) -> void:
 
 func refresh() -> void:
 	_balance.text = "my Money: $%d and %d¢" % [_game_data.get_money_dollars(), _game_data.get_money_cents()]
-	print(_game_data.resource_path)
-	print(_game_data._items.size())
-	print(_game_data._items)
-	print(_game_data._infinite_money)
+	
 	for item: Item in _game_data.get_items():
 		var section: ShopSection = null
 		for index: int in _sections.size():

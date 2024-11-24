@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="Item" load_steps=4 format=3 uid="uid://5eubq4i0q6u6"]
+
+[ext_resource type="Texture2D" uid="uid://j18jikfcyhjc" path="res://assets/item/items/items.png" id="1_drgi1"]
+[ext_resource type="Script" path="res://assets/item/item.gd" id="2_j1jgg"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n1yd0"]
+atlas = ExtResource("1_drgi1")
+region = Rect2(256, 256, 128, 128)
+
+[resource]
+script = ExtResource("2_j1jgg")
+name = &"Kite"
+section = &"Child Safety"
+price_dollars = 120
+price_cents = 48
+icon = SubResource("AtlasTexture_n1yd0")

@@ -1,13 +1,92 @@
-[gd_scene load_steps=2 format=3 uid="uid://bno2xbu6glsda"]
+[gd_scene load_steps=6 format=3 uid="uid://bno2xbu6glsda"]
 
 [ext_resource type="Script" path="res://assets/scenes/play/play.gd" id="1_akjwt"]
+[ext_resource type="Texture2D" uid="uid://c6r56ld3oodpn" path="res://assets/scenes/play/altimeter.png" id="2_0bli0"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a3ver"]
+atlas = ExtResource("2_0bli0")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kn7pv"]
+atlas = ExtResource("2_0bli0")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yb7o3"]
+atlas = ExtResource("2_0bli0")
+region = Rect2(0, 0, 128, 128)
 
 [node name="play" type="Node2D"]
 script = ExtResource("1_akjwt")
 
 [node name="gui" type="CanvasLayer" parent="."]
 
+[node name="info" type="Label" parent="gui"]
+offset_right = 40.0
+offset_bottom = 18.0
+theme_override_font_sizes/font_size = 32
+text = "Attempt #0
+Distance: "
+
+[node name="altimeter" type="Control" parent="gui"]
+layout_mode = 3
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+grow_horizontal = 0
+
+[node name="nine_patch_rect" type="NinePatchRect" parent="gui/altimeter"]
+layout_mode = 0
+offset_left = -973.0
+offset_top = 122.0
+offset_right = -941.0
+offset_bottom = 393.0
+texture = ExtResource("2_0bli0")
+region_rect = Rect2(440, 16, 16, 96)
+patch_margin_top = 16
+patch_margin_bottom = 16
+axis_stretch_vertical = 1
+
+[node name="max" type="TextureRect" parent="gui/altimeter/nine_patch_rect"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -67.0
+offset_top = -47.0
+offset_right = 61.0
+offset_bottom = 81.0
+grow_horizontal = 2
+pivot_offset = Vector2(64, 64)
+texture = SubResource("AtlasTexture_a3ver")
+
+[node name="min" type="TextureRect" parent="gui/altimeter/nine_patch_rect"]
+layout_mode = 0
+offset_left = -49.0
+offset_top = 193.0
+offset_right = 79.0
+offset_bottom = 321.0
+pivot_offset = Vector2(64, 64)
+texture = SubResource("AtlasTexture_kn7pv")
+
+[node name="player" type="TextureRect" parent="gui/altimeter/nine_patch_rect"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -65.0
+offset_top = -326.465
+offset_right = 63.0
+offset_bottom = -198.465
+grow_horizontal = 2
+grow_vertical = 0
+pivot_offset = Vector2(64, 64)
+texture = SubResource("AtlasTexture_yb7o3")
+stretch_mode = 3
+
 [node name="results_overlay" type="ColorRect" parent="gui"]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -16,6 +95,7 @@ grow_vertical = 2
 color = Color(0.796652, 0.766556, 0.77416, 0.670588)
 
 [node name="results_container" type="Control" parent="gui"]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -46,7 +126,7 @@ anchors_preset = -1
 anchor_right = 1.0
 grow_horizontal = 2
 theme_override_font_sizes/font_size = 40
-text = "The resuLts are in!"
+text = "The results are in!"
 horizontal_alignment = 1
 
 [node name="content" type="Panel" parent="gui/results_container/panel"]

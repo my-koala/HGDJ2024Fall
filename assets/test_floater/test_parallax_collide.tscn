@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=3 uid="uid://beik6hew8h4my"]
+
+[ext_resource type="Texture2D" uid="uid://cyim4knemhx1y" path="res://assets/test_hook/test_hero.png" id="1_ypa14"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_b2w8u"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ae2uk"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3ffyx"]
+size = Vector2(176, 53)
+
+[node name="test_parallax_collide" type="Node2D"]
+
+[node name="static_body_2d" type="StaticBody2D" parent="."]
+
+[node name="collision_shape_2d" type="CollisionShape2D" parent="static_body_2d"]
+shape = SubResource("WorldBoundaryShape2D_b2w8u")
+
+[node name="camera_2d" type="Camera2D" parent="."]
+
+[node name="rigid_body_2d" type="RigidBody2D" parent="."]
+position = Vector2(37, -148)
+
+[node name="sprite_2d" type="Sprite2D" parent="rigid_body_2d"]
+texture = ExtResource("1_ypa14")
+
+[node name="collision_shape_2d" type="CollisionShape2D" parent="rigid_body_2d"]
+shape = SubResource("CircleShape2D_ae2uk")
+
+[node name="parallax_2d" type="Parallax2D" parent="."]
+repeat_size = Vector2(256, 0)
+
+[node name="static_body_2d" type="StaticBody2D" parent="parallax_2d"]
+
+[node name="collision_shape_2d" type="CollisionShape2D" parent="parallax_2d/static_body_2d"]
+position = Vector2(11, -16.5)
+shape = SubResource("RectangleShape2D_3ffyx")

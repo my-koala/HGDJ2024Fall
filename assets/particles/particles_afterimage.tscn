@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://dq0ssk6n7tbwj"]
+
+[ext_resource type="Texture2D" uid="uid://cau8jpl7ohbkq" path="res://assets/particles/particles_afterimage.png" id="1_lifvj"]
+[ext_resource type="Material" uid="uid://cpn2ug8hxwkga" path="res://assets/particles/particles_afterimage.tres" id="2_vua5m"]
+
+[node name="particles_afterimage" type="GPUParticles2D"]
+lifetime = 0.25
+texture = ExtResource("1_lifvj")
+process_material = ExtResource("2_vua5m")

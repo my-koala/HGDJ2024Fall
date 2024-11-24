@@ -3,8 +3,6 @@
 [resource]
 particle_flag_disable_z = true
 emission_shape_offset = Vector3(-96, 0, 0)
-angle_min = 1.07288e-05
-angle_max = 1.07288e-05
 direction = Vector3(0, 0, 0)
 spread = 0.0
 gravity = Vector3(0, 0, 0)

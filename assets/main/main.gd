@@ -4,24 +4,24 @@ extends Node
 # BUG: looks like a bug with swing tension not properly retaining velocity?
 # it's definitely noticeable with huge velocity discrepancy between small vs big swing
 
+
 # DONE
 # finish catenary texture drawing
 # add thruster functionality
-
-# TODO stuff to finish for final deliverable
 # finish thrusters art - need sprites, particles
 # redo character art - need leaning animations, freefall, and landing - animations
 # balance drag, gravity, etc.
-# finish swing height art, use sprite frames, correspond to heights - do after balancing - super easy
-# add sounds (when power comes back)
-# add instructions and credits screen to menu
-# shader precompilation
 # add injuries, child safety items - still unsure how to do this lolololol
-# - pillow: softer landing on landing - need some sort of spring force stuff?
-#   - or could just increase impact threshold for injuries
-# 
+# add safety items e.g. parachute, umbrella, and tier-ize injuries
+
+# TODO stuff to finish for final deliverable
+# finish swing height art, use sprite frames, correspond to heights - do after balancing - super easy
+# add instructions and credits screen to menu - super easy
+# add altitude and velocity indicators (need velocity direction too, perhaps drag line particles)
 # add land mines
+# add sounds (when power comes back)
 # add balloons?
+# shader precompilation because dumb lag
 
 const SCENE_HOME: PackedScene = preload("res://assets/scenes/home/home.tscn")
 const SceneHome: = preload("res://assets/scenes/home/home.gd")

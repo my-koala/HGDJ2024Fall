@@ -9,8 +9,9 @@ const MG_TO_KG: float = 10 ** 6.0
 var drag_size: Vector2 = Vector2(16.0, 24.0)
 @export
 var drag_coefficient: Vector2 = Vector2(0.5, 0.75)
-@export
-var drag_density: float = 0.572204589844# Milligrams per cubic pixel.
+#@export
+var drag_density: float = 1.0
+#var drag_density: float = 0.572204589844# Milligrams per cubic pixel.
 # TODO (Player): Air density should be calculated as a function of altitude.
 # NOTE: Default value is equivalent to air density of 1.2 kg per cubic meter.
 # TODO: drag coefficient should scale down with angle (normal check)
@@ -43,4 +44,8 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 		
 		var drag: Vector2 = drag_direction * (0.5 * coeff * density_kg * state.linear_velocity.length_squared() * area)
 		
-		state.linear_velocity += state.inverse_mass * drag * state.step
+		var drag_velocity: Vector2 = drag * state.inverse_mass * state.step
+		# HACK clamp drag to 99% of velocity because big = infinite feedback. may fix drag properly later or something
+		drag_velocity = drag_velocity.limit_length(state.linear_velocity.length() * 0.99)
+		
+		state.linear_velocity += drag_velocity

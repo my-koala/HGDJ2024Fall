@@ -33,7 +33,6 @@ length = 224.0
 end_position = Vector2(0, 224)
 
 [node name="swing" type="RigidBody2D" parent="top"]
-z_index = 1
 collision_layer = 4
 collision_mask = 5
 custom_integrator = true
@@ -48,7 +47,7 @@ shape = SubResource("RectangleShape2D_u5nc1")
 [node name="sprite_2d" type="Sprite2D" parent="top/swing"]
 texture = ExtResource("4_e6346")
 region_enabled = true
-region_rect = Rect2(95, 387, 45, 16)
+region_rect = Rect2(240, 248, 32, 16)
 
 [node name="swing_set_thruster_a" type="Node2D" parent="top/swing"]
 visible = false
@@ -106,18 +105,59 @@ local_coords = true
 position = Vector2(-185, 31)
 amount = 64
 
-[node name="body" type="Node2D" parent="."]
+[node name="body_a" type="Node2D" parent="."]
 
-[node name="foreground" type="Sprite2D" parent="body"]
-z_index = 10
-position = Vector2(0, 99.69)
-scale = Vector2(1.32, 1.32)
+[node name="foreground" type="Sprite2D" parent="body_a"]
+z_index = 8
 texture = ExtResource("1_hod3s")
-offset = Vector2(0, -167.82)
+offset = Vector2(-8, -128)
 
-[node name="background" type="Sprite2D" parent="body"]
-z_index = -1
-position = Vector2(0, 99.69)
-scale = Vector2(1.32, 1.32)
+[node name="background" type="Sprite2D" parent="body_a"]
+z_index = -8
 texture = ExtResource("2_m45k4")
-offset = Vector2(0, -167.82)
+offset = Vector2(-8, -128)
+
+[node name="body_b" type="Node2D" parent="."]
+visible = false
+
+[node name="foreground" type="Sprite2D" parent="body_b"]
+z_index = 8
+scale = Vector2(2, 2)
+texture = ExtResource("1_hod3s")
+offset = Vector2(-8, -128)
+
+[node name="background" type="Sprite2D" parent="body_b"]
+z_index = -8
+scale = Vector2(2, 2)
+texture = ExtResource("2_m45k4")
+offset = Vector2(-8, -128)
+
+[node name="body_c" type="Node2D" parent="."]
+visible = false
+
+[node name="foreground" type="Sprite2D" parent="body_c"]
+z_index = 8
+scale = Vector2(4, 4)
+texture = ExtResource("1_hod3s")
+offset = Vector2(-8, -128)
+
+[node name="background" type="Sprite2D" parent="body_c"]
+z_index = -8
+scale = Vector2(4, 4)
+texture = ExtResource("2_m45k4")
+offset = Vector2(-8, -128)
+
+[node name="body_d" type="Node2D" parent="."]
+visible = false
+
+[node name="foreground" type="Sprite2D" parent="body_d"]
+z_index = 8
+scale = Vector2(8, 8)
+texture = ExtResource("1_hod3s")
+offset = Vector2(-8, -128)
+
+[node name="background" type="Sprite2D" parent="body_d"]
+z_index = -8
+scale = Vector2(8, 8)
+texture = ExtResource("2_m45k4")
+offset = Vector2(-8, -128)

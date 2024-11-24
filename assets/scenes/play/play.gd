@@ -15,6 +15,9 @@ signal exit()
 var _game_data: GameData = preload("res://assets/game_data/game_data.tres")
 
 @onready
+var _gui: CanvasLayer = $gui as CanvasLayer
+
+@onready
 var _results_overlay: ColorRect = $gui/results_overlay as ColorRect
 @onready
 var _results_container: Control = $gui/results_container as Control
@@ -31,11 +34,19 @@ var _results_total_right: Label = $gui/results_container/panel/content/panel/tot
 @onready
 var _results_continue: Button = $gui/results_container/panel/continue as Button
 
+@onready
+var _altimeter_player: TextureRect = $gui/altimeter/nine_patch_rect/player as TextureRect
+
+@onready
+var _info: Label = $gui/info as Label
+
 var _map: Map = null
 
 func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
+	
+	_gui.visible = false
 	
 	_results_container.visible = false
 	_results_container.position.y = _results_container.size.y
@@ -55,14 +66,30 @@ func scene_start() -> void:
 		_map = MAP.instantiate() as Map
 		add_child(_map, true)
 		_map.player_stopped.connect(_on_map_player_stopped)
+	
+	_attempt_stopped = false
+	_gui.visible = true
+
+func _process(delta: float) -> void:
+	if Engine.is_editor_hint():
+		return
+	
+	if !_attempt_stopped && is_instance_valid(_map):
+		_info.text = "Attempt #%d\nDistance: %.2f" % [_game_data.get_attempt(), _map.get_player_distance()]
+		# hacky hacky need to done!
+		_altimeter_player.position.y = clampf(remap(_map.get_player_altitude(), 0.0, 2000.0, 167.0, -55.0), -55.0, 167.0)
+		# TODO: update altitude display
 
 func scene_stop() -> void:
 	_scene_active = false
+	
 	if is_instance_valid(_map):
 		_map.player_stopped.disconnect(_on_map_player_stopped)
 		remove_child(_map)
 		_map.queue_free()
 	
+	_attempt_stopped = false
+	_gui.visible = false
 	_results_container.visible = false
 	_results_container.position.y = _results_container.size.y
 	_results_overlay.visible = false
@@ -100,32 +127,44 @@ func _on_map_player_stopped() -> void:
 	var injuries: String = "Nothing Hurts"
 	match _map.get_player_injury():
 		Player.Injury.NONE:
-			injuries = "Nothing Hurts (-0%)"
 			money_injury_penalty = 0.0
-		Player.Injury.BROKEN_RIBS:
-			injuries = "Broken Ribs (-10%)"
+			injuries = "Nothing Hurts (-%.1f%%)" % [money_injury_penalty * 100.0]
+		Player.Injury.SPRAINED_ANKLES:
 			money_injury_penalty = 0.1
+			injuries = "Sprained Ankles (-%.1f%%)" % [money_injury_penalty * 100.0]
+		Player.Injury.BROKEN_RIBS:
+			money_injury_penalty = 0.3
+			injuries = "Broken Ribs (-%.1f%%)" % [money_injury_penalty * 100.0]
+		Player.Injury.SLIPPED_DISK:
+			money_injury_penalty = 0.4
+			injuries = "Slipped Disk (-%.1f%%)" % [money_injury_penalty * 100.0]
 		Player.Injury.CONCUSSION:
-			injuries = "Concussion (-20%)"
-			money_injury_penalty = 0.2
-		Player.Injury.BROKEN_LEGS:
-			injuries = "Broken Legs (-50%)"
-			money_injury_penalty = 0.5
-		Player.Injury.BROKEN_BACK:
-			injuries = "Broken Back (-60%)"
 			money_injury_penalty = 0.6
+			injuries = "Concussion (-%.1f%%)" % [money_injury_penalty * 100.0]
+		Player.Injury.BROKEN_LEGS:
+			money_injury_penalty = 0.6
+			injuries = "Broken Legs (-%.1f%%)" % [money_injury_penalty * 100.0]
+		Player.Injury.BROKEN_BACK:
+			money_injury_penalty = 0.7
+			injuries = "Broken Back (-%.1f%%)" % [money_injury_penalty * 100.0]
+		Player.Injury.HEART_FAILURE:
+			money_injury_penalty = 0.75
+			injuries = "Heart Failure (-%.1f%%)" % [money_injury_penalty * 100.0]
 		Player.Injury.COMATOSE:
-			injuries = "Comatose (-80%)"
 			money_injury_penalty = 0.8
-		Player.Injury.PARAPLEGIC:
-			injuries = "Paraplegic (-90%)"
+			injuries = "Comatose (-%.1f%%)" % [money_injury_penalty * 100.0]
+		Player.Injury.BROKEN_FEMUR:
 			money_injury_penalty = 0.9
-		Player.Injury.COMATOSE_PARAPLEGIC:
-			injuries = "Comatose & Paraplegic (-95%)"
+			injuries = "Broken Femur (-%.1f%%)" % [money_injury_penalty * 100.0]
+		Player.Injury.PARAPLEGIC:
 			money_injury_penalty = 0.95
+			injuries = "Paraplegic (-%.1f%%)" % [money_injury_penalty * 100.0]
+		Player.Injury.COMATOSE_PARAPLEGIC:
+			money_injury_penalty = 0.99
+			injuries = "Comatose Paraplegic (-%.1f%%)" % [money_injury_penalty * 100.0]
 		Player.Injury.DEAD:
-			injuries = "Dead (-100%)"
 			money_injury_penalty = 1.0
+			injuries = "Dead (-%.1f%%)" % [money_injury_penalty * 100.0]
 	
 	var money_injuries_cents: int = int(float(money_total_cents) * money_injury_penalty)
 	money_total_cents -= money_injuries_cents
@@ -143,3 +182,4 @@ func _on_map_player_stopped() -> void:
 	
 	_results_total_right.text = "$%d.%02d" % [money_total_cents / 100, money_total_cents % 100]
 	
+	_game_data.attempt_add()

@@ -6,6 +6,7 @@ class_name GameData
 @export
 var _infinite_money: bool = false
 
+# setting resources in exported array on web export doesn't work
 var _items: Array[Item] = [
 	preload("res://assets/item/items/item_height_0.tres"),
 	preload("res://assets/item/items/item_height_1.tres"),
@@ -17,10 +18,20 @@ var _items: Array[Item] = [
 	preload("res://assets/item/items/item_thrust_3.tres"),
 	preload("res://assets/item/items/item_safety_0.tres"),
 	preload("res://assets/item/items/item_safety_1.tres"),
+	preload("res://assets/item/items/item_safety_2.tres"),
+	preload("res://assets/item/items/item_safety_3.tres"),
 ]
 
 var _items_purchased: Array[bool] = []
 var _items_equipped: Array[bool] = []
+
+var _attempt: int = 0
+
+func get_attempt() -> int:
+	return _attempt
+
+func attempt_add() -> void:
+	_attempt += 1
 
 func _init() -> void:
 	reset_items()
