@@ -13,6 +13,6 @@ region = Rect2(384, 256, 128, 128)
 script = ExtResource("2_5gcxn")
 name = &"Parachute"
 section = &"Child Safety"
-price_dollars = 1000
+price_dollars = 400
 price_cents = 0
 icon = SubResource("AtlasTexture_et411")

@@ -30,6 +30,13 @@ var _ready_button: Button = $right/ready as Button
 @onready
 var _home_button: Button = $left/home as Button
 
+@onready
+var _sound_cash_register: AudioStreamPlayer = $sounds/cash_register as AudioStreamPlayer
+@onready
+var _sound_item_open: AudioStreamPlayer = $sounds/item_open as AudioStreamPlayer
+@onready
+var _sound_item_equip: AudioStreamPlayer = $sounds/item_equip as AudioStreamPlayer
+
 var _menu_group_id: int = 0
 
 var _sections: Array[ShopSection] = []
@@ -228,9 +235,12 @@ func refresh() -> void:
 func _on_item_button_pressed(item_button: ShopItemButton) -> void:
 	if _game_data.is_item_purchased(item_button.item):
 		_game_data.item_equip(item_button.item)
+		_sound_item_equip.play()
 	else:
-		_game_data.item_purchase(item_button.item)
-		_game_data.item_equip(item_button.item)
+		if _game_data.can_money_withdraw(item_button.item.price_dollars, item_button.item.price_cents):
+			_game_data.item_purchase(item_button.item)
+			_game_data.item_equip(item_button.item)
+			_sound_cash_register.play()
 
 func _on_section_button_pressed(section_button: ShopSectionButton) -> void:
 	var section: ShopSection = null
@@ -239,6 +249,7 @@ func _on_section_button_pressed(section_button: ShopSectionButton) -> void:
 			section = _sections[index]
 			break
 	_set_active_section(section)
+	_sound_item_open.play()
 
 func _on_section_back_pressed() -> void:
 	_set_active_section(null)

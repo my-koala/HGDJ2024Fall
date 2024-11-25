@@ -22,6 +22,9 @@ var _swing_set: SwingSet = $swing_set as SwingSet
 @onready
 var _camera: Camera2D = $camera_2d as Camera2D
 
+@onready
+var _sound_suburbs: AudioStreamPlayer = $sounds/suburbs as AudioStreamPlayer
+
 var _camera_remote_transform: RemoteTransform2D = null
 
 func get_player_distance() -> float:
@@ -59,6 +62,14 @@ func _ready() -> void:
 	_camera_remote_transform.update_rotation = false
 	_camera_remote_transform.update_scale = false
 	_player.add_child(_camera_remote_transform)
+	
+	_player.exploded.connect(_on_player_exploded)
+	
+	_sound_suburbs.play()
+
+var _camera_shake: float = 0.0
+func _on_player_exploded() -> void:
+	_camera_shake = 1.0
 
 var _tween_camera: Tween = null
 var _tween_camera_toggle: bool = false
@@ -66,6 +77,11 @@ var _tween_camera_toggle: bool = false
 func _process(delta: float) -> void:
 	if Engine.is_editor_hint():
 		return
+	
+	_camera.offset = Vector2(randf_range(-_camera_shake * 24.0, _camera_shake * 24.0), randf_range(-_camera_shake * 24.0, _camera_shake * 24.0))
+	_camera_shake = lerpf(_camera_shake, 0.0, 3.0 * delta)
+	
+	_sound_suburbs.volume_db = clampf(remap(-_camera.global_position.y, 2000.0, 4000.0, -16.0, -80.0), -80.0, -16.0)
 	
 	if _player.is_swinging():
 		_tween_camera_toggle = false

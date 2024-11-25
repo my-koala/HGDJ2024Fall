@@ -20,7 +20,17 @@ var _items: Array[Item] = [
 	preload("res://assets/item/items/item_safety_1.tres"),
 	preload("res://assets/item/items/item_safety_2.tres"),
 	preload("res://assets/item/items/item_safety_3.tres"),
+	preload("res://assets/item/items/item_education_0.tres"),
+	preload("res://assets/item/items/item_education_1.tres"),
 ]
+
+var _instruction_flags: int = 0
+
+func get_instruction_flag(flag: int) -> bool:
+	return _instruction_flags & flag
+
+func set_instruction_flag(flag: int) -> void:
+	_instruction_flags = _instruction_flags | flag
 
 var _items_purchased: Array[bool] = []
 var _items_equipped: Array[bool] = []

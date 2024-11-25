@@ -11,6 +11,6 @@ region = Rect2(256, 256, 128, 128)
 script = ExtResource("2_j1jgg")
 name = &"Kite"
 section = &"Child Safety"
-price_dollars = 120
+price_dollars = 8
 price_cents = 48
 icon = SubResource("AtlasTexture_n1yd0")

@@ -4,6 +4,6 @@
 
 [resource]
 script = ExtResource("1_p0oid")
-_infinite_money = true
-_money_dollars = 5
+_infinite_money = false
+_money_dollars = 0
 _money_cents = 0

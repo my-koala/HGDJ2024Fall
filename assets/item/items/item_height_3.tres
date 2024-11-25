@@ -11,6 +11,6 @@ region = Rect2(384, 0, 128, 128)
 script = ExtResource("2_ljv10")
 name = &"Biggest Swing"
 section = &"Swing Height"
-price_dollars = 246
+price_dollars = 80
 price_cents = 31
 icon = SubResource("AtlasTexture_8jfo1")

@@ -1,7 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://wsiimntin7gu"]
+[gd_scene load_steps=10 format=3 uid="uid://wsiimntin7gu"]
 
 [ext_resource type="Script" path="res://assets/scenes/shop/shop.gd" id="1_7ikmg"]
 [ext_resource type="Texture2D" uid="uid://j18jikfcyhjc" path="res://assets/item/items/items.png" id="2_cglov"]
+[ext_resource type="AudioStream" uid="uid://cj5n1y28yx412" path="res://assets/sounds/cash_register.mp3" id="3_l2cch"]
+[ext_resource type="AudioStream" uid="uid://lg4bfj2lsq7y" path="res://assets/sounds/item_open.wav" id="4_anf00"]
+[ext_resource type="AudioStream" uid="uid://ckod2dxxd5qhc" path="res://assets/sounds/item_equip.wav" id="5_l453j"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_2q615"]
 atlas = ExtResource("2_cglov")
@@ -202,3 +205,20 @@ offset_right = 589.0
 offset_bottom = 73.0
 texture = SubResource("AtlasTexture_onf2c")
 expand_mode = 1
+
+[node name="sounds" type="Node" parent="."]
+
+[node name="cash_register" type="AudioStreamPlayer" parent="sounds"]
+process_mode = 3
+stream = ExtResource("3_l2cch")
+volume_db = -6.47
+
+[node name="item_open" type="AudioStreamPlayer" parent="sounds"]
+process_mode = 3
+stream = ExtResource("4_anf00")
+volume_db = -6.47
+
+[node name="item_equip" type="AudioStreamPlayer" parent="sounds"]
+process_mode = 3
+stream = ExtResource("5_l453j")
+volume_db = -10.0

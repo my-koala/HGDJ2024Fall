@@ -12,5 +12,5 @@ script = ExtResource("2_mbn7j")
 name = &"Bottle Rocket"
 section = &"Swing Thrust"
 price_dollars = 2
-price_cents = 33
+price_cents = 50
 icon = SubResource("AtlasTexture_8jfo1")

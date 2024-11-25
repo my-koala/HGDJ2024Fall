@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="Item" load_steps=4 format=3 uid="uid://b1ggoefebfg6n"]
+
+[ext_resource type="Texture2D" uid="uid://j18jikfcyhjc" path="res://assets/item/items/items.png" id="1_jej0b"]
+[ext_resource type="Script" path="res://assets/item/item.gd" id="2_xijs5"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aap5q"]
+atlas = ExtResource("1_jej0b")
+region = Rect2(128, 384, 128, 128)
+
+[resource]
+script = ExtResource("2_xijs5")
+name = &"College"
+section = &"Education"
+price_dollars = 100000
+price_cents = 12
+icon = SubResource("AtlasTexture_aap5q")

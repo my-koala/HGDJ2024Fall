@@ -1,0 +1,38 @@
+[gd_scene load_steps=7 format=3 uid="uid://b32y00m7oqcyk"]
+
+[ext_resource type="Texture2D" uid="uid://bphpn84v6a5pl" path="res://third_party/loukyler/Landmine.png" id="1_2u6ue"]
+[ext_resource type="Script" path="res://assets/props/landmine/landmine.gd" id="1_tiq5r"]
+[ext_resource type="Texture2D" uid="uid://iitcwhl2kci7" path="res://assets/props/landmine/explosion_out/static_0047.png" id="3_10har"]
+[ext_resource type="PackedScene" uid="uid://ch7c2as0belji" path="res://assets/particles/particles_explode.tscn" id="4_vkyrm"]
+[ext_resource type="AudioStream" uid="uid://c8vy1lnno0cx3" path="res://assets/sounds/explosion.mp3" id="5_ajwxa"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_muhg0"]
+size = Vector2(73, 58)
+
+[node name="landmine" type="Area2D"]
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+script = ExtResource("1_tiq5r")
+
+[node name="sprite_2d" type="Sprite2D" parent="."]
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("1_2u6ue")
+
+[node name="collision_shape_2d" type="CollisionShape2D" parent="."]
+position = Vector2(-1.5, -16)
+shape = SubResource("RectangleShape2D_muhg0")
+
+[node name="explosion" type="Sprite2D" parent="."]
+texture = ExtResource("3_10har")
+offset = Vector2(42.215, -300)
+
+[node name="particles_explode" parent="." instance=ExtResource("4_vkyrm")]
+
+[node name="sounds" type="Node2D" parent="."]
+
+[node name="explosion" type="AudioStreamPlayer2D" parent="sounds"]
+process_mode = 3
+stream = ExtResource("5_ajwxa")
+max_distance = 10000.0
+panning_strength = 0.0

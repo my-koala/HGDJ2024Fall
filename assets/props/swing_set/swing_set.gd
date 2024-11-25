@@ -41,6 +41,14 @@ var _body_c: Node2D = $body_c as Node2D
 @onready
 var _body_d: Node2D = $body_d as Node2D
 
+@onready
+var _sounds_rope: Array[AudioStreamPlayer2D] = [
+	$sounds/rope_0 as AudioStreamPlayer2D,
+	$sounds/rope_1 as AudioStreamPlayer2D,
+	$sounds/rope_2 as AudioStreamPlayer2D,
+	$sounds/rope_3 as AudioStreamPlayer2D,
+]
+
 func get_swing() -> Swing2D:
 	return _swing
 
@@ -139,12 +147,17 @@ func set_height(height: float) -> void:
 	_catenary.length = _swing.length
 	_catenary.end_position = _swing.global_position - _catenary.global_position
 
+var _vel: float = 0.0
+
 func _process(delta: float) -> void:
 	if Engine.is_editor_hint():
 		return
 	
 	_catenary.length = _swing.length
 	_catenary.end_position = _swing.global_position - _catenary.global_position
+	
+	if signf(_swing.angular_velocity) != signf(_vel):
+		pass
 
 # swing upgrades:
 

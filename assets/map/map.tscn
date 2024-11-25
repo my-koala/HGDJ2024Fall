@@ -1,10 +1,13 @@
-[gd_scene load_steps=12 format=3 uid="uid://d34tspg13skye"]
+[gd_scene load_steps=15 format=3 uid="uid://d34tspg13skye"]
 
 [ext_resource type="Texture2D" uid="uid://besvtvlevcor5" path="res://assets/global.png" id="1_3s3ts"]
 [ext_resource type="Script" path="res://assets/map/map.gd" id="1_t7ca2"]
 [ext_resource type="PackedScene" uid="uid://cr8cp2x8jbkjq" path="res://assets/actors/player/player.tscn" id="2_sdmjw"]
 [ext_resource type="PackedScene" uid="uid://b0567k1pou8kn" path="res://assets/props/swing_set/swing_set.tscn" id="3_x8dr8"]
 [ext_resource type="PackedScene" uid="uid://deknjco3nnp4j" path="res://assets/props/brick_wall/brick_wall.tscn" id="4_wt10p"]
+[ext_resource type="PackedScene" uid="uid://b32y00m7oqcyk" path="res://assets/props/landmine/landmine.tscn" id="6_ka3it"]
+[ext_resource type="AudioStream" uid="uid://cqrrthhwoftgc" path="res://assets/sounds/ambience_suburbs.mp3" id="7_qvq35"]
+[ext_resource type="AudioStream" uid="uid://bk3ica670o0p1" path="res://assets/sounds/ambience_park.mp3" id="8_wyak2"]
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_fb6oc"]
 polygon = PackedVector2Array(-1e+09, 0, 1e+09, 0, 1e+09, 256, -1e+09, 256)
@@ -171,11 +174,14 @@ drag_size = Vector2(16, 24)
 [node name="brick_wall" parent="geometry" instance=ExtResource("4_wt10p")]
 position = Vector2(-4096, 0)
 
+[node name="marker_2d" type="Marker2D" parent="geometry"]
+position = Vector2(-192, -2890)
+
 [node name="swing_set" parent="." instance=ExtResource("3_x8dr8")]
 
 [node name="camera_2d" type="Camera2D" parent="."]
 position = Vector2(167, -167)
-zoom = Vector2(0.75, 0.75)
+zoom = Vector2(0.125, 0.125)
 process_callback = 0
 limit_bottom = 128
 position_smoothing_enabled = true
@@ -187,3 +193,61 @@ editor_draw_drag_margin = true
 mass = 20.0
 player = true
 drag_size = Vector2(16, 24)
+
+[node name="landmine" parent="." instance=ExtResource("6_ka3it")]
+position = Vector2(-508, -3)
+
+[node name="landmine_13" parent="." instance=ExtResource("6_ka3it")]
+position = Vector2(-3699, 2)
+
+[node name="landmine_14" parent="." instance=ExtResource("6_ka3it")]
+position = Vector2(-3337, 2)
+
+[node name="landmine_2" parent="." instance=ExtResource("6_ka3it")]
+position = Vector2(-970, -1)
+
+[node name="landmine_3" parent="." instance=ExtResource("6_ka3it")]
+position = Vector2(-1388, 0)
+
+[node name="landmine_4" parent="." instance=ExtResource("6_ka3it")]
+position = Vector2(-1823, 0)
+
+[node name="landmine_5" parent="." instance=ExtResource("6_ka3it")]
+position = Vector2(-1973, -3)
+
+[node name="landmine_6" parent="." instance=ExtResource("6_ka3it")]
+position = Vector2(-2641, 5)
+
+[node name="landmine_7" parent="." instance=ExtResource("6_ka3it")]
+position = Vector2(-3220, 1)
+
+[node name="landmine_8" parent="." instance=ExtResource("6_ka3it")]
+position = Vector2(-3458, 7)
+
+[node name="landmine_9" parent="." instance=ExtResource("6_ka3it")]
+position = Vector2(-3939, 3)
+
+[node name="landmine_10" parent="." instance=ExtResource("6_ka3it")]
+position = Vector2(-3826, 5)
+
+[node name="landmine_11" parent="." instance=ExtResource("6_ka3it")]
+position = Vector2(-3568, 3)
+
+[node name="landmine_12" parent="." instance=ExtResource("6_ka3it")]
+position = Vector2(-2321, 3)
+
+[node name="sounds" type="Node2D" parent="."]
+
+[node name="suburbs" type="AudioStreamPlayer" parent="sounds"]
+process_mode = 3
+stream = ExtResource("7_qvq35")
+volume_db = -16.0
+autoplay = true
+
+[node name="park" type="AudioStreamPlayer2D" parent="sounds"]
+process_mode = 3
+stream = ExtResource("8_wyak2")
+volume_db = -20.0
+pitch_scale = 0.75
+autoplay = true
+max_distance = 4000.0

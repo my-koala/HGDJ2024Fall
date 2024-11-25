@@ -8,6 +8,26 @@ extends Node2D
 const MAP: PackedScene = preload("res://assets/map/map.tscn")
 const Map: = preload("res://assets/map/map.gd")
 const Player: = preload("res://assets/actors/player/player.gd")
+const GuiPopup: = preload("res://assets/gui/gui_popup.gd")
+
+const ITEM_THRUST: Array[Item] = [
+	preload("res://assets/item/items/item_thrust_0.tres"),
+	preload("res://assets/item/items/item_thrust_1.tres"),
+	preload("res://assets/item/items/item_thrust_2.tres"),
+	preload("res://assets/item/items/item_thrust_3.tres"),
+]
+
+const ITEM_SAFETY: Array[Item] = [
+	preload("res://assets/item/items/item_safety_0.tres"),
+	preload("res://assets/item/items/item_safety_1.tres"),
+	preload("res://assets/item/items/item_safety_2.tres"),
+	preload("res://assets/item/items/item_safety_3.tres"),
+]
+
+const ITEM_EDUCATION: Array[Item] = [
+	preload("res://assets/item/items/item_education_0.tres"),
+	preload("res://assets/item/items/item_education_1.tres"),
+]
 
 signal exit()
 
@@ -40,6 +60,20 @@ var _altimeter_player: TextureRect = $gui/altimeter/nine_patch_rect/player as Te
 @onready
 var _info: Label = $gui/info as Label
 
+@onready
+var _instruction_0: GuiPopup = $gui/instructions/instruction_0 as GuiPopup
+@onready
+var _instruction_1: GuiPopup = $gui/instructions/instruction_1 as GuiPopup
+@onready
+var _instruction_2: GuiPopup = $gui/instructions/instruction_2 as GuiPopup
+@onready
+var _instruction_3: GuiPopup = $gui/instructions/instruction_3 as GuiPopup
+
+@onready
+var _sound_clapping: AudioStreamPlayer = $sounds/clapping as AudioStreamPlayer
+@onready
+var _sound_bell: AudioStreamPlayer = $sounds/bell as AudioStreamPlayer
+
 var _map: Map = null
 
 func _ready() -> void:
@@ -69,6 +103,24 @@ func scene_start() -> void:
 	
 	_attempt_stopped = false
 	_gui.visible = true
+	
+	if !_game_data.get_instruction_flag(1 << 0):
+		_game_data.set_instruction_flag(1 << 0)
+		_instruction_0.set_active(true)
+	
+	if !_game_data.get_instruction_flag(1 << 1) && !_game_data.is_item_equipped(ITEM_THRUST[0]):
+		_game_data.set_instruction_flag(1 << 1)
+		_instruction_1.set_active(true)
+	
+	if !_game_data.get_instruction_flag(1 << 2) && !_game_data.is_item_equipped(ITEM_SAFETY[0]):
+		_game_data.set_instruction_flag(1 << 2)
+		_instruction_2.set_active(true)
+	
+	if !_game_data.get_instruction_flag(1 << 3) && _game_data.is_item_equipped(ITEM_EDUCATION[1]):
+		_game_data.set_instruction_flag(1 << 3)
+		_instruction_3.set_active(true)
+	
+	
 
 func _process(delta: float) -> void:
 	if Engine.is_editor_hint():
@@ -95,6 +147,7 @@ func scene_stop() -> void:
 	_results_overlay.visible = false
 	_results_overlay.modulate.a = 0.0
 	_results_continue.release_focus.call_deferred()
+	
 
 var _results_tween: Tween = null
 var _attempt_stopped: bool = false
@@ -117,9 +170,9 @@ func _on_map_player_stopped() -> void:
 	var altitude: float = _map.get_player_altitude_max()
 	var velocity: float = _map.get_player_velocity_max()
 	
-	var money_distance_cents: int = floori(absf(distance) * 8.0)
-	var money_altitude_cents: int = floori(absf(altitude) * 7.0)
-	var money_velocity_cents: int = floori(absf(velocity) * 4.0)
+	var money_distance_cents: int = floori(absf(distance ** 2.0) * 0.24)
+	var money_altitude_cents: int = floori(absf(altitude ** 2.0) * 0.16)
+	var money_velocity_cents: int = floori(absf(velocity ** 2.0) * 0.12)
 	
 	var money_total_cents: int = money_distance_cents + money_altitude_cents + money_velocity_cents
 	
@@ -183,3 +236,9 @@ func _on_map_player_stopped() -> void:
 	_results_total_right.text = "$%d.%02d" % [money_total_cents / 100, money_total_cents % 100]
 	
 	_game_data.attempt_add()
+	
+	
+	if _map.get_player_injury() == Player.Injury.DEAD:
+		_sound_bell.play()
+	else:
+		_sound_clapping.play()

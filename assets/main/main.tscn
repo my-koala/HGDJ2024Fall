@@ -1,16 +1,51 @@
-[gd_scene load_steps=6 format=3 uid="uid://b31dacy4pd1eo"]
+[gd_scene load_steps=11 format=3 uid="uid://b31dacy4pd1eo"]
 
 [ext_resource type="PackedScene" uid="uid://bno2xbu6glsda" path="res://assets/scenes/play/play.tscn" id="1_s4vh8"]
 [ext_resource type="Script" path="res://assets/main/main.gd" id="1_sfpys"]
 [ext_resource type="PackedScene" uid="uid://nl7ycbfa1qpk" path="res://assets/scenes/home/home.tscn" id="3_m6023"]
 [ext_resource type="PackedScene" uid="uid://wsiimntin7gu" path="res://assets/scenes/shop/shop.tscn" id="4_02m6b"]
 [ext_resource type="PackedScene" uid="uid://cvife3b4ydk4n" path="res://assets/gui/gui_overlay.tscn" id="5_4coaf"]
+[ext_resource type="Script" path="res://assets/main/particle_shader_precompile.gd" id="6_xb51k"]
+[ext_resource type="PackedScene" uid="uid://b32y00m7oqcyk" path="res://assets/props/landmine/landmine.tscn" id="7_g4n04"]
+[ext_resource type="Texture2D" uid="uid://dg47idjo5mkbe" path="res://assets/main/mykoala_0.png" id="8_cktk5"]
+[ext_resource type="Texture2D" uid="uid://qg3dkuwh1ba1" path="res://assets/main/mykoala_1.png" id="9_h1i2g"]
+
+[sub_resource type="GDScript" id="GDScript_rwmta"]
+resource_name = "splash_texture"
+script/source = "@tool
+extends TextureRect
+
+@export
+var texture_a: Texture2D = null
+@export
+var texture_b: Texture2D = null
+var _texture: bool = false
+
+@export
+var fps: float = 16
+var _fps_delta: float = 0.0
+
+func _ready() -> void:
+	texture = texture_a
+
+func _process(delta: float) -> void:
+	var fps_delta: float = 1.0 / fps
+	if _fps_delta > fps_delta:
+		_fps_delta = fmod(_fps_delta, fps_delta)
+		if _texture:
+			texture = texture_a
+		else:
+			texture = texture_b
+		_texture = !_texture
+	
+	_fps_delta += delta
+"
 
 [node name="main" type="Node"]
 script = ExtResource("1_sfpys")
 
 [node name="overlay" type="CanvasLayer" parent="."]
-layer = 10
+layer = 32
 
 [node name="transition" type="ColorRect" parent="overlay"]
 visible = false
@@ -21,36 +56,6 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="overlay" parent="overlay" instance=ExtResource("5_4coaf")]
-
-[node name="compiling_shaders" type="Control" parent="overlay"]
-visible = false
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="color_rect" type="ColorRect" parent="overlay/compiling_shaders"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="label" type="Label" parent="overlay/compiling_shaders"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "compiling shaders....
-please be patient..."
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="scene_home" type="CanvasLayer" parent="."]
 
@@ -66,3 +71,107 @@ follow_viewport_enabled = true
 layer = 2
 
 [node name="shop" parent="scene_shop" instance=ExtResource("4_02m6b")]
+
+[node name="precompile" type="CanvasLayer" parent="."]
+layer = 16
+
+[node name="particle_shader_precompile" type="Node2D" parent="precompile"]
+script = ExtResource("6_xb51k")
+
+[node name="landmine" parent="precompile" instance=ExtResource("7_g4n04")]
+monitoring = false
+
+[node name="compiling_shaders" type="Control" parent="precompile"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="color_rect" type="ColorRect" parent="precompile/compiling_shaders"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="label" type="Label" parent="precompile/compiling_shaders"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "precompiling shaders....
+please be patient..."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="splash" type="CanvasLayer" parent="."]
+layer = 128
+visible = false
+
+[node name="splash" type="Control" parent="splash"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="color_rect" type="ColorRect" parent="splash/splash"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="texture_rect" type="TextureRect" parent="splash/splash"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = -64.0
+offset_right = 64.0
+offset_bottom = 64.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(64, 64)
+texture = ExtResource("9_h1i2g")
+stretch_mode = 3
+script = SubResource("GDScript_rwmta")
+texture_a = ExtResource("8_cktk5")
+texture_b = ExtResource("9_h1i2g")
+fps = 6.0
+
+[node name="label" type="Label" parent="splash/splash/texture_rect"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -69.5
+offset_top = -18.0
+offset_right = 69.5
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "a game by mykoala"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="color_rect_2" type="ColorRect" parent="splash/splash"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

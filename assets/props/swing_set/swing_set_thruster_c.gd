@@ -5,6 +5,8 @@ extends SwingThruster2D
 var _particles_smoke: GPUParticles2D = $sprite_2d/particles_smoke as GPUParticles2D
 @onready
 var _particles_flame: GPUParticles2D = $sprite_2d/particles_flame as GPUParticles2D
+@onready
+var _sound_rocket: AudioStreamPlayer2D = $sounds/rocket as AudioStreamPlayer2D
 
 func _ready() -> void:
 	if Engine.is_editor_hint():
@@ -29,4 +31,6 @@ func activate() -> void:
 	_thrust_tween.set_trans(Tween.TRANS_QUINT)
 	_thrust_tween.set_parallel(false)
 	
-	_thrust_tween.tween_property(self, "thrust", 16384.0, 2.0)
+	_thrust_tween.tween_property(self, "thrust", 4096.0, 2.0)
+	
+	_sound_rocket.play()

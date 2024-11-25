@@ -1,11 +1,18 @@
 @tool
 extends ProjectileBody2D
 
+signal exploded()
+
 const ITEM_SAFETY: Array[Item] = [
 	preload("res://assets/item/items/item_safety_0.tres"),
 	preload("res://assets/item/items/item_safety_1.tres"),
 	preload("res://assets/item/items/item_safety_2.tres"),
 	preload("res://assets/item/items/item_safety_3.tres"),
+]
+
+const ITEM_EDUCATION: Array[Item] = [
+	preload("res://assets/item/items/item_education_0.tres"),
+	preload("res://assets/item/items/item_education_1.tres"),
 ]
 
 @export
@@ -79,7 +86,33 @@ var _safety_parachute_catenary_e: Catenary2D = $safety/parachute/catenary_e as C
 @onready
 var _safety_parachute_catenary_f: Catenary2D = $safety/parachute/catenary_f as Catenary2D
 
+@onready
+var _sound_bones: Array[AudioStreamPlayer2D] = [
+	$sounds/bone_0 as AudioStreamPlayer2D,
+	$sounds/bone_1 as AudioStreamPlayer2D,
+	$sounds/bone_2 as AudioStreamPlayer2D,
+	$sounds/bone_3 as AudioStreamPlayer2D,
+	$sounds/bone_4 as AudioStreamPlayer2D,
+	$sounds/bone_5 as AudioStreamPlayer2D,
+]
+
+@onready
+var _sound_flesh: Array[AudioStreamPlayer2D] = [
+	$sounds/flesh_0 as AudioStreamPlayer2D,
+	$sounds/flesh_1 as AudioStreamPlayer2D,
+	$sounds/flesh_2 as AudioStreamPlayer2D,
+]
+
+@onready
+var _sound_wind: AudioStreamPlayer2D = $sounds/wind as AudioStreamPlayer2D
+
 var _safety: ProjectileBody2D = null
+
+@onready
+var _sound_deploy: AudioStreamPlayer2D = $sounds/deploy as AudioStreamPlayer2D
+
+@onready
+var _education_hat: Sprite2D = $sprite_2d/education_hat as Sprite2D
 
 func is_swinging() -> bool:
 	return is_instance_valid(swing)
@@ -87,7 +120,7 @@ func is_swinging() -> bool:
 var _input_move: float = 0.0
 var _input_jump: bool = false
 
-func _input(event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent) -> void:
 	if Engine.is_editor_hint():
 		return
 	
@@ -107,6 +140,9 @@ func _ready() -> void:
 	contact_monitor = true
 	max_contacts_reported = 4
 	
+	_sound_wind.play()
+	_sound_wind.volume_db = -80.0
+	
 	_safety_umbrella.freeze = true
 	_safety_umbrella.visible = false
 	_safety_kite.freeze = true
@@ -125,8 +161,12 @@ func _ready() -> void:
 	else:
 		_safety = null
 	
-	var groove_joint: GrooveJoint2D = _safety_parachute.get_node_or_null("groove_joint_2d") as GrooveJoint2D
-	groove_joint.node_b = NodePath("")
+	if _game_data.is_item_equipped(ITEM_EDUCATION[0]):
+		_education_hat.visible = false
+	elif _game_data.is_item_equipped(ITEM_EDUCATION[1]):
+		_education_hat.visible = true
+	else:
+		_education_hat.visible = false
 	
 	body_shape_entered.connect(_on_body_shape_entered)
 	body_shape_exited.connect(_on_body_shape_exited)
@@ -231,11 +271,20 @@ func _physics_process(delta: float) -> void:
 	_safety_parachute_catenary_f.end_position = (global_position - _safety_parachute_catenary_f.global_position).rotated(-_safety_parachute_catenary_f.global_rotation)
 	
 	if !is_swinging():
+		_sound_wind.volume_db = clampf(remap(linear_velocity.length(), 1500.0, 8000.0, -20.0, 0.0), -80.0, 0.0)
+		if _sound_wind.volume_db < -20.0:
+			_sound_wind.volume_db = -80.0
+		
 		_turn_direction = signf(_input_move)
 		
 		_particles_afterimage.emitting = true
 		_particles_afterimage.amount_ratio = clampf(remap(linear_velocity.length(), 2000.0, 10000.0, 0.0, 1.0), 0.0, 1.0)
-		if _particles_afterimage.amount_ratio < 0.5:
+		
+		if _particles_afterimage.amount_ratio < 0.25:
+			_particles_afterimage.amount_ratio = 0.0
+		if linear_velocity.length() > 2000.0:
+			_particles_afterimage.amount_ratio = 0.5
+		else:
 			_particles_afterimage.amount_ratio = 0.0
 		_particles_afterimage_material.angle_min = -(180.0 / PI) * global_rotation
 		_particles_afterimage_material.angle_max = -(180.0 / PI) * global_rotation
@@ -245,6 +294,7 @@ func _physics_process(delta: float) -> void:
 			if !_parachute_deployed:
 				_parachute_deployed = true
 				if is_instance_valid(_safety):
+					_sound_deploy.play()
 					_safety.freeze = false
 					_safety.visible = true
 					var groove_joint: GrooveJoint2D = _safety.get_node_or_null("groove_joint_2d") as GrooveJoint2D
@@ -255,20 +305,27 @@ func _physics_process(delta: float) -> void:
 				_ground_time += delta
 			else:
 				_sprite.frame = 3
+				_education_hat.position = Vector2(-10.0, -50.0)
 		else:
 			_ground_time = 0.0
 			_check_injury(linear_velocity.distance_to(_linear_velocity))
 			_sprite.frame = 4
+			_education_hat.position = Vector2(-6.0, -50.0)
 			#print(_colliding_body_parts)
 	else:
+		_sound_wind.volume_db = -80.0
+		
 		_particles_afterimage.emitting = false
 		
 		if _input_move > 0.0:
 			_sprite.frame = 1
+			_education_hat.position = Vector2(-25.0, -45.0)
 		elif _input_move < 0.0:
 			_sprite.frame = 2
+			_education_hat.position = Vector2(14, -44.0)
 		else:
 			_sprite.frame = 0
+			_education_hat.position = Vector2(-10.0, -50.0)
 		
 		_swing_thruster.activate()
 		_swing_thruster.thrust_direction = Vector2.RIGHT * _input_move
@@ -285,6 +342,7 @@ func _physics_process(delta: float) -> void:
 			if jump:
 				swing = null
 				_sprite.frame = 3
+				_education_hat.position = Vector2(-10.0, -50.0)
 	
 	_linear_velocity = linear_velocity
 
@@ -293,12 +351,10 @@ func _check_injury(acceleration: float) -> void:
 		return
 	
 	if acceleration > 3000.0:
-		print("huge impact - death")
-		_set_injury(Injury.DEAD)
-		_particles_gore.emitting = true
-		_sprite.visible = false
+		explode()
 	
 	if acceleration > 2000.0:
+		_sound_bones[randi_range(0, _sound_bones.size() - 1)].play()
 		for body_part: BodyPart in _colliding_body_parts:
 			if body_part == BodyPart.HEAD:
 				print("large impact - head")
@@ -314,6 +370,7 @@ func _check_injury(acceleration: float) -> void:
 				_set_injury(Injury.BROKEN_FEMUR)
 	
 	if acceleration > 1200.0:
+		_sound_bones[randi_range(0, _sound_bones.size() - 1)].play()
 		for body_part: BodyPart in _colliding_body_parts:
 			if body_part == BodyPart.HEAD:
 				print("medium impact - head")
@@ -329,6 +386,7 @@ func _check_injury(acceleration: float) -> void:
 				_set_injury(Injury.BROKEN_LEGS)
 	
 	if acceleration > 500.0:
+		_sound_flesh[randi_range(0, _sound_flesh.size() - 1)].play()
 		for body_part: BodyPart in _colliding_body_parts:
 			if body_part == BodyPart.HEAD:
 				print("small impact - head")
@@ -343,3 +401,11 @@ func _check_injury(acceleration: float) -> void:
 				print("small impact - legs")
 				_set_injury(Injury.SPRAINED_ANKLES)
 	
+
+func explode() -> void:
+	print("exploded")
+	swing = null
+	_set_injury(Injury.DEAD)
+	_particles_gore.emitting = true
+	_sprite.visible = false
+	exploded.emit()
